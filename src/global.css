@@ -1,0 +1,73 @@
+:root {
+  /* ================= Colors ================= */
+  --black-414141: #414141;
+  --gray-818181: #818181;
+  --gray-DDDDDD: #DDDDDD;
+  --gray-EEEEEE: #EEEEEE;
+
+  --bg-F6F4EF: #F6F4EF;
+
+  --brand-99C08E: #99C08E;
+
+  --error-C41013: #C41013;
+  --red-F50E0E: #F50E0E;
+  --error-bg-FFA3A5: #FFA3A5;
+
+  --green-E1EDDE: #E1EDDE;
+  --yellow-FFF1CC: #FFF1CC;
+  --blue-E0F1F5: #E0F1F5;
+  --pink-FDE0E9: #FDE0E9;
+
+  --green-text-578246: #578246;
+  --yellow-text-C18E1B: #C18E1B;
+  --blue-text-418099: #418099;
+  --pink-text-BC3C6A: #BC3C6A;
+
+  /* ================= Font ================= */
+  --font-family: 'Pretendard', sans-serif;
+
+  /* Font Sizes */
+  --font-32-bold: 700 32px/normal var(--font-family);
+  --font-24-bold: 700 24px/normal var(--font-family);
+  --font-20-bold: 700 20px/normal var(--font-family);
+  --font-20-medium: 500 20px/normal var(--font-family);
+
+  --font-18-bold: 700 18px/normal var(--font-family);
+  --font-18-medium: 500 18px/normal var(--font-family);
+  --font-18-regular: 400 18px/normal var(--font-family);
+
+  --font-16-bold: 700 16px/normal var(--font-family);
+  --font-16-medium: 500 16px/normal var(--font-family);
+  --font-16-regular: 400 16px/normal var(--font-family);
+
+  --font-14-bold: 700 14px/normal var(--font-family);
+  --font-14-medium: 500 14px/normal var(--font-family);
+  --font-14-regular: 400 14px/normal var(--font-family);
+
+  --font-12-bold: 700 12px/normal var(--font-family);
+  --font-12-medium: 500 12px/normal var(--font-family);
+  --font-12-regular: 400 12px/normal var(--font-family);
+
+  --font-10-bold: 700 10px/normal var(--font-family);
+  --font-10-medium: 500 10px/normal var(--font-family);
+  --font-10-regular: 400 10px/normal var(--font-family);
+
+  /* Large Titles */
+  --font-150-bold: 700 71.277px/normal var(--font-family);
+  --font-120-bold: 700 57.021px/normal var(--font-family);
+  --font-80-bold: 700 38.014px/normal var(--font-family);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  background-color: #F6F4EF;
+}
+
+a {
+  text-decoration: none;
+}

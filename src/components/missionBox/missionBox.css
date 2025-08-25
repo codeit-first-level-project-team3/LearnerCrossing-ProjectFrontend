@@ -1,0 +1,164 @@
+.missionBox{
+    max-width: 1248px;
+
+    margin: 39px auto 0;
+    padding: 40px;
+
+    border-radius: 20px;
+    background: #FFF;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+}
+
+.headline{
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.headline .titleDiv{
+    display: flex;
+    justify-content: space-between;
+}
+
+.headline .title{
+    color: var(--black-414141);
+    font: var(--font-32-bold);
+}
+
+.headline .buttonDiv{
+    display: flex;
+    gap: 16px;
+}
+
+.goToBtn{
+    width: fit-content;
+    height: fit-content;
+    flex-shrink: 0;
+
+    padding: 12px 16px 12px 24px;
+
+    border-radius: 15px;
+    border: 1px solid var(--gray-gray_DDDDDD, #DDD);
+    background: #FFF;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;   
+
+    color: var(--gray-818181);
+    font: var(--font-16-medium);
+    line-height: 16px;
+}
+
+.goToBtn img{
+    width: 24px;
+    height: 24px;
+}
+
+.headline .infoDiv{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+    gap: 8px;
+}
+
+.infoDiv .title{
+    margin: 0;
+
+    color: var(--gray-818181);
+    font: var(--font-18-regular);
+}
+
+.infoTag{
+    width: fit-content;
+    height: fit-content;
+    
+    padding: 8px 12px;
+
+    display: flex;
+    justify-content: center ;
+    align-content: center;
+
+    border-radius: 50px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background-color: rgba(255, 255, 255, 0.30);
+
+    color: var(--black-414141);
+    font: var(--font-16-medium);
+    line-height: 16px;
+}
+
+.mainFeature{
+    width: 100%;
+    display: flex;
+    padding: 40px 24px;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    border-radius: 20px;
+    border: 1px solid var(--gray-gray_DDDDDD, #DDD);
+    background: #FFF;
+}
+
+.mainFeature .titleDiv{
+    width: 100%;
+    height: 29px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    position: relative;
+
+    margin-bottom: 24px;
+}
+
+.mainFeature .titleDiv .title{
+    color: var(--black-414141);
+    font: var(--font-24-bold);
+    line-height: 24px;
+}
+
+.mainFeature .titleDiv button{
+    position: absolute;
+    
+    right: 0%;
+    top: 50%;
+    transform: translateY(-50%);
+
+    color: var(--gray-818181);
+    font: var(--font-14-medium);
+    line-height: 14px;
+
+    border: none;
+    background: none;
+}
+
+.routineWrapper{
+    width: 100%;
+    max-width: 400px;
+}
+
+.routineList{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.routineChip{
+    width: 100%;
+    height: 54px;
+
+    border-radius: 20px;
+    border: none;
+}
