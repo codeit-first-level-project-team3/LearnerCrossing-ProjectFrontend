@@ -1,4 +1,4 @@
-import GoToBtn from '../mocules/GoToBtn';
+import GoToBtn from '../../mocules/GoToBtn';
 import '../styles/missionBox.css'
 
 function MissionBox({mainFeature}){

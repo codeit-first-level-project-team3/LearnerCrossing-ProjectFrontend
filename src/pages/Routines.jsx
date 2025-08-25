@@ -1,4 +1,4 @@
-import MissionBox from '../components/missionBox/MissionBox';
+import MissionBox from '../components/organism/missionBox/MissionBox';
 
 function RoutineList(){
 
