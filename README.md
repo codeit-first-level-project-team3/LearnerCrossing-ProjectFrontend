@@ -1,12 +1,22 @@
-# React + Vite
+# 초기 프로젝트 - (공부의 숲) 프론트 엔드
+프론트 엔드 병합용 repo입니다.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![logoImg](public/readmeLogo.png)
 
-Currently, two official plugins are available:
+## 1. 기술 스택 정의
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+| 기술 스택 |                  |
+| ----- | ---------------- |
+| 프레임워크 | React+vite       |
+| 라우팅   | react-router-dom |
+| 언어    | JSX, JavaScript  |
+| 스타일   | css module       |
+| API   | axios            |
 
-## Expanding the ESLint configuration
+## 2. 설정 파일 세팅
+- pakage.json
+- .gitignore
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 3. 루트 레이아웃
+- router.jsx 로 라우터 경로 관리 (createBrowserRouter 방식)
+- App.jsx 에서 router.jsx로 연결, Context 바운더리 정의(미정)
