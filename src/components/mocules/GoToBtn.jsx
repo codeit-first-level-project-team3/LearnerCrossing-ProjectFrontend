@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import arrowRight from '../assets/ic_arrow_right.svg';
+import arrowRight from '../../assets/ic_arrow_right.svg';
 
 function GoToBtn({to, name}){
     return (
