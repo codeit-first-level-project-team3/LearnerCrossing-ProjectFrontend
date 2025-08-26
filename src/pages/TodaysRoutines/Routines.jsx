@@ -1,4 +1,4 @@
-import StudyMain from '../../components/organism/StudyMain/StudyMain.jsx';
+import StudyMain from '../../components/organisms/StudyMain/StudyMain.jsx';
 import Button from '../../components/atoms/Button/Button.jsx';
 import Tag from '../../components/atoms/Tag/Tag.jsx';
 import styles from './Routines.module.css';

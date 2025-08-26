@@ -1,4 +1,4 @@
-import StudyMain from '../../components/organism/StudyMain/StudyMain.jsx';
+import StudyMain from '../../components/organisms/StudyMain/StudyMain.jsx';
 import CntdownTimer from '../../components/molecules/CntDownTimer/CntDownTimer.jsx';
 import Tag from '../../components/atoms/Tag/Tag.jsx';
 
