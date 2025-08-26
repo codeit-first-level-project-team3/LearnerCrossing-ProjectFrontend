@@ -1,3 +1,12 @@
+/* ================= Font Face ================= */
+@font-face {
+    font-family: 'Jeju-Stone-Wall';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2210-EF@1.0/EF_jejudoldam.woff2') format('woff2');
+    font-weight: normal;
+    font-display: swap;
+}
+
+/* ================= Root Variables ================= */
 :root {
   /* ================= Colors ================= */
   --black-414141: #414141;
@@ -22,11 +31,13 @@
   --yellow-text-C18E1B: #C18E1B;
   --blue-text-418099: #418099;
   --pink-text-BC3C6A: #BC3C6A;
+  --white: #FFF;
 
-  /* ================= Font ================= */
+  /* ================= Font Families ================= */
   --font-family: 'Pretendard', sans-serif;
+  --font-family-jeju: 'Jeju-Stone-Wall', sans-serif;
 
-  /* Font Sizes */
+  /* ================= Font Sizes ================= */
   --font-32-bold: 700 32px/normal var(--font-family);
   --font-24-bold: 700 24px/normal var(--font-family);
   --font-20-bold: 700 20px/normal var(--font-family);
@@ -58,6 +69,7 @@
   --font-80-bold: 700 38.014px/normal var(--font-family);
 }
 
+/* ================= Global Styles ================= */
 * {
   margin: 0;
   padding: 0;
