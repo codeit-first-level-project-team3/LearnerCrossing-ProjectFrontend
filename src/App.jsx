@@ -4,6 +4,7 @@ import { RouterProvider } from "react-router-dom";
 import GNB from "./components/organisms/GNB/GNB";
 import HabitButton from './components/molecules/HabitButton/HabitButton';
 import MakeButton from './components/molecules/MakeButton/MakeButton';
+import Search from './components/molecules/Search/Search';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
     {/* gnb 스터디 만들기 버튼이 있는 버전 test */}
     <GNB showCreateStudy={true} />
     <MakeButton />
+    <Search placeholder="검색"/>
     </div> 
   );
 }
