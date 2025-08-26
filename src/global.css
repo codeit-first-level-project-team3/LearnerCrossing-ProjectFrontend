@@ -1,73 +1,98 @@
+/* ================= Font Face ================= */
+@font-face {
+  font-family: "Jeju-Stone-Wall";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2210-EF@1.0/EF_jejudoldam.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-display: swap;
+}
+
+/* ================= Root Variables ================= */
 :root {
   /* ================= Colors ================= */
   --black-414141: #414141;
   --gray-818181: #818181;
-  --gray-DDDDDD: #DDDDDD;
-  --gray-EEEEEE: #EEEEEE;
+  --gray-DDDDDD: #dddddd;
+  --gray-EEEEEE: #eeeeee;
 
-  --bg-F6F4EF: #F6F4EF;
+  --bg-F6F4EF: #f6f4ef;
 
-  --brand-99C08E: #99C08E;
+  --brand-99C08E: #99c08e;
 
-  --error-C41013: #C41013;
-  --red-F50E0E: #F50E0E;
-  --error-bg-FFA3A5: #FFA3A5;
+  --error-C41013: #c41013;
+  --red-F50E0E: #f50e0e;
+  --error-bg-FFA3A5: #ffa3a5;
 
-  --green-E1EDDE: #E1EDDE;
-  --yellow-FFF1CC: #FFF1CC;
-  --blue-E0F1F5: #E0F1F5;
-  --pink-FDE0E9: #FDE0E9;
+  --green-E1EDDE: #e1edde;
+  --yellow-FFF1CC: #fff1cc;
+  --blue-E0F1F5: #e0f1f5;
+  --pink-FDE0E9: #fde0e9;
 
   --green-text-578246: #578246;
-  --yellow-text-C18E1B: #C18E1B;
+  --yellow-text-C18E1B: #c18e1b;
   --blue-text-418099: #418099;
-  --pink-text-BC3C6A: #BC3C6A;
+  --pink-text-BC3C6A: #bc3c6a;
+  --white: #fff;
 
-  /* ================= Font ================= */
-  --font-family: 'Pretendard', sans-serif;
+  /* ================= Font Families ================= */
+  --font-family: "Pretendard", sans-serif;
+  --font-family-jeju: "Jeju-Stone-Wall", sans-serif;
 
-  /* Font Sizes */
-  --font-32-bold: 700 32px/normal var(--font-family);
-  --font-24-bold: 700 24px/normal var(--font-family);
-  --font-20-bold: 700 20px/normal var(--font-family);
-  --font-20-medium: 500 20px/normal var(--font-family);
+  /* ================= Font Sizes ================= */
+  --font-32-bold: 700 32px / normal var(--font-family);
+  --font-24-bold: 700 24px / normal var(--font-family);
+  --font-20-bold: 700 20px / normal var(--font-family);
+  --font-20-medium: 500 20px / normal var(--font-family);
 
-  --font-18-bold: 700 18px/normal var(--font-family);
-  --font-18-medium: 500 18px/normal var(--font-family);
-  --font-18-regular: 400 18px/normal var(--font-family);
+  --font-18-bold: 700 18px / normal var(--font-family);
+  --font-18-medium: 500 18px / normal var(--font-family);
+  --font-18-regular: 400 18px / normal var(--font-family);
 
-  --font-16-bold: 700 16px/normal var(--font-family);
-  --font-16-medium: 500 16px/normal var(--font-family);
-  --font-16-regular: 400 16px/normal var(--font-family);
+  --font-16-bold: 700 16px / normal var(--font-family);
+  --font-16-medium: 500 16px / normal var(--font-family);
+  --font-16-regular: 400 16px / normal var(--font-family);
 
-  --font-14-bold: 700 14px/normal var(--font-family);
-  --font-14-medium: 500 14px/normal var(--font-family);
-  --font-14-regular: 400 14px/normal var(--font-family);
+  --font-14-bold: 700 14px / normal var(--font-family);
+  --font-14-medium: 500 14px / normal var(--font-family);
+  --font-14-regular: 400 14px / normal var(--font-family);
 
-  --font-12-bold: 700 12px/normal var(--font-family);
-  --font-12-medium: 500 12px/normal var(--font-family);
-  --font-12-regular: 400 12px/normal var(--font-family);
+  --font-12-bold: 700 12px / normal var(--font-family);
+  --font-12-medium: 500 12px / normal var(--font-family);
+  --font-12-regular: 400 12px / normal var(--font-family);
 
-  --font-10-bold: 700 10px/normal var(--font-family);
-  --font-10-medium: 500 10px/normal var(--font-family);
-  --font-10-regular: 400 10px/normal var(--font-family);
+  --font-10-bold: 700 10px / normal var(--font-family);
+  --font-10-medium: 500 10px / normal var(--font-family);
+  --font-10-regular: 400 10px / normal var(--font-family);
 
   /* Large Titles */
-  --font-150-bold: 700 71.277px/normal var(--font-family);
-  --font-120-bold: 700 57.021px/normal var(--font-family);
-  --font-80-bold: 700 38.014px/normal var(--font-family);
+  --font-150-bold: 700 71.277px / normal var(--font-family);
+  --font-120-bold: 700 57.021px / normal var(--font-family);
+  --font-80-bold: 700 38.014px / normal var(--font-family);
 }
 
+/* ================= Global Styles ================= */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body{
-  background-color: #F6F4EF;
+body {
+  background-color: #f6f4ef;
 }
-
+ol, ul {
+	list-style: none;
+}
 a {
   text-decoration: none;
+}
+
+section {
+  display: flex;
+  padding: 40px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: 20px;
+  background: #fff;
 }
