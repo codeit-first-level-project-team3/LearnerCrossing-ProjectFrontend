@@ -1,0 +1,21 @@
+.logo {
+  width: 181.603px;
+  height: 60px;
+  flex-shrink: 0;
+}
+
+/* Tablet */
+@media (min-width: 376px) and (max-width: 744px) {
+  .logo {
+    width: 181.603px;
+    height: 60px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 375px) {
+  .logo {
+    width: 106px;
+    height: 35.021px;
+  }
+}
