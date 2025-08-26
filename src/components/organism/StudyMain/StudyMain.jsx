@@ -1,5 +1,5 @@
-import GoToBtn from '../../mocules/GoToBtn';
-import './StudyMain.css'
+import GoToBtn from '../../molecules/GoToBtn';
+import styles from './StudyMain.module.css'
 
 function StudyMain({
     title = '연우의 개발 공장',
@@ -9,11 +9,11 @@ function StudyMain({
     mainFeature = <></>
 }){
     return(
-        <div className="missionBox">
-                <div className="headline">
-                    <div className="titleDiv">
-                        <p className="title">{title}</p>
-                        <div className="buttonDiv">
+        <div className={styles.missionBox}>
+                <div className={styles.headline}>
+                    <div className={styles.titleDiv}>
+                        <p className={styles.title}>{title}</p>
+                        <div className={styles.buttonDiv}>
                             {goToBtn.map((e)=>{
                                 const {to, name} = e;
                                 return <GoToBtn to={to} name={name}/>;
@@ -21,19 +21,19 @@ function StudyMain({
                         </div>
                     </div>
                     {false && 
-                        <div className="description">
-                            <p className="label">{description.name}</p>
+                        <div className={styles.description}>
+                            <p className={styles.label}>{description.name}</p>
                             <p>{description.value}</p>
                         </div>
                     }
-                    <div className="infoDiv">
-                        <p className="label">{info.name}</p>
-                        <div className="tag">
+                    <div className={styles.infoDiv}>
+                        <p className={styles.label}>{info.name}</p>
+                        <div className={styles.tag}>
                             <p>{info.value}</p>
                         </div>
                     </div>
                 </div>
-                <div className="mainFeature">
+                <div className={styles.mainFeature}>
                     {mainFeature} 
                 </div>
             </div>

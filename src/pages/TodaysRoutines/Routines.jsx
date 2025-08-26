@@ -1,4 +1,5 @@
-import StudyMain from '../components/organism/missionBox/StudyMain';
+import StudyMain from '../../components/organism/StudyMain/StudyMain.jsx';
+import styles from './Routines.module.css';
 
 function RoutineList(){
 
@@ -20,16 +21,16 @@ function RoutineList(){
 
     //Key를 지금은 인덱스로 넣고 있어서 차후 수정 필요.
     return(
-        <div className="routineWrapper">
-            <div className="titleDiv">
-                <p className="title">오늘의 습관</p>
+        <div className={styles.routineWrapper}>
+            <div className={styles.titleDiv}>
+                <p className={styles.title}>오늘의 습관</p>
                 <button>목록수정</button>
             </div>
-            <ul className="routineList">
+            <ul className={styles.routineList}>
                 {routineList.map((e) => {
                     return(
                         <li key={routineList.indexOf(e)}>
-                            <button className="routineChip" style={chipStyle}>{e}</button>
+                            <button className={styles.routineChip} style={chipStyle}>{e}</button>
                         </li>
                     );  
                 })}
