@@ -1,15 +1,16 @@
 import StudyMain from '../../components/organism/StudyMain/StudyMain.jsx';
+import CntdownTimer from '../../components/molecules/CntDownTimer/CntDownTimer.jsx';
 import styles from './Routines.module.css';
 
-function Timer(){
+function Concentration(){
+    const fiveMinutesLater = new Date().getTime() + 20 * 1000;
 
-    //Key를 지금은 인덱스로 넣고 있어서 차후 수정 필요.
     return(
         <div className={styles.routineWrapper}>
             <div className={styles.titleDiv}>
                 <p className={styles.title}>오늘의 집중</p>
             </div>
-            
+            <CntdownTimer targetTime={fiveMinutesLater}/>
         </div>
     )
 }
@@ -34,7 +35,7 @@ function TodaysConcentration(){
                 goToBtn= {goToBtn}
                 description={null}
                 info={info}
-                mainFeature={<Timer/>}
+                mainFeature={<Concentration/>}
             />
         </main>
         </>

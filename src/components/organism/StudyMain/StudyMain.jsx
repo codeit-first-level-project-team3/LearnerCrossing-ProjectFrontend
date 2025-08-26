@@ -1,4 +1,4 @@
-import GoToBtn from '../../molecules/GoToBtn';
+import GoToBtn from '../../molecules/GotoBtn/GoToBtn';
 import styles from './StudyMain.module.css'
 
 function StudyMain({

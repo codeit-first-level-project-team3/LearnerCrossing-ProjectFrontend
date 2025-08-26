@@ -75,6 +75,9 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
+  font-style: normal;
+  line-height: normal;
 }
 
 body {

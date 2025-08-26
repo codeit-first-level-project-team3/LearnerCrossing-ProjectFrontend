@@ -10,7 +10,7 @@
     align-content: center;
     position: relative;
 
-    margin-bottom: 24px;
+    margin-bottom: 100px;
 }
 
 .titleDiv .title{
@@ -36,7 +36,6 @@
 
 .routineWrapper{
     width: 100%;
-    max-width: 400px;
 }
 
 .routineList{
