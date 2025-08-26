@@ -22,7 +22,7 @@ function Concentration(){
 
 function TodaysConcentration(){
     const goToBtn = [
-        {to: '/', name:'오늘의 습관'},
+        {to: '/routines', name:'오늘의 습관'},
         {to: '/', name:'홈'},
     ]
 

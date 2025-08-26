@@ -1,4 +1,5 @@
 import StudyMain from '../../components/organism/StudyMain/StudyMain.jsx';
+import Button from '../../components/atoms/Button/Button.jsx';
 import Tag from '../../components/atoms/Tag/Tag.jsx';
 import styles from './Routines.module.css';
 
@@ -25,7 +26,7 @@ function RoutineList(){
         <div className={styles.routineWrapper}>
             <div className={styles.titleDiv}>
                 <p className={styles.title}>오늘의 습관</p>
-                <button>목록수정</button>
+                <Button>목록수정</Button>
             </div>
             <ul className={styles.routineList}>
                 {routineList.map((e) => {
@@ -42,7 +43,7 @@ function RoutineList(){
 
 function TodaysRoutine(){
     const goToBtn = [
-        {to: '/', name:'오늘의 집중'},
+        {to: '/concentrations', name:'오늘의 집중'},
         {to: '/', name:'홈'},
     ]
 
