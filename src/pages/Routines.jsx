@@ -1,4 +1,4 @@
-import MissionBox from '../components/organism/missionBox/MissionBox';
+import StudyMain from '../components/organism/missionBox/StudyMain';
 
 function RoutineList(){
 
@@ -39,11 +39,32 @@ function RoutineList(){
 }
 
 function TodaysRoutine(){
+    const goToBtn = [
+        {to: '/', name:'오늘의 집중'},
+        {to: '/', name:'홈'},
+    ]
+
+    const description = {
+        name: '소개',
+        value: 'Slow And Steady Wins The Race! 다들 오늘 하루도 화이팅 :)'
+    }
+
+    const info = {
+        name: '현재 시간',
+        value: '2024-01-04 오후 03:04'
+    }
+
     return (
         <>
         {/* <header></header> */}
         <main>
-            <MissionBox mainFeature={<RoutineList/>}/>
+            <StudyMain 
+                title='연우의 개발 공장'
+                goToBtn= {goToBtn}
+                description={null}
+                info={info}
+                mainFeature={<RoutineList/>}
+            />
         </main>
         </>
     );
