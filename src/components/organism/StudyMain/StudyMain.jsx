@@ -9,7 +9,7 @@ function StudyMain({
     mainFeature = <></>
 }){
     return(
-        <div className={styles.missionBox}>
+        <div className={styles.studyMain}>
                 <div className={styles.headline}>
                     <div className={styles.titleDiv}>
                         <p className={styles.title}>{title}</p>
@@ -28,9 +28,7 @@ function StudyMain({
                     }
                     <div className={styles.infoDiv}>
                         <p className={styles.label}>{info.name}</p>
-                        <div className={styles.tag}>
-                            <p>{info.value}</p>
-                        </div>
+                        {info.value}
                     </div>
                 </div>
                 <div className={styles.mainFeature}>

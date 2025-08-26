@@ -1,6 +1,11 @@
 import StudyMain from '../../components/organism/StudyMain/StudyMain.jsx';
 import CntdownTimer from '../../components/molecules/CntDownTimer/CntDownTimer.jsx';
+import Tag from '../../components/atoms/Tag/Tag.jsx';
+
 import styles from './Routines.module.css';
+
+import pointIcon from '../../assets/point_icon.svg';
+
 
 function Concentration(){
     const fiveMinutesLater = new Date().getTime() + 20 * 1000;
@@ -23,7 +28,7 @@ function TodaysConcentration(){
 
     const info = {
         name: '현재까지 획득한 포인트',
-        value: '310P 획득'
+        value: <Tag img={pointIcon} value='340p'/>
     }
 
     return (

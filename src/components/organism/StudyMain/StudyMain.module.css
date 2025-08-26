@@ -1,4 +1,4 @@
-.missionBox{
+.studyMain{
     max-width: 1248px;
 
     margin: 39px auto 0;
@@ -24,6 +24,7 @@
 .headline .titleDiv{
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .headline .title{
@@ -49,25 +50,6 @@
 
     color: var(--gray-818181);
     font: var(--font-18-regular);
-}
-
-.infoDiv .tag{
-    width: fit-content;
-    height: fit-content;
-    
-    padding: 8px 12px;
-
-    display: flex;
-    justify-content: center ;
-    align-content: center;
-
-    border-radius: 50px;
-    border: 1px solid rgba(0, 0, 0, 0.10);
-    background-color: rgba(255, 255, 255, 0.30);
-
-    color: var(--black-414141);
-    font: var(--font-16-medium);
-    line-height: 16px;
 }
 
 .mainFeature{

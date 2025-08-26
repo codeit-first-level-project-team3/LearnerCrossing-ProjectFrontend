@@ -1,4 +1,5 @@
 import StudyMain from '../../components/organism/StudyMain/StudyMain.jsx';
+import Tag from '../../components/atoms/Tag/Tag.jsx';
 import styles from './Routines.module.css';
 
 function RoutineList(){
@@ -52,7 +53,7 @@ function TodaysRoutine(){
 
     const info = {
         name: '현재 시간',
-        value: '2024-01-04 오후 03:04'
+        value: <Tag value='2024-01-04 오후 03:04'/>
     }
 
     return (
