@@ -11,11 +11,13 @@ import MoreButton from './components/molecules/MoreButton/MoreButton';
 import HabitFocusButton from './components/molecules/HabitFocusButton/HabitFocusButton';
 import EditButton from './components/molecules/EditButton/EditButton';
 import ConfirmButton from './components/molecules/ConfirmButton/ConfirmButton';
+import CancelButton from './components/molecules/CancelButton/CancelButton';
 
 function App() {
   return (
     <div>
     <RouterProvider router={router} />
+    <CancelButton />
     </div>
   );
 }
