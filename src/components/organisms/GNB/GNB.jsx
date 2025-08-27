@@ -1,6 +1,6 @@
 import Logo from "../../atoms/Logo/Logo";
 import StudyCreateButton from "../../molecules/StudyCreateButton/StudyCreateButton"; 
-import styles from "./GNB.module.css"; // CSS 모듈 import
+import styles from "./GNB.module.css"; 
 
 export default function GNB({ showCreateStudy = false }) {
   return (
