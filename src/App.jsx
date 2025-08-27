@@ -16,12 +16,12 @@ import EditCompleteButton from './components/molecules/EditCompleteButton/EditCo
 import StartButton from './components/molecules/StartButton/StartButton';
 import StopButton from './components/molecules/StopButton/StopButton';
 import RestartButton from './components/molecules/RestartButton/RestartButton';
+import PauseButton from './components/molecules/PauseButton/PauseButton';
 
 function App() {
   return (
     <div>
     <RouterProvider router={router} />
-    <RestartButton />
     </div>
   );
 }

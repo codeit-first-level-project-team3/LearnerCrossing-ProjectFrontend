@@ -1,0 +1,40 @@
+.pauseBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+
+  border-radius: 50%; /* 원형 */
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  background: #578246; /* 아이콘 배경 필요 없으면 투명으로 해도 됨 */
+}
+
+.icon {
+  width: 35.2px;
+  height: 35.2px;
+  padding: 2.2px;
+  object-fit: contain;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* ================= Mobile (≤375px) ================= */
+@media (max-width: 375px) {
+  .pauseBtn {
+    width: 48px;
+    height: 48px;
+  }
+
+  .icon {
+    width: 26.4px;
+    height: 26.4px;
+    padding: 1.65px;
+  }
+}
