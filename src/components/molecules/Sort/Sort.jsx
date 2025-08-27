@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./Sort.module.css";
-import arrowIcon from "../../../assets/arrowDown.svg"; // 상대경로 기준
+import arrowIcon from "../../../assets/arrowDown.svg"; 
 
 export default function Sort({ label = "최근 순" }) {
   const options = ["최근 순", "오래된 순", "많은 포인트 순", "적은 포인트 순"];

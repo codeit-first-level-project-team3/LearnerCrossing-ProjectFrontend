@@ -11,7 +11,7 @@
   border: none;
   cursor: pointer;
   padding: 0;
-  background: #578246; /* 아이콘 배경 필요 없으면 투명으로 해도 됨 */
+  background: var(--green-text-578246); 
 }
 
 .icon {

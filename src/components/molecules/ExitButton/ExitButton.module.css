@@ -9,7 +9,7 @@
   height: 58px;
   padding: 10px;
   border-radius: 16px;
-  background: #99C08E;
+  background: var(--brand-99C08E);
 
   cursor: pointer;
   border: none;
@@ -24,7 +24,7 @@
   justify-content: center;
   flex-shrink: 0;
 
-  color: #FFF;
+  color: var(--white);
   text-align: center;
   font-family: var(--font-family-jeju);
   font-size: 18px;

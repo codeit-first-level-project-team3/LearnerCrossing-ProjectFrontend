@@ -1,5 +1,5 @@
 import React from "react";
-import Button from '../../atoms/Button/Button'; // Atom Button 경로
+import Button from '../../atoms/Button/Button'; 
 import styles from "./ConfirmButton.module.css";
 
 export default function ConfirmButton({ text = "확인", ...props }) {
