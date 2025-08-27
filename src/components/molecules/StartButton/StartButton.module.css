@@ -1,4 +1,4 @@
-.playBtn {
+.startBtn {
   display: inline-flex;
   align-items: center;
   gap: 16px;
@@ -25,7 +25,7 @@
 
 /* ================= Mobile (≤375px) ================= */
 @media (max-width: 375px) {
-  .playBtn {
+  .startBtn {
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -47,7 +47,7 @@
     justify-content: center;
   }
 
-  .playBtn img {
+  .startBtn img {
     width: 24px;
     height: 24px;
   }

@@ -13,13 +13,15 @@ import EditButton from './components/molecules/EditButton/EditButton';
 import ConfirmButton from './components/molecules/ConfirmButton/ConfirmButton';
 import CancelButton from './components/molecules/CancelButton/CancelButton';
 import EditCompleteButton from './components/molecules/EditCompleteButton/EditCompleteButton';
-import PlayButton from './components/molecules/PlayButton/PlayButton';
+import StartButton from './components/molecules/StartButton/StartButton';
 import StopButton from './components/molecules/StopButton/StopButton';
+import RestartButton from './components/molecules/RestartButton/RestartButton';
 
 function App() {
   return (
     <div>
     <RouterProvider router={router} />
+    <RestartButton />
     </div>
   );
 }
