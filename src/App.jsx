@@ -10,12 +10,12 @@ import INput from './components/atoms/Input/Input'
 import MoreButton from './components/molecules/MoreButton/MoreButton';
 import HabitFocusButton from './components/molecules/HabitFocusButton/HabitFocusButton';
 import EditButton from './components/molecules/EditButton/EditButton';
+import ConfirmButton from './components/molecules/ConfirmButton/ConfirmButton';
 
 function App() {
   return (
     <div>
     <RouterProvider router={router} />
-    <MakeButton/>
     </div>
   );
 }
