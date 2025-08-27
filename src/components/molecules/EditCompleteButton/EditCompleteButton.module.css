@@ -40,7 +40,7 @@
 
     color: var(--white);
     text-align: center;
-    font-family: var(--font-family-jeju); /* 필요 시 EF_jejudoldam 교체 가능 */
+    font-family: var(--font-family-jeju);
     font-size: 18px;
     font-style: normal;
     font-weight: 400;
