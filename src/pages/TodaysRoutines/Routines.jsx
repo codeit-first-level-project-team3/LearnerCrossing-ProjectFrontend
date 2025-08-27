@@ -2,6 +2,9 @@ import GNB from '../../components/organisms/GNB/GNB.jsx';
 import StudyMain from '../../components/organisms/StudyMain/StudyMain.jsx';
 import Button from '../../components/atoms/Button/Button.jsx';
 import Tag from '../../components/atoms/Tag/Tag.jsx';
+import DateKR from '../../components/molecules/DateKR/DateKR.jsx';
+import RoutineChip from '../../components/molecules/RoutineChip/RoutineChip.jsx';
+
 import styles from './Routines.module.css';
 
 
@@ -17,12 +20,6 @@ function RoutineList(){
         "물 2리터 먹기"
     ];
 
-    const chipStyle = {
-        backgroundColor: "var(--gray-gray_EEEEEE, #EEE)",
-        color: "var(--gray-818181)",
-        font: "var(--font-16-bold)",
-    }
-
     //Key를 지금은 인덱스로 넣고 있어서 차후 수정 필요.
     return(
         <div className={styles.routineWrapper}>
@@ -34,7 +31,9 @@ function RoutineList(){
                 {routineList.map((e) => {
                     return(
                         <li key={routineList.indexOf(e)}>
-                            <button className={styles.routineChip} style={chipStyle}>{e}</button>
+                            <RoutineChip
+                                name={e}
+                            />
                         </li>
                     );  
                 })}
@@ -49,14 +48,9 @@ function TodaysRoutine(){
         {to: '/', name:'홈'},
     ]
 
-    const description = {
-        name: '소개',
-        value: 'Slow And Steady Wins The Race! 다들 오늘 하루도 화이팅 :)'
-    }
-
     const info = {
         name: '현재 시간',
-        value: <Tag value='2024-01-04 오후 03:04'/>
+        value: <Tag value={<DateKR/>}/>
     }
 
     return (

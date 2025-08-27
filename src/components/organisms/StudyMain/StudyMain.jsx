@@ -9,12 +9,6 @@ function StudyMain({
     mainFeature = <></>
 }){
 
-    const infoContent= {
-        '현재 시간': <Tag value='2024-01-04 오후 03:04'/>,
-        '현재까지 획득한 포인트': <Tag img={pointIcon} value='340p'/>
-    }
-
-
     return(
         <div className={styles.studyMain}>
                 <div className={styles.headline}>
@@ -35,8 +29,8 @@ function StudyMain({
                     }
                     {info && 
                         <div className={styles.infoDiv}>
-                            <p className={styles.label}>{info}</p>
-                            {infoContent[info]}
+                            <p className={styles.label}>{info.name}</p>
+                            {info.value}
                         </div>
                     }
                 </div>
