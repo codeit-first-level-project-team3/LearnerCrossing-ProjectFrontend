@@ -1,7 +1,9 @@
+import GNB from '../../components/organisms/GNB/GNB.jsx';
 import StudyMain from '../../components/organisms/StudyMain/StudyMain.jsx';
 import Button from '../../components/atoms/Button/Button.jsx';
 import Tag from '../../components/atoms/Tag/Tag.jsx';
 import styles from './Routines.module.css';
+
 
 function RoutineList(){
 
@@ -59,7 +61,7 @@ function TodaysRoutine(){
 
     return (
         <>
-        {/* <header></header> */}
+        <GNB/>
         <main>
             <StudyMain 
                 title='연우의 개발 공장'

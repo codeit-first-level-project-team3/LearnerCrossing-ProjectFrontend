@@ -8,6 +8,13 @@ function StudyMain({
     info = { name:'', value:''},
     mainFeature = <></>
 }){
+
+    const infoContent= {
+        '현재 시간': <Tag value='2024-01-04 오후 03:04'/>,
+        '현재까지 획득한 포인트': <Tag img={pointIcon} value='340p'/>
+    }
+
+
     return(
         <div className={styles.studyMain}>
                 <div className={styles.headline}>
@@ -20,16 +27,18 @@ function StudyMain({
                             })}
                         </div>
                     </div>
-                    {false && 
+                    {description && 
                         <div className={styles.description}>
                             <p className={styles.label}>{description.name}</p>
                             <p>{description.value}</p>
                         </div>
                     }
-                    <div className={styles.infoDiv}>
-                        <p className={styles.label}>{info.name}</p>
-                        {info.value}
-                    </div>
+                    {info && 
+                        <div className={styles.infoDiv}>
+                            <p className={styles.label}>{info}</p>
+                            {infoContent[info]}
+                        </div>
+                    }
                 </div>
                 <div className={styles.mainFeature}>
                     {mainFeature} 

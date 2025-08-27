@@ -1,8 +1,11 @@
-.studyMain{
-    max-width: 1248px;
+/* Mobile 디자인 */
+/* 디폴트를 모바일로 잡았습니다. */
 
-    margin: 39px auto 0;
-    padding: 40px;
+.studyMain{
+    max-width: 1200px;
+
+    margin: 20px 16px 32px;
+    padding: 16px;
 
     border-radius: 20px;
     background: #FFF;
@@ -63,4 +66,22 @@
     border-radius: 20px;
     border: 1px solid var(--gray-gray_DDDDDD, #DDD);
     background: #FFF;
+}
+
+/* Tablet 디자인 */
+@media (min-width: 744px){
+    .studyMain{
+        margin: 16px 24px 170px;
+        padding: 24px;
+    }
+}
+
+/* PC 디자인 */
+@media (min-width: 1300px){
+    .studyMain{
+        max-width: 1200px;
+
+        margin: 40px auto 70px;
+        padding: 40px;
+    }
 }

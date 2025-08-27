@@ -1,17 +1,19 @@
+import GNB from '../../components/organisms/GNB/GNB.jsx';
 import StudyMain from '../../components/organisms/StudyMain/StudyMain.jsx';
 import CntdownTimer from '../../components/molecules/CntDownTimer/CntDownTimer.jsx';
 import Tag from '../../components/atoms/Tag/Tag.jsx';
 
-import styles from './Routines.module.css';
+import styles from './Concentrations.module.css';
 
 import pointIcon from '../../assets/point_icon.svg';
+
 
 
 function Concentration(){
     const fiveMinutesLater = new Date().getTime() + 20 * 1000;
 
     return(
-        <div className={styles.routineWrapper}>
+        <div className={styles.wrapper}>
             <div className={styles.titleDiv}>
                 <p className={styles.title}>오늘의 집중</p>
             </div>
@@ -33,7 +35,7 @@ function TodaysConcentration(){
 
     return (
         <>
-        {/* <header></header> */}
+        <GNB/>
         <main>
             <StudyMain 
                 title='연우의 개발 공장'
