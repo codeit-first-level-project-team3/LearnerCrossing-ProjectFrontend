@@ -18,6 +18,7 @@ import StopButton from './components/molecules/StopButton/StopButton';
 import RestartButton from './components/molecules/RestartButton/RestartButton';
 import PauseButton from './components/molecules/PauseButton/PauseButton';
 import AddButton from './components/molecules/AddButton/AddButton';
+import DeleteButton from './components/molecules/DeleteButton/DeleteButton';
 
 function App() {
   return (
