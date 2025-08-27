@@ -9,12 +9,13 @@ import Sort from './components/molecules/Sort/Sort';
 import INput from './components/atoms/Input/Input'
 import MoreButton from './components/molecules/MoreButton/MoreButton';
 import HabitFocusButton from './components/molecules/HabitFocusButton/HabitFocusButton';
+import EditButton from './components/molecules/EditButton/EditButton';
 
 function App() {
   return (
     <div>
     <RouterProvider router={router} />
-    <HabitFocusButton />
+    <MakeButton/>
     </div>
   );
 }
