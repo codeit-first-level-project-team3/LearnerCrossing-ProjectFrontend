@@ -7,10 +7,14 @@ import MakeButton from './components/molecules/MakeButton/MakeButton';
 import Search from './components/molecules/Search/Search';
 import Sort from './components/molecules/Sort/Sort';
 import INput from './components/atoms/Input/Input'
+import MoreButton from './components/molecules/MoreButton/MoreButton';
 
 function App() {
   return (
+    <div>
     <RouterProvider router={router} />
+    <MoreButton />
+    </div>
   );
 }
 
