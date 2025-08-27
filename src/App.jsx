@@ -6,6 +6,7 @@ import HabitButton from './components/molecules/HabitButton/HabitButton';
 import MakeButton from './components/molecules/MakeButton/MakeButton';
 import Search from './components/molecules/Search/Search';
 import Sort from './components/molecules/Sort/Sort';
+import PlusButton from './components/molecules/PlusButton/PlusButton';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
     <MakeButton />
     <Search placeholder="검색"/>
     <Sort label="최근 순" />
+    <PlusButton />
     </div> 
   );
 }
