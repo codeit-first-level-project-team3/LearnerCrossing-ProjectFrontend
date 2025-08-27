@@ -10,12 +10,12 @@
   height: 58px;
   padding: 10px;
   border-radius: 16px;
-  background: #99C08E;
+  background: var(--brand-99C08E);
 
   /* 글씨 */
-  color: #fff;
+  color: var(--white);
   text-align: center;
-  font-family: 'Jeju-Stone-Wall', sans-serif;
+  font-family: var(--font-family-jeju);
   font-size: 18px;
   font-style: normal;
   font-weight: 400;
@@ -40,8 +40,8 @@
     padding: 10px;
 
     /* 글씨 */
-    color: #FFF;
-    font-family: 'Jeju-Stone-Wall', sans-serif;
+    color: var(--white);
+    font-family: var(--font-family-jeju);
     font-size: 18px;
     font-style: normal;
     font-weight: 400;
