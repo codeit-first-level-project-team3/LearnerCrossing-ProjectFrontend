@@ -1,3 +1,5 @@
+import GNB from '../../components/organisms/GNB/GNB.jsx';
+import StudyMain from '../../components/organisms/StudyMain/StudyMain.jsx';
 import HabitWeekly from "../../components/molecules/HabitWeekly/HabitWeekly";
 import StudyDescription from "../../components/organisms/StudyDescription/StudyDescription";
 
@@ -8,13 +10,23 @@ function StudyDetail() {
   ];
   return (
     <>
-      <section>
+      {/* <section>
         <StudyDescription
           goToBtn={gotobtn}
           description="Slow And Steady Wins The Race! 다들 오늘 하루도 화이팅 :)"
         />
         <HabitWeekly />
-      </section>
+      </section> */}
+      <GNB/>
+        <main>
+            <StudyMain>
+                <StudyDescription
+                  goToBtn={gotobtn}
+                  description="Slow And Steady Wins The Race! 다들 오늘 하루도 화이팅 :)"
+                />
+                <HabitWeekly />
+            </StudyMain>
+        </main>
     </>
   );
 }

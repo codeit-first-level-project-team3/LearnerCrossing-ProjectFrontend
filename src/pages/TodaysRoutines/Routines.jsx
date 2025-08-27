@@ -1,11 +1,10 @@
 import GNB from '../../components/organisms/GNB/GNB.jsx';
 import StudyMain from '../../components/organisms/StudyMain/StudyMain.jsx';
 import Button from '../../components/atoms/Button/Button.jsx';
-import Tag from '../../components/atoms/Tag/Tag.jsx';
-import DateKR from '../../components/molecules/DateKR/DateKR.jsx';
 import RoutineChip from '../../components/molecules/RoutineChip/RoutineChip.jsx';
 
 import styles from './Routines.module.css';
+import StudyDescription from '../../components/organisms/StudyDescription/StudyDescription.jsx';
 
 
 function RoutineList(){
@@ -22,6 +21,7 @@ function RoutineList(){
 
     //Key를 지금은 인덱스로 넣고 있어서 차후 수정 필요.
     return(
+        <div className={styles.box}>
         <div className={styles.routineWrapper}>
             <div className={styles.titleDiv}>
                 <p className={styles.title}>오늘의 습관</p>
@@ -39,6 +39,7 @@ function RoutineList(){
                 })}
             </ul>
         </div>
+        </div>
     )
 }
 
@@ -48,16 +49,17 @@ function TodaysRoutine(){
         {to: '/', name:'홈'},
     ]
 
-    const info = {
-        name: '현재 시간',
-        value: <Tag value={<DateKR/>}/>
-    }
-
     return (
         <>
         <GNB/>
         <main>
-            {/* StudyMain -> StudyDescription으로 변경하면서 일단은 지웠습니다! */}
+            <StudyMain>
+                <StudyDescription
+                    goToBtn={goToBtn}
+                    isInfoPoint={false}
+                />
+                <RoutineList/>
+            </StudyMain>
         </main>
         </>
     );

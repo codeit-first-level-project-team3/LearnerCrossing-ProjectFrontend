@@ -2,6 +2,7 @@ import Tag from "../../atoms/Tag/Tag";
 import GoToBtn from "../../molecules/GotoBtn/GoToBtn";
 import styles from "./StudyDescription.module.css";
 import pointIcon from "../../../assets/point_icon.svg";
+import DateKR from "../../molecules/DateKR/DateKR";
 
 function StudyDescription({
   title = "연우의 개발 공장",
@@ -13,7 +14,7 @@ function StudyDescription({
 
   const info = {
     true: <Tag img={pointIcon} value="340p" />,
-    false: <Tag value="2024-01-04 오후 03:04" />,
+    false: <Tag value={<DateKR/>}/>,
   };
 
   return (
