@@ -1,0 +1,43 @@
+.searchBox {
+  display: flex;
+  align-items: center; /* 아이콘과 input 세로 가운데 정렬 */
+  gap: 10px;
+
+  width: 335px;
+  height: 42px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+
+  border-radius: 15px;
+  border: 1px solid var(--gray-DDDDDD); /* 루트 색상 */
+  background: var(--white, #FFF);        /* 루트 흰색 변수, 없으면 #FFF */
+
+  font: var(--font-16-regular);          /* 루트 font 단축 속성 적용 */
+  color: var(--gray-818181);             /* placeholder 색상 */
+}
+
+.searchBox input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font: inherit;                          /* 부모 font 상속, 단축 속성 포함 */
+  color: var(--black-414141);             /* 입력 시 글자색 */
+  background: transparent;
+}
+
+.searchBox input::placeholder {
+  color: var(--gray-818181);             /* placeholder 색상 */
+}
+
+.searchIcon {
+  display: block;
+}
+
+/* ================= Mobile (≤375px) ================= */
+@media (max-width: 375px) {
+  .searchBox {
+    width: 312px;       /* 모바일 너비 */
+    height: 42px;       /* 모바일 높이 */
+    padding: 12px 12px; /* 좌우 패딩 조정 */
+  }
+}

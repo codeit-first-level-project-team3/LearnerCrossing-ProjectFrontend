@@ -75,12 +75,15 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
+  font-style: normal;
+  line-height: normal;
 }
 
 body {
   background-color: #f6f4ef;
 }
-ol, ul {
+ol, ul , li{
 	list-style: none;
 }
 a {
