@@ -1,4 +1,3 @@
-import StudyMain from '../../components/organisms/StudyMain/StudyMain.jsx';
 import Button from '../../components/atoms/Button/Button.jsx';
 import Tag from '../../components/atoms/Tag/Tag.jsx';
 import styles from './Routines.module.css';
@@ -61,13 +60,7 @@ function TodaysRoutine(){
         <>
         {/* <header></header> */}
         <main>
-            <StudyMain 
-                title='연우의 개발 공장'
-                goToBtn= {goToBtn}
-                description={null}
-                info={info}
-                mainFeature={<RoutineList/>}
-            />
+            {/* StudyMain -> StudyDescription으로 변경하면서 일단은 지웠습니다! */}
         </main>
         </>
     );

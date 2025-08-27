@@ -83,7 +83,7 @@
 body {
   background-color: #f6f4ef;
 }
-ol, ul {
+ol, ul , li{
 	list-style: none;
 }
 a {
