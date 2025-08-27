@@ -14,6 +14,7 @@ import ConfirmButton from './components/molecules/ConfirmButton/ConfirmButton';
 import CancelButton from './components/molecules/CancelButton/CancelButton';
 import EditCompleteButton from './components/molecules/EditCompleteButton/EditCompleteButton';
 import PlayButton from './components/molecules/PlayButton/PlayButton';
+import StopButton from './components/molecules/StopButton/StopButton';
 
 function App() {
   return (
