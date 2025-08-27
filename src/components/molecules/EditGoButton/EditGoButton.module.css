@@ -1,0 +1,56 @@
+.editGoBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+
+  width: 600px; /* PC 기본 */
+  height: 58px;
+  padding: 10px;
+  border-radius: 16px;
+  background: #99C08E;
+
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+.text {
+  display: flex;
+  width: 117px;
+  height: 28px;
+  flex-direction: column;
+  justify-content: center;
+  flex-shrink: 0;
+
+  color: #FFF;
+  text-align: center;
+  font-family: var(--font-family-jeju); 
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+/* 376px ~ 630px: 점점 줄어듦 */
+@media (max-width: 630px) and (min-width: 376px) {
+  .editGoBtn {
+    width: clamp(312px, 80vw, 600px);
+  }
+}
+
+/* 모바일 (≤375px): 고정 */
+@media (max-width: 375px) {
+  .editGoBtn {
+    width: 312px;
+    height: 58px;
+    padding: 10px;
+  }
+
+  .text {
+    width: 119px;
+    height: 28px;
+    font-size: 18px;
+  }
+}
