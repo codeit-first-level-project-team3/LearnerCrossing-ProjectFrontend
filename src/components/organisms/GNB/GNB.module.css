@@ -1,0 +1,29 @@
+.gnb {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100px;
+  background: var(--bg-F6F4EF);
+  box-sizing: border-box;
+  padding: 20px 240px 20px 220px;
+  width: 100%;
+  max-width: 1920px;
+  position: relative;
+}
+
+/* PC/Tablet/Mobile 레이아웃 미디어쿼리만 남김 */
+@media (min-width: 376px) and (max-width: 744px) {
+  .gnb {
+    width: 100%;
+    max-width: 744px;
+    padding: 20px 24px;
+  }
+}
+
+@media (max-width: 375px) {
+  .gnb {
+    width: 100%;
+    max-width: 375px;
+    padding: 32px 16px;
+  }
+}
