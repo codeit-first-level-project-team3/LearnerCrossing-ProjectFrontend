@@ -12,12 +12,12 @@ import HabitFocusButton from './components/molecules/HabitFocusButton/HabitFocus
 import EditButton from './components/molecules/EditButton/EditButton';
 import ConfirmButton from './components/molecules/ConfirmButton/ConfirmButton';
 import CancelButton from './components/molecules/CancelButton/CancelButton';
+import EditCompleteButton from './components/molecules/EditCompleteButton/EditCompleteButton';
 
 function App() {
   return (
     <div>
     <RouterProvider router={router} />
-    <CancelButton />
     </div>
   );
 }
