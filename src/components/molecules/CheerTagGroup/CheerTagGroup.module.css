@@ -3,4 +3,23 @@
   flex-wrap: wrap;
   align-content: center;
   gap: 5px;
+  position: relative;
+}
+
+.emojiMore {
+  position: absolute;
+  display: grid;
+  grid-template-columns: repeat(4, 60px);
+  justify-items: center;
+  
+  padding: 12px;
+  gap: 4px;
+
+  border-radius: 15px;
+  border: 1px solid var(--gray-DDDDDD);
+  background: #fff;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.08);
+
+  top: 40px;
+  right: 0;
 }

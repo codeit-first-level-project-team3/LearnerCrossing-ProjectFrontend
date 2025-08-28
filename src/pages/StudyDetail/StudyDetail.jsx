@@ -1,4 +1,3 @@
-import Tag from "../../components/atoms/Tag/Tag.jsx";
 import HabitWeekly from "../../components/molecules/HabitWeekly/HabitWeekly";
 import CheerTagGroup from "../../components/molecules/CheerTagGroup/CheerTagGroup.jsx";
 import EmojiPickerButton from "../../components/molecules/EmojiPickerButton/EmojiPickerButton.jsx";
@@ -22,6 +21,13 @@ function StudyDetail() {
     1: { emoji: "😀", count: 10 },
     2: { emoji: "😎", count: 5 },
     3: { emoji: "🤩", count: 2 },
+    4: { emoji: "❤️‍🔥", count: 2 },
+    5: { emoji: "❤️", count: 2 },
+    6: { emoji: "🍇", count: 53 },
+    7: { emoji: "🥰", count: 2 },
+    8: { emoji: "🏝️", count: 9 },
+    9: { emoji: "🍉", count: 4 },
+    10: { emoji: "👽", count: 78 },
   });
 
   // 이모지 카운트 증가 함수
@@ -72,12 +78,12 @@ function StudyDetail() {
           />
           <HabitWeekly
             stickerColor="blue"
-            stickerNum={2}
+            stickerNum={1}
             weeklytodo="cheer Tag 만들기"
           />
           <HabitWeekly
             stickerColor="purple"
-            stickerNum={2}
+            stickerNum={0}
             weeklytodo="스프린트 7..."
           />
         </StudyMain>
