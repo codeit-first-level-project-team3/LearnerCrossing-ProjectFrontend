@@ -2,7 +2,13 @@ import { useState } from "react";
 import Sticker from "../../atoms/Sticker";
 import style from "./HabitWeekly.module.css";
 
-function HabitWeekly({ stickerColor, stickerNum, weeklyState, weeklytodo, isTop = false }) {
+function HabitWeekly({
+  stickerColor,
+  stickerNum,
+  weeklyState,
+  weeklytodo,
+  isTop = false,
+}) {
   const weekDays = {
     mon: "월",
     tue: "화",
@@ -24,7 +30,8 @@ function HabitWeekly({ stickerColor, stickerNum, weeklyState, weeklytodo, isTop 
     sun: false,
   });
 
-  const toggleTodo = (day) => { // todo 상태 토글 클릭 핸들러
+  const toggleTodo = (day) => {
+    // todo 상태 토글 클릭 핸들러
     setWeeklyCheck((prev) => ({
       ...prev,
       [day]: !prev[day],
@@ -33,13 +40,18 @@ function HabitWeekly({ stickerColor, stickerNum, weeklyState, weeklytodo, isTop 
 
   return (
     <div className={style.habitWeekly}>
-      {isTop && <div className={style.week}>
-        {Object.values(weekDays).map((label, index) => (
-          <li className={style.todoSticker} key={index}>
-            {label}
-          </li>
-        ))}
-      </div>}
+      {isTop && (
+        <div className={style.week}>
+          <p className={style.todo}></p>
+          <ul className={style.todoWeek}>
+            {Object.values(weekDays).map((label, index) => (
+              <li className={style.todoSticker} key={index}>
+                {label}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <div className={style.weeklyGoals}>
         <p className={style.todo}>{weeklytodo}</p>
         <ul className={style.todoWeek}>
@@ -49,7 +61,10 @@ function HabitWeekly({ stickerColor, stickerNum, weeklyState, weeklytodo, isTop 
               key={key}
               onClick={() => toggleTodo(key)}
             >
-              <Sticker color={weeklyCheck[key] ? stickerColor : "empty"} num={stickerNum} />
+              <Sticker
+                color={weeklyCheck[key] ? stickerColor : "empty"}
+                num={stickerNum}
+              />
             </li>
           ))}
         </ul>
