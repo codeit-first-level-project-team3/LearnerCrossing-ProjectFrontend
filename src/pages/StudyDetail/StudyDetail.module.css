@@ -6,7 +6,12 @@
   
   max-width: 1120px;
   width: 100%;
-  height: 31px;
+}
+
+.emojiBox {
+  display: flex;
+  gap: 8px;
+  position: relative;
 }
 
 .quickLinks {

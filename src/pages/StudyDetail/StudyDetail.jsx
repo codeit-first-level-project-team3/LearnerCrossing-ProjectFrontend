@@ -1,10 +1,11 @@
 import Tag from "../../components/atoms/Tag/Tag.jsx";
 import HabitWeekly from "../../components/molecules/HabitWeekly/HabitWeekly";
 import CheerTagGroup from "../../components/molecules/CheerTagGroup/CheerTagGroup.jsx";
+import EmojiPickerButton from "../../components/molecules/EmojiPickerButton/EmojiPickerButton.jsx";
 import GNB from "../../components/organisms/GNB/GNB.jsx";
 import StudyMain from "../../components/organisms/StudyMain/StudyMain.jsx";
 import StudyDescription from "../../components/organisms/StudyDescription/StudyDescription";
-import style from "./StudyDetail.module.css";
+import styles from "./StudyDetail.module.css";
 import { useState } from "react";
 
 function StudyDetail() {
@@ -12,6 +13,9 @@ function StudyDetail() {
     { to: "/concentrations", name: "오늘의 집중" },
     { to: "/", name: "홈" },
   ];
+
+  // 이모지 선택창에서 선택한 이모지
+  const [chosenEmoji, setChosenEmoji] = useState(null);
 
   // 임시 이모지 상태
   const [emojis, setEmojis] = useState({
@@ -30,6 +34,7 @@ function StudyDetail() {
       },
     }));
 
+    // console.log(chosenEmoji) // 이모지 픽커 이모지 확인
     console.log("id:", id); // 현재 클릭 아이디 확인용
   };
 
@@ -38,9 +43,12 @@ function StudyDetail() {
       <GNB />
       <main>
         <StudyMain>
-          <div className={style.utilityBar}>
-            <CheerTagGroup emojis={emojis} onClick={increaseCnt}/> 
-            <div className={style.quickLinks}>
+          <div className={styles.utilityBar}>
+            <div className={styles.emojiBox}>
+              <CheerTagGroup emojis={emojis} onClick={increaseCnt} />
+              <EmojiPickerButton setChosenEmoji={setChosenEmoji} />
+            </div>
+            <div className={styles.quickLinks}>
               <span>공유하기</span>
               <span>수정하기</span>
               <span>스터디삭제하기</span>

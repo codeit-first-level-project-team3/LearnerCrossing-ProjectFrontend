@@ -1,4 +1,6 @@
-.cheerTagGroup{
+.cheerTagGroup {
   display: flex;
+  flex-wrap: wrap;
+  align-content: center;
   gap: 5px;
 }
