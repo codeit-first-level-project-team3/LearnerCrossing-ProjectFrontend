@@ -1,0 +1,42 @@
+.habitWeekly {
+  max-width: 1072px;
+  width: 100%;
+}
+
+.week {
+  display: flex;
+  justify-content: flex-end;
+
+  color: var(--gray-818181);
+  font: var(--font-18-regular);
+  height: 26px;
+}
+
+.weeklyGoals {
+  display: flex;
+  height: 64px;
+}
+
+.todo {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-content: center;
+
+  color: var(--black-414141);
+  font: var(--font-18-bold);
+
+  width: 246px;
+  padding: 0 24px;
+}
+
+.todoWeek {
+  display: flex;
+}
+
+.todoSticker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 118px;
+}

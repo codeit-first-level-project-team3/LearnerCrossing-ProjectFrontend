@@ -9,8 +9,8 @@
   box-sizing: border-box;
 
   border-radius: 15px;
-  border: 1px solid var(--gray-DDDDDD); /* 루트 색상 */
-  background: var(--white, #FFF);        /* 루트 흰색 변수, 없으면 #FFF */
+  border: 1px solid var(--gray-DDDDDD);
+  background: var(--white, #FFF);        
 
   font: var(--font-16-regular);          /* 루트 font 단축 속성 적용 */
   color: var(--gray-818181);             /* placeholder 색상 */

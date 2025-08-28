@@ -4,10 +4,11 @@
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
-  background: #99C08E;
-  color: #FFF;
+
+  background: var(--brand-99C08E);
+  color: var(--white);
   text-align: center;
-  font-family: 'Jeju-Stone-Wall', sans-serif;
+  font-family: var(--font-family-jeju);
   font-style: normal;
   font-weight: 400;
   line-height: normal;

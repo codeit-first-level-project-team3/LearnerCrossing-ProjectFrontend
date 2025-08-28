@@ -1,0 +1,8 @@
+.chip{
+    cursor: pointer;
+}
+
+.chip:disabled{
+    cursor: default;
+    pointer-events: none;
+}

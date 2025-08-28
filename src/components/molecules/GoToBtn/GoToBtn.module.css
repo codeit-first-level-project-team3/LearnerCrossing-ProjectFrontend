@@ -1,0 +1,29 @@
+.goToBtn{
+    width: fit-content;
+    height: fit-content;
+    flex-shrink: 0;
+
+    padding: 12px 16px 12px 24px;
+
+    border-radius: 15px;
+    border: 1px solid var(--gray-gray_DDDDDD, #DDD);
+    background: #FFF;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;   
+}
+
+.goToBtn span{
+    flex-shrink: 0;
+    color: var(--gray-818181);
+    font: var(--font-16-medium);
+    line-height: 16px;
+}
+
+.goToBtn img{
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}

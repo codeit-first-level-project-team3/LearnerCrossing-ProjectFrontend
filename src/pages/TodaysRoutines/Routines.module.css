@@ -1,0 +1,58 @@
+.box{
+    width: 100%;
+    display: flex;
+    padding: 40px 24px;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    border-radius: 20px;
+    border: 1px solid var(--gray-gray_DDDDDD, #DDD);
+    background: #FFF;
+}
+
+.titleDiv{
+    width: 100%;
+    height: 29px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    position: relative;
+
+    margin-bottom: 24px;
+}
+
+.titleDiv .title{
+    color: var(--black-414141);
+    font: var(--font-24-bold);
+    line-height: 24px;
+}
+
+.titleDiv button{
+    position: absolute;
+    
+    right: 0%;
+    top: 50%;
+    transform: translateY(-50%);
+
+    color: var(--gray-818181);
+    font: var(--font-14-medium);
+    line-height: 14px;
+
+    border: none;
+    background: none;
+}
+
+.routineWrapper{
+    width: 100%;
+    max-width: 400px;
+}
+
+.routineList{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
