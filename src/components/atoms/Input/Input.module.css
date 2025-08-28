@@ -1,11 +1,13 @@
 .input {
-  width: 100%;
-  border: 1px solid var(--gray-DDDDDD);
-  border-radius: 8px;
+  width: 648px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 15px;
+  border: 1px solid var(--gray-DDDDDD, #DDD);
+  background: var(--white);
   padding: 10px 12px;
   font-family: var(--font-family);
   font-size: 16px;
   outline: none;
-  background: var(--white);
   box-sizing: border-box;
 }

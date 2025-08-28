@@ -1,5 +1,5 @@
 import { useState } from "react";
-import TextInput from "../../atoms/TextInput/TextInput";
+import Input from "../../atoms/Input/Input"; 
 import EyeOpen from "../../../assets/eyeOpen.svg";
 import EyeClose from "../../../assets/eyeClose.svg";
 import styles from "./PasswordInput.module.css";
@@ -10,7 +10,7 @@ export default function PasswordInput({ placeholder, ...props }) {
 
   return (
     <div className={styles.wrapper}>
-      <TextInput type={type} placeholder={placeholder} {...props} />
+      <Input type={type} placeholder={placeholder} {...props} />
       <img
         src={visible ? EyeOpen : EyeClose}
         alt="토글 비밀번호"
