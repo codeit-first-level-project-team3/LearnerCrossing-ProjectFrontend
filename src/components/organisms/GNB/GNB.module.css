@@ -12,12 +12,12 @@
 }
 
 /* PC/Tablet/Mobile 레이아웃 미디어쿼리만 남김 */
-@media (min-width: 376px) and (max-width: 744px) {
+@media (max-width: 744px) {
   .gnb {
     width: 100%;
     max-width: 744px;
     padding: 20px 24px;
-  }
+  } 
 }
 
 @media (max-width: 375px) {

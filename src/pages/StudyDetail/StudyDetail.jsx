@@ -10,13 +10,6 @@ function StudyDetail() {
   ];
   return (
     <>
-      {/* <section>
-        <StudyDescription
-          goToBtn={gotobtn}
-          description="Slow And Steady Wins The Race! 다들 오늘 하루도 화이팅 :)"
-        />
-        <HabitWeekly />
-      </section> */}
       <GNB/>
         <main>
             <StudyMain>
@@ -24,7 +17,10 @@ function StudyDetail() {
                   goToBtn={gotobtn}
                   description="Slow And Steady Wins The Race! 다들 오늘 하루도 화이팅 :)"
                 />
-                <HabitWeekly />
+                <HabitWeekly isTop={true} stickerColor="pink" stickerNum={2} weeklytodo="미라클 모닝 6시 기상"/>
+                <HabitWeekly stickerColor="green" stickerNum={2} weeklytodo="아침 챙겨 먹기"/>
+                <HabitWeekly stickerColor="blue" stickerNum={2} weeklytodo="cheer Tag 만들기"/>
+                <HabitWeekly stickerColor="purple" stickerNum={2} weeklytodo="스프린트 7..."/>
             </StudyMain>
         </main>
     </>

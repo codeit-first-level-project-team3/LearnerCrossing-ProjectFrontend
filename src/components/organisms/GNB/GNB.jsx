@@ -10,3 +10,4 @@ export default function GNB({ showCreateStudy = false }) {
     </header>
   );
 }
+ 
