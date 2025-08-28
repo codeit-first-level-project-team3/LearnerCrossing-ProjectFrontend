@@ -14,7 +14,7 @@ function StudyDescription({
 
   const info = {
     true: <Tag img={pointIcon} text="340p" />,
-    false: <Tag value={<DateKR/>}/>,
+    false: <Tag text={<DateKR/>}/>,
   };
 
   return ( 

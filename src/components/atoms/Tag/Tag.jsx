@@ -1,9 +1,8 @@
 import styles from './Tag.module.css';
 
 function Tag({className='', img=null, text='', onClick=null}){
-    const classNames = className||styles.tag;
     return(
-        <button className={classNames} onClick={onClick}>
+        <button className={className||styles.tag} onClick={onClick}>
             {img && <img src={img}/>}
             <p>{text}</p>
         </button>

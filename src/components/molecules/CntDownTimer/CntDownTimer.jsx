@@ -24,7 +24,7 @@ function CntdownTimer({ targetTime }) {
       setTimeLeft(updatedTime);
 
       if (!updatedTime) clearInterval(timer);
-    }, 1000);
+    }, 100);
 
     //ureEffect의 리턴은 "정리 함수" 이므로 clearInterval을 넣기 적합하다!!
     return () => clearInterval(timer);
@@ -35,10 +35,11 @@ function CntdownTimer({ targetTime }) {
     : {color: "var(--gray-818181)"};
 
   return (
-    <div>
-      <h2 style={style} className={styles.segment}>
-        {timeLeft.sign}{String(timeLeft.minutes).padStart(2, '0')}:{String(timeLeft.seconds).padStart(2, '0')}
-      </h2>
+    <div className={styles.segment} style={style}>
+        <div className={styles.sign}><p>{timeLeft.sign}</p></div>
+        <div className={styles.digit}><p>{String(timeLeft.minutes).padStart(2, '0')}</p></div>
+        <div className={styles.colon}><p>:</p></div>
+        <div className={styles.digit}><p>{String(timeLeft.seconds).padStart(2, '0')}</p></div>
     </div>
   );
 }

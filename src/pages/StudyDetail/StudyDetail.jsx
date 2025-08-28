@@ -9,7 +9,7 @@ import { useState } from "react";
 
 function StudyDetail() {
   const gotobtn = [
-    { to: "/concentrations", name: "오늘의 집중" },
+    { to: "/focus", name: "오늘의 집중" },
     { to: "/", name: "홈" },
   ];
 

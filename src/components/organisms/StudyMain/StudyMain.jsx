@@ -1,5 +1,6 @@
 import styles from './StudyMain.module.css'
-
+//무려 승인을 받은 공식 틀이 되었습니다.
+//내용 표시 기능은 StudyDescription으로 이주했습니다.
 function StudyMain({children}){
     return(
         <div className={styles.studyMain}>
