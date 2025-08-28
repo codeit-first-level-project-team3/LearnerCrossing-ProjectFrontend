@@ -1,11 +1,8 @@
 import { useState } from "react";
 import Chip from "../../atoms/Chip/Chip.jsx";
-import styles from './RoutineChip.module.css';
+import styles from './HabitChip.module.css';
 
-export default function RoutineChip({name='', isClear=false, onToggle=null}){
-    
-    //임시로 여기에 State 구현
-    const [toggle, setToggle] = useState(false);
+export default function RoutineChip({isClear, onToggle, name=''}){
     
     const toggleStyle = {
         on: {
@@ -24,8 +21,8 @@ export default function RoutineChip({name='', isClear=false, onToggle=null}){
         <Chip
             className={styles.routineChip}
             toggleStyle={toggleStyle}
-            isActive={toggle}
-            setToggle={setToggle}
+            isOn={isClear}
+            onToggle={onToggle}
         >
             {name}
         </Chip>

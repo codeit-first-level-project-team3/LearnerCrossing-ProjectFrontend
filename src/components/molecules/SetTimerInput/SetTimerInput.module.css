@@ -7,14 +7,13 @@
     align-items: center;
     gap: 0;
 
+    color: var(--black-414141);
     text-align: center;
     font-family: Pretendard;
     font-size: 150px;
     font-weight: 800;
 
     margin: 0 auto;
-
-    position: relative;
 }
 
 .segment span{
@@ -22,18 +21,24 @@
     line-height: 1;
 }
 
-.digit {
+.digit{
     width: 200px;
     height: 180px;
     text-align: center;
+
+    color: var(--black-414141);
+    font-family: Pretendard;
+    font-size: 150px;
+    font-weight: 800;
+
+    border: none;
+    flex-flow: hide;
+
+    border-radius: 20px;
 }
 
-.sign{  
-    position: absolute;
-    left: -20%;
-    bottom: 55%;
-    transform: translateX(50%); 
-    transform: translateY(50%);     
+.digit::placeholder{
+    color: var(--black-414141);
 }
 
 .colon{  
@@ -41,4 +46,5 @@
     bottom: 58%;
     transform: translateX(50%); 
     transform: translateY(50%);     
-}
+}   
+

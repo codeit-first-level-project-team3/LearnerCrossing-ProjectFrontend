@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Home from "./pages/Home.jsx";
-import TodaysRoutine from "./pages/TodaysRoutines/Routines.jsx";
-import TodaysConcentration from "./pages/TodaysConcentrations/Concentrations.jsx";
+import TodaysHabits from "./pages/TodaysHabits/TodaysHabits.jsx";
+import TodaysFocus from "./pages/TodaysFocus/TodaysFocus.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import StudyDetail from "./pages/StudyDetail/StudyDetail.jsx";
 
@@ -9,8 +9,8 @@ import StudyDetail from "./pages/StudyDetail/StudyDetail.jsx";
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
   { path: "/studyDetail", element: <StudyDetail /> },
-  { path: "/routines", element: <TodaysRoutine /> },
-  { path: "/concentrations", element: <TodaysConcentration /> },
+  { path: "/routines", element: <TodaysHabits /> },
+  { path: "/concentrations", element: <TodaysFocus /> },
   { path: "*", element: <NotFound /> },
 ]);
 

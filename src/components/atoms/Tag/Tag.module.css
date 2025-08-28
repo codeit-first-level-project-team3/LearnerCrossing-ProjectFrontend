@@ -1,19 +1,19 @@
 .tag{
     width: fit-content;
     height: fit-content;
-    
-    padding: 8px 12px;
-
     display: flex;
     justify-content: center;
     align-content: center;
+    line-height: 16px;
+
+
+    padding: 8px 12px;
     gap: 4px;   
+
+    color: var(--black-414141);
+    font: var(--font-16-medium);
 
     border-radius: 50px;
     border: 1px solid rgba(0, 0, 0, 0.10);
     background-color: rgba(255, 255, 255, 0.30);
-
-    color: var(--black-414141);
-    font: var(--font-16-medium);
-    line-height: 16px;
 }

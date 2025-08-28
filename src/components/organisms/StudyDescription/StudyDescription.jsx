@@ -13,8 +13,8 @@ function StudyDescription({
   const infoName = isInfoPoint ? "현재까지 획득한 포인트" : "현재 시간";
 
   const info = {
-    true: <Tag img={pointIcon} value="340p" />,
-    false: <Tag value={<DateKR/>}/>,
+    true: <Tag img={pointIcon} text="340p" />,
+    false: <Tag text={<DateKR/>}/>,
   };
 
   return (
