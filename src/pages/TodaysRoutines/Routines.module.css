@@ -1,0 +1,53 @@
+.titleDiv{
+    width: 100%;
+    height: 29px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    position: relative;
+
+    margin-bottom: 24px;
+}
+
+.titleDiv .title{
+    color: var(--black-414141);
+    font: var(--font-24-bold);
+    line-height: 24px;
+}
+
+.titleDiv button{
+    position: absolute;
+    
+    right: 0%;
+    top: 50%;
+    transform: translateY(-50%);
+
+    color: var(--gray-818181);
+    font: var(--font-14-medium);
+    line-height: 14px;
+
+    border: none;
+    background: none;
+}
+
+.routineWrapper{
+    width: 100%;
+    max-width: 400px;
+}
+
+.routineList{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.routineChip{
+    width: 100%;
+    height: 54px;
+
+    border-radius: 20px;
+    border: none;
+}

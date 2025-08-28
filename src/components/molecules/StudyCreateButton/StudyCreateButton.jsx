@@ -1,10 +1,11 @@
 import React from "react";
-import styles from "./StudyCreateButton.module.css"; // CSS 모듈 import
+import Button from "../../atoms/Button/Button"; 
+import styles from "./StudyCreateButton.module.css"; 
 
 export default function StudyCreateButton({ text = "스터디 만들기", ...props }) {
   return (
-    <button className={styles.studyCreateBtn} {...props}>
+    <Button className={styles.studyCreateBtn} {...props}>
       {text}
-    </button>
+    </Button>
   );
 }
