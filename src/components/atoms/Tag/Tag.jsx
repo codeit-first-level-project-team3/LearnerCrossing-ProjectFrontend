@@ -1,12 +1,12 @@
 import styles from './Tag.module.css';
 
-function Tag({className='', img=null, value=''}){
-    const classNames = [styles.tag, className].join(' ');
+function Tag({className='', img=null, text='', onClick=null}){
+    const classNames = className||styles.tag;
     return(
-        <div className={classNames}>
+        <button className={classNames} onClick={onClick}>
             {img && <img src={img}/>}
-            <p>{value}</p>
-        </div>
+            <p>{text}</p>
+        </button>
     );
 }
 

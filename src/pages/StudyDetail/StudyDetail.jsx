@@ -1,21 +1,45 @@
+import Tag from "../../components/atoms/Tag/Tag.jsx";
+import HabitWeekly from "../../components/molecules/HabitWeekly/HabitWeekly";
+import CheerTagGroup from "../../components/molecules/CheerTagGroup/CheerTagGroup.jsx";
 import GNB from "../../components/organisms/GNB/GNB.jsx";
 import StudyMain from "../../components/organisms/StudyMain/StudyMain.jsx";
-import HabitWeekly from "../../components/molecules/HabitWeekly/HabitWeekly";
 import StudyDescription from "../../components/organisms/StudyDescription/StudyDescription";
 import style from "./StudyDetail.module.css";
+import { useState } from "react";
 
 function StudyDetail() {
   const gotobtn = [
     { to: "/concentrations", name: "오늘의 집중" },
     { to: "/", name: "홈" },
   ];
+
+  // 임시 이모지 상태
+  const [emojis, setEmojis] = useState({
+    1: { emoji: "😀", count: 10 },
+    2: { emoji: "😎", count: 5 },
+    3: { emoji: "🤩", count: 2 },
+  });
+
+  // 이모지 카운트 증가 함수
+  const increaseCnt = (id) => {
+    setEmojis((prev) => ({
+      ...prev,
+      [id]: {
+        ...prev[id],
+        count: prev[id].count + 1,
+      },
+    }));
+
+    console.log("id:", id); // 현재 클릭 아이디 확인용
+  };
+
   return (
     <>
       <GNB />
       <main>
         <StudyMain>
           <div className={style.utilityBar}>
-            <div>응원 이모지 태그</div>
+            <CheerTagGroup emojis={emojis} onClick={increaseCnt}/> 
             <div className={style.quickLinks}>
               <span>공유하기</span>
               <span>수정하기</span>
