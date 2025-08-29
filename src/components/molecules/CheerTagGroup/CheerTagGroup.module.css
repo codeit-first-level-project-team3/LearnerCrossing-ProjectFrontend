@@ -9,7 +9,7 @@
 .emojiMore {
   position: absolute;
   display: grid;
-  grid-template-columns: repeat(4, 60px);
+  grid-template-columns: repeat(4, 64px);
   justify-items: center;
   
   padding: 12px;

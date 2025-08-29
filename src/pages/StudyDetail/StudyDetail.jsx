@@ -5,7 +5,7 @@ import GNB from "../../components/organisms/GNB/GNB.jsx";
 import StudyMain from "../../components/organisms/StudyMain/StudyMain.jsx";
 import StudyDescription from "../../components/organisms/StudyDescription/StudyDescription";
 import styles from "./StudyDetail.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function StudyDetail() {
   const gotobtn = [
@@ -31,7 +31,7 @@ function StudyDetail() {
   });
 
   // 이모지 카운트 증가 함수
-  const increaseCnt = (id) => {
+  function increaseCnt(id) {
     setEmojis((prev) => ({
       ...prev,
       [id]: {
@@ -42,7 +42,38 @@ function StudyDetail() {
 
     // console.log(chosenEmoji) // 이모지 픽커 이모지 확인
     console.log("id:", id); // 현재 클릭 아이디 확인용
-  };
+  }
+
+  function addEmoji(newEmoji) {
+    setEmojis((prev) => {
+      // 동일한 이모지 있는지 확인. 있으면 그 key 반환
+      const existEmojiKey = Object.keys(prev).find(
+        (key) => prev[key].emoji === newEmoji
+      );
+      // 있는 경우
+      if (existEmojiKey) {
+        return {
+          ...prev,
+          [existEmojiKey]: {
+            ...prev[existEmojiKey],
+            count: prev[existEmojiKey].count + 1,
+          },
+        };
+      }
+
+      const newId = Math.max(...Object.keys(prev).map(Number)) + 1;
+      return {
+        ...prev,
+        [newId]: { emoji: newEmoji, count: 1 },
+      };
+    });
+  }
+
+  useEffect(() => {
+    if (!chosenEmoji) return;
+    addEmoji(chosenEmoji);
+    console.log("이모지 추가: " + chosenEmoji); // 이모지 추가 확인용 코드
+  }, [chosenEmoji]);
 
   return (
     <>
