@@ -1,16 +1,23 @@
 import { useState, useEffect } from 'react';
 import styles from './CntDownTimer.module.css';
 
-function CntdownTimer({ targetTime }) {
+function CntdownTimer({ isRun, targetTime }) {
   const calculateTimeLeft = () => {
     const difference = targetTime - new Date().getTime();
-    const abs = Math.abs(difference);
+    const abs = Math.abs(difference > 0 ? difference : difference -1000);
+    
+    //abs, floor의 특징 때문에 0초대에 2초 가량 머무르는 현상이 발생. (09xx ~ -0.9xx까지 를 0으로 표시 하므로)
+    //마이너스로 내려가면 ceil을 적용하고 -1 로 해결
+    const secfloor = (time) => {
+      return difference > 0 ? Math.floor(time) : Math.ceil(time) - 1;
+    }
+
     return {
-      sign: difference > 0 ? '': '-',
+      sign: Math.floor(difference/1000) > -1 ? '': '-',
       wholeSecs: Math.floor(difference / 1000),
       hours: Math.floor((abs / (1000 * 60 * 60)) % 24),
       minutes: Math.floor((abs / (1000 * 60)) % 60),
-      seconds: Math.floor((abs / 1000) % 60),
+      seconds: secfloor((abs / 1000) % 60),
     };
   };
 
@@ -28,7 +35,7 @@ function CntdownTimer({ targetTime }) {
 
     //ureEffect의 리턴은 "정리 함수" 이므로 clearInterval을 넣기 적합하다!!
     return () => clearInterval(timer);
-  }, [targetTime]);
+  }, [isRun, targetTime]);
 
   const style = timeLeft.wholeSecs > 0 
     ? timeLeft.wholeSecs > 10 ? {color: "var(--black-414141)"} : {color: "var(--red-F50E0E)"}

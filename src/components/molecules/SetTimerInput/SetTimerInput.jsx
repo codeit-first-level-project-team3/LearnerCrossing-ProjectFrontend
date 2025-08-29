@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react"
 import styles from './SetTimerInput.module.css';
 
-export default function SetTimerInput({setTargetTime}){
+export default function SetTimerInput({setTimeInterval}){
     const [mins, setMins] = useState('');
     const [secs, setSecs] = useState('');
 
     useEffect(()=>{
         const timeInterval =  ((covertToValidInput(mins) * 60) + covertToValidInput(secs)) * 1000;
-        setTargetTime(new Date().getTime() + timeInterval);
+        setTimeInterval(timeInterval);
     }, [mins, secs]);
 
     //String을 분, 초에 Int로 저장하는 함수
