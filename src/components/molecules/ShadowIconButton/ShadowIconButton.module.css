@@ -1,0 +1,58 @@
+.shadowIconBtn {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 64px;
+  height: 60.916px;
+  flex-shrink: 0;
+
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  overflow: visible;
+
+  /* 기본 배경 (swap=false) */
+  background: var(--brand-brand_99C08E, #99C08E);
+}
+
+.shadowIconBtn .shadowLayer {
+  position: absolute;
+  top: -4px; /* 위쪽 레이어 위치 */
+  left: 0;
+  width: 64px;
+  height: 60.916px;
+  border-radius: 50%;
+
+  /* 기본 그림자 (swap=false) */
+  background: #578246;
+  z-index: 1;
+}
+
+.shadowIconBtn.swap {
+  /* swap=true 배경 색상 */
+  background: #578246;
+}
+
+.shadowIconBtn.swap .shadowLayer {
+  /* swap=true 그림자 색상 */
+  background: var(--brand-brand_99C08E, #99C08E);
+  top: -4px; /* 필요 시 입체감 조정 */
+}
+
+.shadowIconBtn .icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  position: relative; /* 버튼 레이어 위 */
+  top: -3px;
+  z-index: 2;
+
+  /* 아이콘 크기와 패딩 */
+  width: 35.2px;
+  height: 35.2px;
+  padding: 2.2px;
+}
