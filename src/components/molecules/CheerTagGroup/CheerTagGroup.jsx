@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CheerTag from "../CheerTag/CheerTag";
 import styles from "./CheerTagGroup.module.css";
 
@@ -10,6 +10,24 @@ function CheerTagGroup({ emojis, onClick }) {
   const isMore = emojisEntries.length > show;
 
   const [showEmojiMore, setShowEmojiMore] = useState(false); // 더보기창 상태
+  const wrapperRef = useRef(null); // <div> emojiMore
+
+  useEffect(() => {
+    if (!showEmojiMore) return;
+    
+    function handleClickOutside(e) {
+      // 해당 컨텐츠가 아니라 다른 곳을 클릭하면 setShowEmojiMore(false)
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+        setShowEmojiMore(false);
+      }
+    }
+    // click할때 handleClickOutside 호출 
+    document.addEventListener("mousedown", handleClickOutside);
+    // 사이드 이펙트 정리
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showEmojiMore]); // showEmojiMore가 바뀌때만 실행되면 됨
 
   return (
     <div className={styles.cheerTagGroup}>
@@ -30,7 +48,7 @@ function CheerTagGroup({ emojis, onClick }) {
         />
       )}
       {showEmojiMore && (
-        <div className={styles.emojiMore}>
+        <div className={styles.emojiMore} ref={wrapperRef}>
           {emojisEntries
             .slice(show, emojisEntries.length)
             .map(([id, { emoji, count }]) => (

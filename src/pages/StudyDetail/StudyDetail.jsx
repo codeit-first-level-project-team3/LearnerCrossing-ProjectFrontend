@@ -19,15 +19,15 @@ function StudyDetail() {
   // 임시 이모지 상태
   const [emojis, setEmojis] = useState({
     1: { emoji: "😀", count: 10 },
-    2: { emoji: "😎", count: 5 },
-    3: { emoji: "🤩", count: 2 },
-    4: { emoji: "❤️‍🔥", count: 2 },
-    5: { emoji: "❤️", count: 2 },
-    6: { emoji: "🍇", count: 53 },
-    7: { emoji: "🥰", count: 2 },
-    8: { emoji: "🏝️", count: 9 },
-    9: { emoji: "🍉", count: 4 },
-    10: { emoji: "👽", count: 78 },
+    // 2: { emoji: "😎", count: 5 },
+    // 3: { emoji: "🤩", count: 2 },
+    // 4: { emoji: "❤️‍🔥", count: 2 },
+    // 5: { emoji: "❤️", count: 2 },
+    // 6: { emoji: "🍇", count: 53 },
+    // 7: { emoji: "🥰", count: 2 },
+    // 8: { emoji: "🏝️", count: 9 },
+    // 9: { emoji: "🍉", count: 4 },
+    // 10: { emoji: "👽", count: 78 },
   });
 
   // 이모지 카운트 증가 함수
