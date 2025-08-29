@@ -1,4 +1,4 @@
-.pauseBtn {
+.iconBtn {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -7,27 +7,23 @@
   height: 64px;
   flex-shrink: 0;
 
-  border-radius: 50%; /* 원형 */
+  border-radius: 50%;
   border: none;
   cursor: pointer;
   padding: 0;
-  background: var(--green-text-578246); 
+  background: var(--brand-99C08E);
 }
 
 .icon {
   width: 35.2px;
   height: 35.2px;
-  padding: 2.2px;
   object-fit: contain;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
+  padding: 2.2px 5.883px 4.733px 5.9px;
 }
 
 /* ================= Mobile (≤375px) ================= */
 @media (max-width: 375px) {
-  .pauseBtn {
+  .iconBtn {
     width: 48px;
     height: 48px;
   }
@@ -35,6 +31,6 @@
   .icon {
     width: 26.4px;
     height: 26.4px;
-    padding: 1.65px;
+    padding: 1.65px 4.911px 4.05px 3.926px;
   }
 }

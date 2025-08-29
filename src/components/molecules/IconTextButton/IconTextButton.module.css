@@ -1,6 +1,7 @@
-.stopBtn {
+.iconTextBtn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 16px;
 
   width: 333px;
@@ -14,40 +15,28 @@
   font-family: var(--font-family);
   font-size: 28px;
   font-weight: 800;
-  font-style: normal;
   line-height: normal;
 
-  justify-content: center;
   cursor: pointer;
   border: none;
   outline: none;
 }
 
+.iconTextBtn img {
+  width: 24px;
+  height: 24px;
+}
+
 /* ================= Mobile (≤375px) ================= */
 @media (max-width: 375px) {
-  .stopBtn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-
+  .iconTextBtn {
     width: 140px;
     height: 45px;
-    flex-shrink: 0;
-    border-radius: 30.48px;
-
-    background: var(--brand-99C08E);
-    color: var(--white);
-
-    font-family: var(--font-family);
+    gap: 8px;
     font-size: 18px;
-    font-weight: 800;
-    font-style: normal;
-    line-height: normal;
-
-    justify-content: center;
   }
 
-  .stopBtn img {
+  .iconTextBtn img {
     width: 24px;
     height: 24px;
   }

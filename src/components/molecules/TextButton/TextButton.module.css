@@ -1,21 +1,18 @@
-.editCompleteBtn {
+.textBtn {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
 
-  width: 288px;
-  height: 58px;
-  padding: 10px;
+  width: 600px;   /* PC 기본 */
+  height: 55px;
   border-radius: 16px;
   background: var(--brand-99C08E);
 
   color: var(--white);
-  text-align: center;
   font-family: var(--font-family-jeju);
   font-size: 18px;
-  font-style: normal;
   font-weight: 400;
   line-height: normal;
 
@@ -24,26 +21,20 @@
   outline: none;
 }
 
+/* ================= Tablet (376px ~ 744px) ================= */
+@media (max-width: 744px) {
+  .textBtn {
+    width: 288px;
+    height: 55px;
+  }
+}
+
 /* ================= Mobile (≤375px) ================= */
 @media (max-width: 375px) {
-  .editCompleteBtn {
+  .textBtn {
     width: 140px;
     height: 58px;
-    padding: 10px;
-    border-radius: 16px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    flex-shrink: 0;
-
-    color: var(--white);
-    text-align: center;
-    font-family: var(--font-family-jeju);
+    gap: 8px;
     font-size: 18px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
   }
 }
