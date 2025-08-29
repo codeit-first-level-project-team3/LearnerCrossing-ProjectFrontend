@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import Input from "../../components/atoms/Input/Input"; 
 import PasswordInput from "../../components/molecules/PasswordInput/PasswordInput";
 import TextareaInput from "../../components/molecules/TextareaInput/TextareaInput";
-import MakeButton from "../../components/molecules/MakeButton/MakeButton"; 
 import GNB from "../../components/organisms/GNB/GNB"; 
 import SelectIcon from "../../assets/select.svg"; 
 import styles from "./StudyCreate.module.css"; 
+import TextButton from "../../components/molecules/TextButton/TextButton";
 
-// 배경 이미지 4개
+// 배경 이미지
 import bg1 from "../../assets/backgrounds/bg1.svg";
 import bg2 from "../../assets/backgrounds/bg2.svg";
 import bg3 from "../../assets/backgrounds/bg3.svg";
 import bg4 from "../../assets/backgrounds/bg4.svg";
+
 
 export default function StudyCreate() {
   const [nickname, setNickname] = useState("");
@@ -117,7 +118,11 @@ export default function StudyCreate() {
 
         {/* 만들기 버튼 */}
         <div className={styles.buttonWrapper}>
-          <MakeButton />
+          <TextButton 
+            text="만들기" 
+            className={styles.createButton} 
+            onClick={() => alert("스터디 만들기 클릭")} //테스트 용
+          />
         </div>
       </div>
     </div>
