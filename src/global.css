@@ -101,6 +101,7 @@ section {
   background: #fff;
 }
 
+/* 숫자 인풋 스핀 버튼 제거 - 타이머 관련 */
 input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button {
   -webkit-appearance: none;

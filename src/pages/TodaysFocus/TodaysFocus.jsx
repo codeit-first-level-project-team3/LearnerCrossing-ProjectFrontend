@@ -14,19 +14,44 @@ import pointIcon from '../../assets/point_icon.svg';
 
 
 
-function Focus(){
+function MyTimer(){
 
     const [targetTime, setTargetTime] = useState(0);
+    const [timeInterval, setTimeInterval] = useState(0);
+    const [isRun, setIsRun] = useState(false);
 
     //const fiveMinutesLater = new Date().getTime() + 20 * 1000;
+
+    const startTimer = () => {
+        if(timeInterval > 0){
+            setIsRun(true)
+            setTargetTime(new Date().getTime() + timeInterval + 900);
+            //설정 시간에 여유시간 0.9초(900밀리초) 추가 (UX 고려)
+        }
+    }
+
+    const resetTimer = () => {
+        setTargetTime(0);
+        setIsRun(false)
+    }
 
     return(
         <div className={styles.wrapper}>
             <div className={styles.titleDiv}>
                 <p className={styles.title}>오늘의 집중</p>
             </div>
-            <SetTimerInput setTargetTime={setTargetTime}/>
-            <CntdownTimer targetTime={targetTime}/>
+            {isRun || 
+                <>
+                    <SetTimerInput setTimeInterval={setTimeInterval}/>
+                    <button onClick={startTimer}>시작 버튼(임시)</button>
+                </>
+            }
+            {isRun && 
+                <>
+                    <CntdownTimer targetTime={targetTime}/>
+                    <button onClick={resetTimer}>리셋 버튼(임시)</button>
+                </>
+            }
         </div>
     )
 }
@@ -51,7 +76,7 @@ function TodaysFocus(){
                     goToBtn={goToBtn}
                     isInfoPoint={true}
                 />
-                <Focus/>
+                <MyTimer/>
             </StudyMain>
         </main>
         </>
