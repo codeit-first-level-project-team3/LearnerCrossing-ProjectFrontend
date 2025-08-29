@@ -3,7 +3,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   align-content: center;
-  
+
   max-width: 1120px;
   width: 100%;
 }
@@ -16,5 +16,16 @@
 
 .quickLinks {
   display: flex;
-  gap: 16px;
+  align-items: center;
+  gap: 19px;
+}
+
+.quickLinks span {
+  color: var(--green-text-578246);
+  font:var(--font-16-medium);
+  text-align: center;
+  position: relative;
+}
+.quickLinks .delete {
+  color: var(--gray-818181);
 }

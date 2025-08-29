@@ -6,11 +6,12 @@ import StudyMain from "../../components/organisms/StudyMain/StudyMain.jsx";
 import StudyDescription from "../../components/organisms/StudyDescription/StudyDescription";
 import styles from "./StudyDetail.module.css";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function StudyDetail() {
   const gotobtn = [
+    { to: "/habits", name: "오늘의 습관" },
     { to: "/focus", name: "오늘의 집중" },
-    { to: "/", name: "홈" },
   ];
 
   // 이모지 선택창에서 선택한 이모지
@@ -18,16 +19,8 @@ function StudyDetail() {
 
   // 임시 이모지 상태
   const [emojis, setEmojis] = useState({
-    1: { emoji: "😀", count: 10 },
-    // 2: { emoji: "😎", count: 5 },
-    // 3: { emoji: "🤩", count: 2 },
-    // 4: { emoji: "❤️‍🔥", count: 2 },
-    // 5: { emoji: "❤️", count: 2 },
-    // 6: { emoji: "🍇", count: 53 },
-    // 7: { emoji: "🥰", count: 2 },
-    // 8: { emoji: "🏝️", count: 9 },
-    // 9: { emoji: "🍉", count: 4 },
-    // 10: { emoji: "👽", count: 78 },
+    1: { emoji: "🏝️", count: 10 },
+    // 2: { emoji: "👽", count: 78 },
   });
 
   // 이모지 카운트 증가 함수
@@ -87,14 +80,17 @@ function StudyDetail() {
             </div>
             <div className={styles.quickLinks}>
               <span>공유하기</span>
+              <span>|</span>
               <span>수정하기</span>
-              <span>스터디삭제하기</span>
+              <span className={styles.delete}>|</span>
+              <span className={styles.delete}>스터디삭제하기</span>
             </div>
           </div>
           <StudyDescription
             goToBtn={gotobtn}
             description="Slow And Steady Wins The Race! 다들 오늘 하루도 화이팅 :)"
           />
+
           {/* 임시로 올려본 일주일 습관 */}
           <HabitWeekly
             isTop={true}
