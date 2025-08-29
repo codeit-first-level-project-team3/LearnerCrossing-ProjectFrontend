@@ -1,0 +1,43 @@
+.iconTextBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+
+  width: 333px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: 50px;
+
+  background: var(--brand-99C08E);
+  color: var(--white);
+
+  font-family: var(--font-family);
+  font-size: 28px;
+  font-weight: 800;
+  line-height: normal;
+
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+.iconTextBtn img {
+  width: 24px;
+  height: 24px;
+}
+
+/* ================= Mobile (≤375px) ================= */
+@media (max-width: 375px) {
+  .iconTextBtn {
+    width: 140px;
+    height: 45px;
+    gap: 8px;
+    font-size: 18px;
+  }
+
+  .iconTextBtn img {
+    width: 24px;
+    height: 24px;
+  }
+}
