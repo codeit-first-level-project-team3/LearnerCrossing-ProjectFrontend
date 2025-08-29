@@ -6,7 +6,6 @@ import StudyMain from "../../components/organisms/StudyMain/StudyMain.jsx";
 import StudyDescription from "../../components/organisms/StudyDescription/StudyDescription";
 import styles from "./StudyDetail.module.css";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
 function StudyDetail() {
   const gotobtn = [
@@ -68,6 +67,35 @@ function StudyDetail() {
     console.log("이모지 추가: " + chosenEmoji); // 이모지 추가 확인용 코드
   }, [chosenEmoji]);
 
+  // 임시 일주일 습관 상태
+  const weeklyCheck1 = {
+    mon: false,
+    tue: true,
+    wed: true,
+    thu: true,
+    fri: true,
+    sat: false,
+    sun: false,
+  };
+  const weeklyCheck2 = {
+    mon: true,
+    tue: true,
+    wed: true,
+    thu: true,
+    fri: true,
+    sat: false,
+    sun: true,
+  };
+  const weeklyCheck3 = {
+    mon: false,
+    tue: false,
+    wed: false,
+    thu: true,
+    fri: false,
+    sat: true,
+    sun: true,
+  };
+
   return (
     <>
       <GNB />
@@ -97,21 +125,25 @@ function StudyDetail() {
             stickerColor="pink"
             stickerNum={2}
             weeklytodo="미라클 모닝 6시 기상"
+            weeklyState={weeklyCheck1}
           />
           <HabitWeekly
             stickerColor="green"
             stickerNum={2}
             weeklytodo="아침 챙겨 먹기"
+            weeklyState={weeklyCheck2}
           />
           <HabitWeekly
             stickerColor="blue"
             stickerNum={1}
-            weeklytodo="cheer Tag 만들기"
+            weeklytodo="일주일 습관표"
+            weeklyState={weeklyCheck3}
           />
           <HabitWeekly
             stickerColor="purple"
             stickerNum={0}
             weeklytodo="스프린트 7..."
+            weeklyState={weeklyCheck2}
           />
         </StudyMain>
       </main>

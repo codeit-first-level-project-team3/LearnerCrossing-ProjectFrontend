@@ -19,25 +19,6 @@ function HabitWeekly({
     sun: "일",
   };
 
-  // todo 상태 -> 나중엔 prop로 상태를 받아와서 적용
-  const [weeklyCheck, setWeeklyCheck] = useState({
-    mon: false,
-    tue: false,
-    wed: false,
-    thu: false,
-    fri: false,
-    sat: false,
-    sun: false,
-  });
-
-  const toggleTodo = (day) => {
-    // todo 상태 토글 클릭 핸들러
-    setWeeklyCheck((prev) => ({
-      ...prev,
-      [day]: !prev[day],
-    }));
-  };
-
   return (
     <div className={style.habitWeekly}>
       {isTop && (
@@ -56,13 +37,9 @@ function HabitWeekly({
         <p className={style.todo}>{weeklytodo}</p>
         <ul className={style.todoWeek}>
           {Object.keys(weekDays).map((key) => (
-            <li
-              className={style.todoSticker}
-              key={key}
-              onClick={() => toggleTodo(key)}
-            >
+            <li className={style.todoSticker} key={key}>
               <Sticker
-                color={weeklyCheck[key] ? stickerColor : "empty"}
+                color={weeklyState[key] ? stickerColor : "empty"}
                 num={stickerNum}
               />
             </li>
