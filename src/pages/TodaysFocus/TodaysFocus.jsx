@@ -36,6 +36,7 @@ function MyTimer(){
     }
 
     return(
+        //임시 버튼을 달았습니다 (추후 수정 예정)
         <div className={styles.wrapper}>
             <div className={styles.titleDiv}>
                 <p className={styles.title}>오늘의 집중</p>
