@@ -1,0 +1,162 @@
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  gap: 40px; 
+  padding: 0; 
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 24px 40px 24px;
+  align-items: flex-start;
+  gap: 24px;
+  border-radius: 20px;
+  background: var(--white);
+  width: 696px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.pageTitle {
+  color: var(--black-414141);
+  font: var(--font-24-bold);
+  margin-bottom: 24px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.label {
+  color: var(--black-414141);
+  font: var(--font-18-bold);
+}
+
+/* Input */
+.input {
+  width: 100%;
+  border: 1px solid var(--gray-DDDDDD);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font: var(--font-16-regular);
+  outline: none;
+  background: var(--white);
+  box-sizing: border-box;
+}
+
+/* PasswordInput(비번) */
+.wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.eyeIcon {
+  position: absolute;
+  right: 12px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+/* TextareaInput(소개) */
+.textarea {
+  width: 100%;
+  height: 98px;
+  border: 1px solid var(--gray-DDDDDD);
+  border-radius: 8px;
+  padding: 12px;
+  font: var(--font-16-regular);
+  outline: none;
+  background: var(--white);
+  resize: none;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+/* 배경 선택 */
+.sectionTitle {
+  color: var(--black-414141);
+  font: var(--font-18-bold);
+  margin-bottom: 24px;
+}
+
+.backgroundGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px; 
+}
+
+.backgroundBox {
+  width: 150px;
+  height: 150px;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.10);
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* 선택 아이콘 */
+.selectIconWrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(65, 65, 65, 0.50);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.selectIcon {
+  width: 15px;
+  height: 14.25px;
+  fill: var(--white);
+}
+
+.buttonWrapper {
+  width: 100%;
+  margin-top: 40px;
+}
+
+/* 만들기 버튼 */
+.createButton {
+  display: inline-flex;
+  width: 100%;
+  justify-content: center;
+  padding: 14px 0;
+  border-radius: 16px;
+  background: var(--brand-99C08E);
+  color: var(--white);
+  font-family: var(--font-family-jeju);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: normal;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+}
+
+/* 배경 선택 에러 테두리 */
+.errorBorder {
+  border: 2px solid red;
+  border-radius: 16px;
+}
+
+/* 에러 텍스트 */
+.errorText {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 8px;
+}

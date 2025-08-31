@@ -1,0 +1,219 @@
+import React, { useState } from "react";
+import LabeledInput from "../../molecules/LabeledInput/LabeledInput"; 
+import LabeledPasswordInput from "../../molecules/LabeledPasswordInput/LabeledPasswordInput";
+import LabeledTextareaInput from "../../molecules/LabeledTextareaInput/LabeledTextareaInput";
+import TextButton from "../../molecules/TextButton/TextButton";
+import styles from "./StudyForm.module.css";
+
+import {
+  validateNickname,
+  validateStudyName,
+  validateDescription,
+  validatePassword,
+  validateConfirmPassword,
+} from "../../../hooks/validation";
+
+export default function StudyForm({
+  onSubmit,
+  formData,
+  setFormData,
+  errors,
+  setErrors,
+  backgrounds,
+  backgroundImages,
+  selectedBackground,
+  setSelectedBackground,
+  submitText,
+}) {
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleChange = (field, value) => {
+    setFormData({ ...formData, [field]: value });
+
+    let errorMsg = "";
+    switch (field) {
+      case "nickname":
+        errorMsg = validateNickname(value);
+        break;
+      case "studyName":
+        errorMsg = validateStudyName(value);
+        break;
+      case "description":
+        errorMsg = validateDescription(value);
+        break;
+      case "password":
+        errorMsg = validatePassword(value);
+        setErrors((prev) => ({
+          ...prev,
+          confirmPassword: validateConfirmPassword(formData.confirmPassword, value),
+        }));
+        break;
+      case "confirmPassword":
+        errorMsg = validateConfirmPassword(value, formData.password);
+        break;
+      default:
+        break;
+    }
+    setErrors((prev) => ({ ...prev, [field]: errorMsg }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitted(true);
+
+    const newErrors = {
+      nickname: validateNickname(formData.nickname),
+      studyName: validateStudyName(formData.studyName),
+      description: validateDescription(formData.description),
+      password: validatePassword(formData.password),
+      confirmPassword: validateConfirmPassword(formData.confirmPassword, formData.password),
+      background: selectedBackground === null ? "*배경을 선택해 주세요." : "",
+    };
+    setErrors(newErrors);
+
+    const hasError = Object.values(newErrors).some((err) => err);
+    if (!hasError && onSubmit) {
+      onSubmit(formData);
+      setSubmitted(false);
+    }
+  };
+
+  return (
+    <form id="studyForm" onSubmit={handleSubmit}>
+      {/* 닉네임 */}
+      <div className={styles.inputGroup}>
+        <LabeledInput
+          labelText="닉네임"
+          id="nickname"
+          name="nickname"
+          placeholder="닉네임을 입력해 주세요"
+          errorId="nicknameError"
+          errorMessage={errors.nickname}
+          value={formData.nickname}
+          onChange={(e) => handleChange("nickname", e.target.value)}
+          onFocus={() =>
+            setErrors((prev) => ({ ...prev, nickname: validateNickname(formData.nickname) }))
+          }
+        />
+      </div>
+
+      {/* 스터디 이름 */}
+      <div className={styles.inputGroup}>
+        <LabeledInput
+          labelText="스터디 이름"
+          id="studyName"
+          name="studyName"
+          placeholder="스터디 이름을 입력해 주세요"
+          errorId="studyNameError"
+          errorMessage={errors.studyName}
+          value={formData.studyName}
+          onChange={(e) => handleChange("studyName", e.target.value)}
+          onFocus={() =>
+            setErrors((prev) => ({ ...prev, studyName: validateStudyName(formData.studyName) }))
+          }
+        />
+      </div>
+
+      {/* 소개 */}
+      <div className={styles.inputGroup}>
+        <LabeledTextareaInput
+          labelText="소개"
+          id="description"
+          name="description"
+          placeholder="소개 멘트를 작성해 주세요"
+          errorId="descriptionError"
+          errorMessage={errors.description}
+          value={formData.description}
+          onChange={(e) => handleChange("description", e.target.value)}
+          onFocus={() =>
+            setErrors((prev) => ({ ...prev, description: validateDescription(formData.description) }))
+          }
+        />
+      </div>
+
+      {/* 배경 선택 */}
+      <div className={styles.sectionTitle}>
+        배경을 선택해 주세요
+      </div>
+      {submitted && selectedBackground === null && (
+        <div className={styles.errorText} style={{ color: "red" }}>
+          *배경을 선택해 주세요.
+        </div>
+      )}
+      <div className={styles.backgroundGrid}>
+        {backgrounds.map((_, idx) => {
+          const isSelected = selectedBackground === idx;
+          return (
+            <div
+              key={idx}
+              className={`${styles.backgroundBox} ${
+                submitted && selectedBackground === null && !isSelected ? styles.errorBorder : ""
+              }`}
+              onClick={() => setSelectedBackground(idx)}
+              style={{
+                background:
+                  idx === 0
+                    ? "#E1EDDE"
+                    : idx === 1
+                    ? "#FFF1CC"
+                    : idx === 2
+                    ? "#FDE0E9"
+                    : idx === 3
+                    ? "#E0F1F5"
+                    : `url(${backgroundImages[idx - 4]}) center/cover no-repeat`,
+              }}
+            >
+              {isSelected && (
+                <div className={styles.selectIconWrapper}>
+                  <img src="../src/assets/select.svg" alt="선택됨" className={styles.selectIcon} />
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* 비밀번호 */}
+      <div className={styles.inputGroup}>
+        <LabeledPasswordInput
+          labelText="비밀번호"
+          id="password"
+          name="password"
+          placeholder="비밀번호를 입력해 주세요"
+          errorId="passwordError"
+          errorMessage={errors.password}
+          value={formData.password}
+          onChange={(e) => handleChange("password", e.target.value)}
+          onFocus={() =>
+            setErrors((prev) => ({ ...prev, password: validatePassword(formData.password) }))
+          }
+        />
+      </div>
+
+      {/* 비밀번호 확인 */}
+      <div className={styles.inputGroup}>
+        <LabeledPasswordInput
+          labelText="비밀번호 확인"
+          id="confirmPassword"
+          name="confirmPassword"
+          placeholder="비밀번호를 다시 입력해 주세요"
+          errorId="confirmPasswordError"
+          errorMessage={errors.confirmPassword}
+          value={formData.confirmPassword}
+          onChange={(e) => handleChange("confirmPassword", e.target.value)}
+          onFocus={() =>
+            setErrors((prev) => ({
+              ...prev,
+              confirmPassword: validateConfirmPassword(formData.confirmPassword, formData.password),
+            }))
+          }
+        />
+      </div>
+
+      {/* 버튼 항상 활성화 */}
+      <div className={styles.buttonWrapper}>
+        <TextButton text={submitText} className={styles.createButton} type="submit" />
+      </div>
+    </form>
+  );
+}
