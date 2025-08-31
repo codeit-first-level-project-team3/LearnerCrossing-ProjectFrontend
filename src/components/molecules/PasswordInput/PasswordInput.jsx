@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Input from "../../atoms/Input/Input"; 
+import Input from "../Input/Input"; 
 import EyeOpen from "../../../assets/eyeOpen.svg";
 import EyeClose from "../../../assets/eyeClose.svg";
 import styles from "./PasswordInput.module.css";

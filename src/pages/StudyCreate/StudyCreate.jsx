@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Input from "../../components/atoms/Input/Input"; 
+import Input from "../../components/molecules/Input/Input"; 
 import PasswordInput from "../../components/molecules/PasswordInput/PasswordInput";
 import TextareaInput from "../../components/molecules/TextareaInput/TextareaInput";
 import GNB from "../../components/organisms/GNB/GNB"; 
