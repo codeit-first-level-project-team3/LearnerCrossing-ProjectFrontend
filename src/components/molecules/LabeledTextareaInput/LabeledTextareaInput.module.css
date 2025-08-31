@@ -12,3 +12,18 @@
   line-height: 1.5;
   box-sizing: border-box;
 }
+
+/* 오류 있을 때 빨간 테두리 */
+.errorTextarea {
+  border-color: red;
+}
+
+.label {
+  margin-bottom: 16px;
+}
+
+.errorMessage {
+  font-size: 0.875rem;
+  color: red;
+  margin-top: 0.5rem;
+}
