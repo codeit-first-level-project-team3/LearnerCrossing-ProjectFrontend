@@ -1,8 +1,7 @@
-import { useState } from "react";
 import Chip from "../../atoms/Chip/Chip.jsx";
 import styles from './HabitChip.module.css';
 
-export default function RoutineChip({isClear, onToggle, name=''}){
+export default function HabitChip({isClear, onToggle, name=''}){
     
     const toggleStyle = {
         on: {

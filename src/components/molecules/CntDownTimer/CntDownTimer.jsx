@@ -27,7 +27,7 @@ function CntdownTimer({ interval=0, isPause=false, _setTimeLeft }) {
 
   const makeTimer = () => {
     const targetTime = new Date().getTime() + timeLeft; //남은 시간을 통해 새로운 타겟 타임 설정.
-    return setInterval(() => { //화살표 함수는 선언 스코프를 따르기 때문에 한번만 targetTime을 설정해주면 계속 작동.
+    return setInterval(() => { //화살표 함수는 선언 시점 스코프를 따르기 때문에 한번만 targetTime을 설정해주면 계속 작동.
       const diff = targetTime - new Date().getTime();
       setTimeLeft(diff);
       _setTimeLeft(diff);

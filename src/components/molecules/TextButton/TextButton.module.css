@@ -3,9 +3,9 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
-  flex-shrink: 0;
 
-  width: 600px;   /* PC 기본 */
+  width: 100%;
+  max-width: 600px;   /* PC 기본 */
   height: 55px;
   border-radius: 16px;
   background: var(--brand-99C08E);
@@ -24,7 +24,7 @@
 /* ================= Tablet (376px ~ 744px) ================= */
 @media (max-width: 744px) {
   .textBtn {
-    width: 288px;
+    max-width: 288px;
     height: 55px;
   }
 }
@@ -32,7 +32,7 @@
 /* ================= Mobile (≤375px) ================= */
 @media (max-width: 375px) {
   .textBtn {
-    width: 140px;
+    max-width: 140px;
     height: 58px;
     gap: 8px;
     font-size: 18px;
