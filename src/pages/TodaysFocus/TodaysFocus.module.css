@@ -1,3 +1,16 @@
+.box{
+    width: 100%;
+    display: flex;
+    padding: 40px 24px;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    border-radius: 20px;
+    border: 1px solid var(--gray-gray_DDDDDD, #DDD);
+    background: #FFF;
+}
+
 .titleDiv{
     width: 100%;
     height: 29px;
@@ -19,4 +32,19 @@
 
 .wrapper{
     width: 100%;
+}
+
+.btnDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+}
+
+.timerDiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 95.5px;
 }
