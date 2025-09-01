@@ -7,6 +7,8 @@ import StudyDescription from "../../components/organisms/StudyDescription/StudyD
 import AuthPasswordModal from "../../components/organisms/AuthPasswordModal/AuthPasswordModal.jsX";
 import styles from "./StudyDetail.module.css";
 import { useEffect, useState } from "react";
+import Toast from "../../components/atoms/Toast.jsx";
+import { useNavigate } from "react-router-dom";
 
 function StudyDetail() {
   const gotobtn = [
@@ -80,6 +82,20 @@ function StudyDetail() {
     console.log(password);
   };
 
+  const [warning, setWarning] = useState(false); // 경고창
+  const navigate = useNavigate(); // 페이지 이동
+
+  // 비밀번호 성공시 스터디 생성으로 페이지 이동(임시 함수)
+  const handlePasswordsubmit = () => {
+    if(password === pwd) {
+      setWarning(false);
+      console.log("일치합니다.");
+      navigate("/studyCreate");
+    } else {
+      setWarning(true);
+    }
+  };
+
   const [buttonText, setButtonText] = useState("");
   const handleUpdateClick = () => {
     setIsOpen(true);
@@ -122,9 +138,11 @@ function StudyDetail() {
 
   return (
     <>
+      {warning && <Toast text="비밀번호가 일치하지 않습니다. 다시 입력해주세요." type="warning"/>}
       {isOpen && (
         <AuthPasswordModal
           isOpen={isOpen}
+          onClick={handlePasswordsubmit}
           onClose={() => setIsOpen(false)}
           buttonText={buttonText}
           title={title}

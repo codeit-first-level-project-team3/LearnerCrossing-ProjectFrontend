@@ -1,4 +1,3 @@
-import TextButton from "../../molecules/TextButton/TextButton";
 import TwoButtonModal from "../../molecules/TwoButtonModal";
 
 function HabitAddModal({isOpen, onClose, onClick}) {
