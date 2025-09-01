@@ -21,7 +21,7 @@ export default function LabeledInput({ labelText, name, errorId, errorMessage, t
         className={`${styles.input} ${errorMessage ? styles.errorInput : ""}`} 
         {...props}
       />
-      <div id={errorId} className={styles.errorMessage}>{errorMessage}</div>
+      {errorMessage && <div id={errorId} className={styles.errorMessage}>{errorMessage}</div>}
     </div>
   );
 }

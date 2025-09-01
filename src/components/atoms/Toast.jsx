@@ -1,4 +1,4 @@
-function Toast({ text, type, witdth }) {
+function Toast({ text, type }) {
   const toastType = {
     warning: {
       textColor: "var(--red-F50E0E)",
@@ -22,16 +22,21 @@ function Toast({ text, type, witdth }) {
     borderRadius: "12px",
     height: "47px",
 
-    fontFamily: "Pretendard",
-    fontSize: "16px",
-    fontStyle: "normal",
-    fontWeight: 600,
-    lineHeight: "normal",
+    font: "var(--font-16-medium)",
     color: textColor,
     backgroundColor: backgroundColor,
+    position: "fixed",
+    bottom: "10%",
+    left: "50%",
+    transform: "translateX(-50%)",
+    zIndex: 7,
   };
 
-  return <div style={toastStyle}>{icon} {text}</div>;
+  return (
+    <div style={toastStyle}>
+      {icon} {text}
+    </div>
+  );
 }
 
 export default Toast;

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Sticker from "../../atoms/Sticker";
 import style from "./HabitWeekly.module.css";
 
