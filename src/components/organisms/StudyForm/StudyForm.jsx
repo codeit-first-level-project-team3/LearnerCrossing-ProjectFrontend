@@ -21,8 +21,6 @@ export default function StudyForm({
   setErrors,
   backgrounds,
   backgroundImages,
-  selectedBackground,
-  setSelectedBackground,
   submitText,
 }) {
   const [submitted, setSubmitted] = useState(false);
@@ -35,7 +33,7 @@ export default function StudyForm({
       case "nickname":
         errorMsg = validateNickname(value);
         break;
-      case "name":   
+      case "name":
         errorMsg = validateStudyName(value);
         break;
       case "description":
@@ -63,11 +61,11 @@ export default function StudyForm({
 
     const newErrors = {
       nickname: validateNickname(formData.nickname),
-      name: validateStudyName(formData.name),   
+      name: validateStudyName(formData.name),
       description: validateDescription(formData.description),
       password: validatePassword(formData.password),
       confirmPassword: validateConfirmPassword(formData.confirmPassword, formData.password),
-      background: selectedBackground === null ? "*배경을 선택해 주세요." : "",
+      background: !formData.background ? "*배경을 선택해 주세요." : "",
     };
     setErrors(newErrors);
 
@@ -76,6 +74,18 @@ export default function StudyForm({
       onSubmit(formData);
       setSubmitted(false);
     }
+  };
+
+  const getBackgroundValue = (idx) => {
+    return idx === 0
+      ? "#E1EDDE"
+      : idx === 1
+      ? "#FFF1CC"
+      : idx === 2
+      ? "#FDE0E9"
+      : idx === 3
+      ? "#E0F1F5"
+      : backgroundImages[idx - 4];
   };
 
   return (
@@ -132,35 +142,26 @@ export default function StudyForm({
       </div>
 
       {/* 배경 선택 */}
-      <div className={styles.sectionTitle}>
-        배경을 선택해 주세요
-      </div>
-      {submitted && selectedBackground === null && (
+      <div className={styles.sectionTitle}>배경을 선택해 주세요</div>
+      {submitted && !formData.background && (
         <div className={styles.errorText} style={{ color: "red" }}>
           *배경을 선택해 주세요.
         </div>
       )}
       <div className={styles.backgroundGrid}>
         {backgrounds.map((_, idx) => {
-          const isSelected = selectedBackground === idx;
+          const bgValue = getBackgroundValue(idx);
+          const isSelected = formData.background === bgValue;
           return (
             <div
               key={idx}
               className={`${styles.backgroundBox} ${
-                submitted && selectedBackground === null && !isSelected ? styles.errorBorder : ""
+                submitted && !formData.background && !isSelected ? styles.errorBorder : ""
               }`}
-              onClick={() => setSelectedBackground(idx)}
+              onClick={() => setFormData({ ...formData, background: bgValue })}
               style={{
                 background:
-                  idx === 0
-                    ? "#E1EDDE"
-                    : idx === 1
-                    ? "#FFF1CC"
-                    : idx === 2
-                    ? "#FDE0E9"
-                    : idx === 3
-                    ? "#E0F1F5"
-                    : `url(${backgroundImages[idx - 4]}) center/cover no-repeat`,
+                  idx < 4 ? bgValue : `url(${bgValue}) center/cover no-repeat`,
               }}
             >
               {isSelected && (
@@ -210,7 +211,7 @@ export default function StudyForm({
         />
       </div>
 
-      {/* 버튼 항상 활성화 */}
+      {/* 버튼 */}
       <div className={styles.buttonWrapper}>
         <TextButton text={submitText} className={styles.createButton} type="submit" />
       </div>
