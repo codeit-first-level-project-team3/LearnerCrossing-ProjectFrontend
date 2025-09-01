@@ -41,6 +41,7 @@
 
   /* ================= Font Sizes ================= */
   --font-32-bold: 700 32px / normal var(--font-family);
+  --font-28-bold: 800 28px / normal var(--font-family);
   --font-24-bold: 700 24px / normal var(--font-family);
   --font-20-bold: 700 20px / normal var(--font-family);
   --font-20-medium: 500 20px / normal var(--font-family);
