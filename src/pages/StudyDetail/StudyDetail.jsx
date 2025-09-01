@@ -6,6 +6,7 @@ import StudyMain from "../../components/organisms/StudyMain/StudyMain.jsx";
 import StudyDescription from "../../components/organisms/StudyDescription/StudyDescription";
 import styles from "./StudyDetail.module.css";
 import { useEffect, useState } from "react";
+import Modal from "../../components/atoms/modal/modal.jsx";
 
 function StudyDetail() {
   const gotobtn = [
@@ -98,6 +99,7 @@ function StudyDetail() {
 
   return (
     <>
+      <Modal isOpen={true} />
       <GNB />
       <main>
         <StudyMain>

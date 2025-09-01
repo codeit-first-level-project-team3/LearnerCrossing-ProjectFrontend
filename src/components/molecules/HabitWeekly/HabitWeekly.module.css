@@ -46,7 +46,7 @@
 }
 
 /* Tablet */
-@media (max-width: 1199px) {
+@media (max-width: 1200px) {
   .todo {
     width: 160px;
     font: var(--font-16-bold);
