@@ -35,7 +35,7 @@ export default function StudyForm({
       case "nickname":
         errorMsg = validateNickname(value);
         break;
-      case "studyName":
+      case "name":   
         errorMsg = validateStudyName(value);
         break;
       case "description":
@@ -63,7 +63,7 @@ export default function StudyForm({
 
     const newErrors = {
       nickname: validateNickname(formData.nickname),
-      studyName: validateStudyName(formData.studyName),
+      name: validateStudyName(formData.name),   
       description: validateDescription(formData.description),
       password: validatePassword(formData.password),
       confirmPassword: validateConfirmPassword(formData.confirmPassword, formData.password),
@@ -101,15 +101,15 @@ export default function StudyForm({
       <div className={styles.inputGroup}>
         <LabeledInput
           labelText="스터디 이름"
-          id="studyName"
-          name="studyName"
+          id="name"
+          name="name"
           placeholder="스터디 이름을 입력해 주세요"
-          errorId="studyNameError"
-          errorMessage={errors.studyName}
-          value={formData.studyName}
-          onChange={(e) => handleChange("studyName", e.target.value)}
+          errorId="nameError"
+          errorMessage={errors.name}
+          value={formData.name}
+          onChange={(e) => handleChange("name", e.target.value)}
           onFocus={() =>
-            setErrors((prev) => ({ ...prev, studyName: validateStudyName(formData.studyName) }))
+            setErrors((prev) => ({ ...prev, name: validateStudyName(formData.name) }))
           }
         />
       </div>
