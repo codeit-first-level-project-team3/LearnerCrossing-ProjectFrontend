@@ -4,9 +4,9 @@ import EmojiPickerButton from "../../components/molecules/EmojiPickerButton/Emoj
 import GNB from "../../components/organisms/GNB/GNB.jsx";
 import StudyMain from "../../components/organisms/StudyMain/StudyMain.jsx";
 import StudyDescription from "../../components/organisms/StudyDescription/StudyDescription";
+import AuthPasswordModal from "../../components/molecules/AuthPasswordModal/AuthPasswordModal.jsX";
 import styles from "./StudyDetail.module.css";
 import { useEffect, useState } from "react";
-import Modal from "../../components/atoms/modal/modal.jsx";
 
 function StudyDetail() {
   const gotobtn = [
@@ -16,6 +16,11 @@ function StudyDetail() {
 
   // 이모지 선택창에서 선택한 이모지
   const [chosenEmoji, setChosenEmoji] = useState(null);
+  const [isOpen, setIsOpen] = useState(false); // 모달창 열린 상태
+  const [password, setPassword] = useState(""); // 비밀번호
+
+  const title = "연우의 개발 공장"; //임시 타이틀
+  const pwd = "12390"; // 임시 비밀번호
 
   // 임시 이모지 상태
   const [emojis, setEmojis] = useState({
@@ -32,11 +37,10 @@ function StudyDetail() {
         count: prev[id].count + 1,
       },
     }));
-
     // console.log(chosenEmoji) // 이모지 픽커 이모지 확인
-    console.log("id:", id); // 현재 클릭 아이디 확인용
+    // console.log("id:", id); // 현재 클릭 아이디 확인용
   }
-
+  // 이모지 추가 함수
   function addEmoji(newEmoji) {
     setEmojis((prev) => {
       // 동일한 이모지 있는지 확인. 있으면 그 key 반환
@@ -53,7 +57,7 @@ function StudyDetail() {
           },
         };
       }
-
+      // 일단은 있는 아이디 중 제일 큰 수 + 1 로 새 아이디 생성
       const newId = Math.max(...Object.keys(prev).map(Number)) + 1;
       return {
         ...prev,
@@ -62,11 +66,19 @@ function StudyDetail() {
     });
   }
 
+  // 이모지 추가
   useEffect(() => {
     if (!chosenEmoji) return;
     addEmoji(chosenEmoji);
     console.log("이모지 추가: " + chosenEmoji); // 이모지 추가 확인용 코드
   }, [chosenEmoji]);
+
+  // input 변경 시 password 변경
+  const handlePasswordChange = (e) => {
+    const val = e.target.value;
+    setPassword(val);
+    console.log(password);
+  };
 
   // 임시 일주일 습관 상태
   const weeklyCheck1 = {
@@ -99,7 +111,13 @@ function StudyDetail() {
 
   return (
     <>
-      <Modal isOpen={true} />
+      <AuthPasswordModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        title={title}
+        value={password}
+        onChange={handlePasswordChange}
+      />
       <GNB />
       <main>
         <StudyMain>
@@ -111,12 +129,15 @@ function StudyDetail() {
             <div className={styles.quickLinks}>
               <span>공유하기</span>
               <span>|</span>
-              <span>수정하기</span>
+              <span onClick={() => setIsOpen(true)}>수정하기</span>
               <span className={styles.delete}>|</span>
-              <span className={styles.delete}>스터디삭제하기</span>
+              <span className={styles.delete} onClick={() => setIsOpen(true)}>
+                스터디삭제하기
+              </span>
             </div>
           </div>
           <StudyDescription
+            title={title}
             goToBtn={gotobtn}
             description="Slow And Steady Wins The Race! 다들 오늘 하루도 화이팅 :)"
           />

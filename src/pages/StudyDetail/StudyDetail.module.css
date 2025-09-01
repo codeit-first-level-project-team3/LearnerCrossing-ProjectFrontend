@@ -25,6 +25,10 @@
   font:var(--font-16-medium);
   text-align: center;
   position: relative;
+  cursor: pointer;
+}
+.quickLinks span:nth-child(even) {
+  cursor: auto;
 }
 .quickLinks .delete {
   color: var(--gray-818181);

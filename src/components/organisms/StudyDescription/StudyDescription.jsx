@@ -5,7 +5,7 @@ import pointIcon from "../../../assets/point_icon.svg";
 import DateKR from "../../molecules/DateKR/DateKR";
 
 function StudyDescription({
-  title = "연우의 개발 공장",
+  title = "",
   goToBtn = [],
   description = "",
   isInfoPoint = true,

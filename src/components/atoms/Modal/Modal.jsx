@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import TextButton from "../../molecules/TextButton/TextButton.jsx";
 import styles from "./Modal.module.css";
 
-function Modal({isOpen = false, onClick, children}) {
+function Modal({className='', isOpen = false, onClick, buttontext, children}) {
   // modal창 뜰 때 스크롤 막기
   useEffect(() => {
     if(isOpen) {
@@ -19,10 +19,10 @@ function Modal({isOpen = false, onClick, children}) {
   if(!isOpen) return null;
 
   return (
-    <div className={styles.modalBackground}>
+    <div className={className||styles.modalBackground}>
       <div className={styles.modal}>
         {children}
-        <TextButton onClick={onClick} />
+        <TextButton text={buttontext} onClick={onClick} />
       </div>
     </div>
   );
