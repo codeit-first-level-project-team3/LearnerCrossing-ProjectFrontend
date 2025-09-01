@@ -4,7 +4,7 @@ import EmojiPickerButton from "../../components/molecules/EmojiPickerButton/Emoj
 import GNB from "../../components/organisms/GNB/GNB.jsx";
 import StudyMain from "../../components/organisms/StudyMain/StudyMain.jsx";
 import StudyDescription from "../../components/organisms/StudyDescription/StudyDescription";
-import AuthPasswordModal from "../../components/molecules/AuthPasswordModal/AuthPasswordModal.jsX";
+import AuthPasswordModal from "../../components/organisms/AuthPasswordModal/AuthPasswordModal.jsX";
 import styles from "./StudyDetail.module.css";
 import { useEffect, useState } from "react";
 
@@ -80,6 +80,17 @@ function StudyDetail() {
     console.log(password);
   };
 
+  const [buttonText, setButtonText] = useState("");
+  const handleUpdateClick = () => {
+    setIsOpen(true);
+    setButtonText("수정하러 가기");
+  };
+
+  const handlDeleteClick = () => {
+    setIsOpen(true);
+    setButtonText("삭제하기");
+  };
+
   // 임시 일주일 습관 상태
   const weeklyCheck1 = {
     mon: false,
@@ -111,13 +122,16 @@ function StudyDetail() {
 
   return (
     <>
-      <AuthPasswordModal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        title={title}
-        value={password}
-        onChange={handlePasswordChange}
-      />
+      {isOpen && (
+        <AuthPasswordModal
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          buttonText={buttonText}
+          title={title}
+          value={password}
+          onChange={handlePasswordChange}
+        />
+      )}
       <GNB />
       <main>
         <StudyMain>
@@ -129,9 +143,12 @@ function StudyDetail() {
             <div className={styles.quickLinks}>
               <span>공유하기</span>
               <span>|</span>
-              <span onClick={() => setIsOpen(true)}>수정하기</span>
+              <span onClick={() => handleUpdateClick()}>수정하기</span>
               <span className={styles.delete}>|</span>
-              <span className={styles.delete} onClick={() => setIsOpen(true)}>
+              <span
+                className={styles.delete}
+                onClick={() => handlDeleteClick()}
+              >
                 스터디삭제하기
               </span>
             </div>

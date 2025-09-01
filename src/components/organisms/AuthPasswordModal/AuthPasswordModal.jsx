@@ -1,10 +1,18 @@
-import Modal from "../../atoms/modal/modal";
-import LabeledPasswordInput from "../LabeledPasswordInput/LabeledPasswordInput";
+import LabeledPasswordInput from "../../molecules/LabeledPasswordInput/LabeledPasswordInput";
+import OneButtonModal from "../../molecules/OneButtonModal";
 import styles from "./AuthPasswordModal.module.css";
 
-function AuthPasswordModal({ isOpen, onClose, title, value, onChange }) {
+function AuthPasswordModal({
+  isOpen,
+  onClick,
+  onClose,
+  buttonText,
+  title,
+  value,
+  onChange,
+}) {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} buttontext="수정하러 가기">
+    <OneButtonModal isOpen={isOpen} onClick={onClick} buttonText={buttonText}>
       <div className={styles.authModal}>
         <h3 className={styles.title}>{title}</h3>
         <p className={styles.content}>권한이 필요해요!</p>
@@ -15,9 +23,11 @@ function AuthPasswordModal({ isOpen, onClose, title, value, onChange }) {
           value={value}
           onChange={onChange}
         />
-        <span className={styles.exit} onClick={onClose}>나가기</span>
+        <span className={styles.exit} onClick={onClose}>
+          나가기
+        </span>
       </div>
-    </Modal>
+    </OneButtonModal>
   );
 }
 
