@@ -1,0 +1,140 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(358px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  width: 358px;
+  height: 243px;
+  flex-shrink: 0;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #000;
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  filter: brightness(0.95);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 닉네임 + name 묶음 */
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.nickname {
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.name {
+  color: var(--black-black_414141, #414141);
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.points {
+  display: flex;
+  padding: 4px 8px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  border-radius: 50px;
+  border: 1px solid rgba(0, 0, 0, 0.10);
+  background: rgba(255, 255, 255, 0.30);
+}
+
+.pointsRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dpIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.studyName {
+  color: var(--gray-gray_818181, #818181);
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+.description {
+  color: var(--black-black_414141, #414141);
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+  flex-grow: 1;
+}
+
+.tagList {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.tag {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 8px;
+  border-radius: 50px;
+  background: rgba(0, 0, 0, 0.40);
+}
+
+.tagEmoji {
+  font-size: 14px;
+}
+
+.tagNumber {
+  color: #fff;
+  font-family: Pretendard, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+/* ===== 이미지 배경일 때 ===== */
+.whiteText .nickname,
+.whiteText .name,
+.whiteText .studyName,
+.whiteText .description,
+.whiteText .points,
+.whiteText .pointsRow span {
+  color: #fff !important;
+}
+
+.whiteText .points {
+  background: rgba(0, 0, 0, 0.50) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
