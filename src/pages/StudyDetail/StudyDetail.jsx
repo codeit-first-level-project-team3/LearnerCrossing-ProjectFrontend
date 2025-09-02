@@ -90,7 +90,7 @@ function StudyDetail() {
     if(password === pwd) {
       setWarning(false);
       console.log("일치합니다.");
-      navigate("/studyCreate");
+      navigate("/studyEdit");
     } else {
       setWarning(true);
     }

@@ -15,7 +15,7 @@
   flex-direction: column;
   justify-content: space-between;
   color: #000;
-
+  cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
