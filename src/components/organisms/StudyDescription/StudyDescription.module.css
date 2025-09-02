@@ -52,3 +52,16 @@
   border: 1px solid var(--gray-gray_DDDDDD, #ddd);
   background: #fff;
 }
+
+/* Tablet */
+@media (max-width: 1200px) {
+}
+
+/* Mobile */
+@media (max-width: 744px) {
+  .titleDiv {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+}
