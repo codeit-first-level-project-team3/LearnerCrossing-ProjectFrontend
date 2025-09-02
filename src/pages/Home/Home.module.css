@@ -3,7 +3,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  font-family: Pretendard, sans-serif;
+  font-family: var(--font-family);
 }
 
 /* 최근 조회한 스터디 & 스터디 둘러보기 */
@@ -14,16 +14,34 @@
   padding: 40px;
   flex-direction: column;
   align-items: flex-start;
-  gap: 10px;
   border-radius: 20px;
   margin-bottom: 40px;
-  background: #FFF;
+  background: var(--white-FFFFFF);
 }
 
+/* 각 섹션별 gap */
+.recentStudies {
+  gap: 30px; 
+}
+
+.allStudies {
+  gap: 24px; 
+}
+
+/* Section title */
+.sectionTitle {
+  color: var(--black-414141);
+  font-family: var(--font-family);
+  font-size: 24px;
+  font-weight: 800;
+  line-height: normal;
+  margin: 0;
+}
+
+/* Controls */
 .controlsAll {
   display: flex;
   gap: 599px;
-  margin-bottom: 16px;
 }
 
 /* Card grid */
@@ -50,7 +68,7 @@
 
 /* 공통 empty 메시지 */
 .emptyMessage {
-  color: #818181;
+  color: var(--gray-818181);
   font-size: 20px;
   font-weight: 500;
   text-align: center;
@@ -71,21 +89,13 @@
   align-items: center;
   width: 280px;
   height: 53px;
-  margin-top: 30px;
+  margin-top: 36px;
 
-  color: #578246;
-  text-align: center;
+  color: var(--green-text-578246);
   font-size: 16px;
   font-weight: 500;
   border: none;
   border-radius: 16px;
-  background: #f0f0f0;
+  background: var(--gray-EEEEEE);
   cursor: pointer;
-}
-
-/* Section titles */
-.recentStudies h2,
-.allStudies h2 {
-  font-size: 20px;
-  font-weight: 600;
 }

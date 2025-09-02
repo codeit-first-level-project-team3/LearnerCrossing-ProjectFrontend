@@ -67,7 +67,7 @@ export default function Home() {
 
       {/* 최근 조회한 스터디 */}
       <section className={styles.recentStudies}>
-        <h2>최근 조회한 스터디</h2>
+        <h2 className={styles.sectionTitle}>최근 조회한 스터디</h2>
         <div className={`${styles.cardGridRecent} ${recentStudies.length === 0 ? styles.emptyGrid : ""}`}>
           {recentStudies.length === 0 ? (
             <p className={styles.emptyMessage}>아직 조회한 스터디가 없어요</p>
@@ -76,7 +76,7 @@ export default function Home() {
               <Card
                 key={study.id}
                 studies={[study]}
-                onClick={() => navigate("/studyDetail")} // ✅ 모든 카드 클릭 시 /studyDetail 이동
+                onClick={() => navigate("/studyDetail")}
               />
             ))
           )}
@@ -85,7 +85,7 @@ export default function Home() {
 
       {/* 스터디 둘러보기 */}
       <section className={styles.allStudies}>
-        <h2>스터디 둘러보기</h2>
+        <h2 className={styles.sectionTitle}>스터디 둘러보기</h2>
         <div className={styles.controlsAll}>
           <Search placeholder="스터디 검색" onChange={(e) => setSearchTerm(e.target.value)} />
           <Sort label={sortOption} onChange={(option) => setSortOption(option)} />
@@ -99,7 +99,7 @@ export default function Home() {
               <Card
                 key={study.id}
                 studies={[study]}
-                onClick={() => navigate("/studyDetail")} // ✅ 하드코드 이동
+                onClick={() => navigate("/studyDetail")}
               />
             ))
           )}
