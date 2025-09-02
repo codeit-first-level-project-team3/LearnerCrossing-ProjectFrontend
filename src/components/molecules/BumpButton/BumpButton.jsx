@@ -8,7 +8,6 @@ export default function ShadowButton({
   text='',
   colorSwap = false,
   shapeCircle = true,
-  shapeBig = true,
   onClick=null,
   disabled=false,
   ...props
@@ -45,7 +44,6 @@ export default function ShadowButton({
           styles.btnLayer,
           disabled ? styles.colorDisabled : (colorSwap ? styles.colorSwap : styles.colorDefault),
           shapeCircle ? styles.circle : styles.bar,
-          shapeBig ? styles.big : styles.small,
           isPush ? styles.bottom : styles.top,
         ].join(' ')}
       >
@@ -57,7 +55,6 @@ export default function ShadowButton({
           styles.shadowLayer,
           colorSwap ? styles.colorDefault : styles.colorSwap,
           shapeCircle ? styles.circle : styles.bar,
-          shapeBig ? styles.big : styles.small,
           isPush ? styles.under : styles.bottom,
         ].join(' ')}
       ></div>

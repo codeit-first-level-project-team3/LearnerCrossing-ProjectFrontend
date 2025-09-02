@@ -30,6 +30,7 @@ export default function SetTimerInput({setTimeInterval}){
                 onChange={(e)=>setStringTime(e.target.value, setMins)}
                 onFocus={()=>setMins('')}
                 placeholder="00"
+                size={2}
             />
             <div className={styles.colon}><p>:</p></div>
             <input 
@@ -39,6 +40,7 @@ export default function SetTimerInput({setTimeInterval}){
                 onChange={(e)=>setStringTime(e.target.value, setSecs)}
                 onFocus={()=>setSecs('')}
                 placeholder="00"
+                size={2}
             />
         </div>
     )

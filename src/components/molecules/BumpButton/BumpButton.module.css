@@ -35,19 +35,13 @@
 }
 
 /* === circle/bar , big/small 버전 정의 === */
-.circle.big {
+.circle{
   width: 64px;
   height: 60.916px;
   border-radius: 50%;
 }
 
-.circle.small{
-  width: 48px;
-  height: 45.687px;
-  border-radius: 50%;
-}
-
-.bar.big{
+.bar{
   width: 333px;
   height: 60px;
   border-radius: 50px;
@@ -56,38 +50,14 @@
   gap: 16px;
 }
 
-.bar.small{
-  width: 140px;
-  height: 45px;
-  border-radius: 50px;
-
-  padding: 0 28px 0 20px;
-  gap: 8px;
-}
-
-.circle.big .icon{
+.circle .icon{
   width: 35.2px;
   height: 35.2px;
 }
 
-.circle.small .icon{
-  width: 26.4px;
-  height: 26.4px;
-}
-
-.circle.big .icon{
-  width: 35.2px;
-  height: 35.2px;
-}
-
-.bar.big .icon{
+.bar .icon{
   width: 44px;
   height: 44px;
-}
-
-.bar.small .icon{
-  width: 24px;  
-  height: 24px;
 }
 
 /* === 위/아래 위치 조정 === */
@@ -120,4 +90,38 @@
   display: flex;
   color: var(--white-FFFFFF);
   font: var(--font-28-bold);
+}
+
+/* mobile */
+@media (max-width: 744px){
+
+  .circle{
+    width: 48px;
+    height: 45.687px;
+    border-radius: 50%;
+  }
+
+  .bar{
+    width: 140px;
+    height: 45px;
+    border-radius: 50px;
+
+    padding: 0 28px 0 20px;
+    gap: 8px;
+  }
+
+  .circle .icon{
+    width: 26.4px;
+    height: 26.4px;
+  }
+
+  .bar .icon{
+    width: 24px;  
+    height: 24px;
+  }
+
+  .text{
+    font: var(--font-18-bold);
+  }
+
 }

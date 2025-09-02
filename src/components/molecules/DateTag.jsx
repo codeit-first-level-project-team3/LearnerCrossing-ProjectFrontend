@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
+import Tag from '../atoms/Tag/Tag';
 
 
 //이게 서버 시간을 받아와야 하는지 고민입니다 (+ 습관 클리어 시간 판정)
-export default function DateKR(){
+export default function DateTag(){
 
     const [date, setDate] = useState(formatKoreanDate(new Date()));
 
@@ -18,7 +19,7 @@ export default function DateKR(){
       }, []);
 
     return (
-        <>{date}</>
+        <Tag text={date}/>
     )
 }
 
