@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import Home from "./pages/Home.jsx";
+import Home from "./pages/Home/Home.jsx";
 import TodaysHabits from "./pages/TodaysHabits/TodaysHabits.jsx";
 import TodaysFocus from "./pages/TodaysFocus/TodaysFocus.jsx";
 import NotFound from "./pages/NotFound.jsx";
