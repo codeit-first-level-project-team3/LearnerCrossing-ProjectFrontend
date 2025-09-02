@@ -111,19 +111,19 @@ function StudyDetail() {
   const habits = {
     1: {
       name: "미라클 모닝 6시 기상",
-      state: "0|0|0|0|0|0|0",
+      weeklyClear: "0|0|0|0|0|0|0",
     },
     2: {
       name: "아침 챙겨 먹기",
-      state: "1|0|1|1|0|1|0"
+      weeklyClear: "1|0|1|1|0|1|0"
     },
     3: {
       name: "스트레칭",
-      state: "1|1|1|0|1|0|0"
+      weeklyClear: "1|1|1|0|1|0|0"
     },
     4: {
       name: "물 1L 마시기",
-      state: "0|1|1|1|0|1|0"
+      weeklyClear: "0|1|1|1|0|1|0"
     },
   };
 
