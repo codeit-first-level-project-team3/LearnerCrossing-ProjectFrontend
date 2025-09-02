@@ -18,6 +18,8 @@ function HabitWeekly({
     sun: "일",
   };
 
+  const boolenState = weeklyState.split("|").map(el => el==0 ? false : true);
+
   return (
     <div className={style.habitWeekly}>
       {isTop && (
@@ -35,10 +37,10 @@ function HabitWeekly({
       <div className={style.weeklyGoals}>
         <p className={style.todo}>{weeklytodo}</p>
         <ul className={style.todoWeek}>
-          {Object.keys(weekDays).map((key) => (
+          {Object.keys(weekDays).map((key, i) => (
             <li className={style.todoSticker} key={key}>
               <Sticker
-                color={weeklyState[key] ? stickerColor : "empty"}
+                color={boolenState[i] ? stickerColor : "empty"}
                 num={stickerNum}
               />
             </li>

@@ -1,13 +1,13 @@
-import HabitWeekly from "../../components/molecules/HabitWeekly/HabitWeekly";
+import Toast from "../../components/atoms/Toast.jsx";
 import CheerTagGroup from "../../components/molecules/CheerTagGroup/CheerTagGroup.jsx";
 import EmojiPickerButton from "../../components/molecules/EmojiPickerButton/EmojiPickerButton.jsx";
 import GNB from "../../components/organisms/GNB/GNB.jsx";
 import StudyMain from "../../components/organisms/StudyMain/StudyMain.jsx";
 import StudyDescription from "../../components/organisms/StudyDescription/StudyDescription";
 import AuthPasswordModal from "../../components/organisms/AuthPasswordModal/AuthPasswordModal.jsX";
+import WeeklyHabitForm from "../../components/organisms/WeeklyHabitForm/WeeklyHabitForm.jsx";
 import styles from "./StudyDetail.module.css";
 import { useEffect, useState } from "react";
-import Toast from "../../components/atoms/Toast.jsx";
 import { useNavigate } from "react-router-dom";
 
 function StudyDetail() {
@@ -87,7 +87,7 @@ function StudyDetail() {
 
   // 비밀번호 성공시 스터디 생성으로 페이지 이동(임시 함수)
   const handlePasswordsubmit = () => {
-    if(password === pwd) {
+    if (password === pwd) {
       setWarning(false);
       console.log("일치합니다.");
       navigate("/studyCreate");
@@ -108,37 +108,33 @@ function StudyDetail() {
   };
 
   // 임시 일주일 습관 상태
-  const weeklyCheck1 = {
-    mon: false,
-    tue: true,
-    wed: true,
-    thu: true,
-    fri: true,
-    sat: false,
-    sun: false,
-  };
-  const weeklyCheck2 = {
-    mon: true,
-    tue: true,
-    wed: true,
-    thu: true,
-    fri: true,
-    sat: false,
-    sun: true,
-  };
-  const weeklyCheck3 = {
-    mon: false,
-    tue: false,
-    wed: false,
-    thu: true,
-    fri: false,
-    sat: true,
-    sun: true,
+  const habits = {
+    1: {
+      name: "미라클 모닝 6시 기상",
+      state: "0|0|0|0|0|0|0",
+    },
+    2: {
+      name: "아침 챙겨 먹기",
+      state: "1|0|1|1|0|1|0"
+    },
+    3: {
+      name: "스트레칭",
+      state: "1|1|1|0|1|0|0"
+    },
+    4: {
+      name: "물 1L 마시기",
+      state: "0|1|1|1|0|1|0"
+    },
   };
 
   return (
     <>
-      {warning && <Toast text="비밀번호가 일치하지 않습니다. 다시 입력해주세요." type="warning"/>}
+      {warning && (
+        <Toast
+          text="비밀번호가 일치하지 않습니다. 다시 입력해주세요."
+          type="warning"
+        />
+      )}
       {isOpen && (
         <AuthPasswordModal
           isOpen={isOpen}
@@ -176,33 +172,7 @@ function StudyDetail() {
             goToBtn={gotobtn}
             description="Slow And Steady Wins The Race! 다들 오늘 하루도 화이팅 :)"
           />
-
-          {/* 임시로 올려본 일주일 습관 */}
-          <HabitWeekly
-            isTop={true}
-            stickerColor="pink"
-            stickerNum={2}
-            weeklytodo="미라클 모닝 6시 기상"
-            weeklyState={weeklyCheck1}
-          />
-          <HabitWeekly
-            stickerColor="green"
-            stickerNum={2}
-            weeklytodo="아침 챙겨 먹기"
-            weeklyState={weeklyCheck2}
-          />
-          <HabitWeekly
-            stickerColor="blue"
-            stickerNum={1}
-            weeklytodo="일주일 습관표"
-            weeklyState={weeklyCheck3}
-          />
-          <HabitWeekly
-            stickerColor="purple"
-            stickerNum={0}
-            weeklytodo="스프린트 7..."
-            weeklyState={weeklyCheck2}
-          />
+          <WeeklyHabitForm habits={habits} color="purple" colorNum={2}/>
         </StudyMain>
       </main>
     </>
