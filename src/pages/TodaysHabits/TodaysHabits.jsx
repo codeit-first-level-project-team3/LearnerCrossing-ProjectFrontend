@@ -20,14 +20,14 @@ function convertToArray(weeklyClear){
     return '';
 }
 
-function HabitList({ habits, handleToggle }){
+function HabitList({ habits, handleToggle, setIsModalOpen }){
 
     return(
         <div className={styles.box}>
         <div className={styles.routineWrapper}>
             <div className={styles.titleDiv}>
                 <p className={styles.title}>오늘의 습관</p>
-                <Button>목록수정</Button>
+                <Button onClick={() => setIsModalOpen(true)}>목록수정</Button>
             </div>
             <ul className={styles.routineList}>
                 {habits.map((habit) => {
@@ -98,7 +98,7 @@ function TodaysHabits(){
     ]
     
     const [habits, setHabits] = useState(habitList);
-    const [isModalOpen, setIsModalOpen] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleToggle = (habitId, isClear) => {
         //실제로는 리퀘스트를 보내야 한다. (PATCH)
@@ -121,10 +121,15 @@ function TodaysHabits(){
         <main>
             <StudyMain>
                 <StudyDescription
+                    title='연우의 개발 공장'
                     goToBtn={goToBtn}
                     isInfoPoint={false}
                 />
-                <HabitList habits={habits} handleToggle={handleToggle}/>
+                <HabitList 
+                    habits={habits} 
+                    handleToggle={handleToggle}
+                    setIsModalOpen={setIsModalOpen}
+                />
                 <SetHabitModal 
                     isOpen={isModalOpen}
                     setIsOpen={setIsModalOpen}

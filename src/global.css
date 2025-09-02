@@ -67,9 +67,9 @@
   --font-10-regular: 400 10px / normal var(--font-family);
 
   /* Large Titles */
-  --font-150-bold: 700 71.277px / normal var(--font-family);
-  --font-120-bold: 700 57.021px / normal var(--font-family);
-  --font-80-bold: 700 38.014px / normal var(--font-family);
+  --font-150-bold: 700 150px / normal var(--font-family);
+  --font-120-bold: 700 120px / normal var(--font-family);
+  --font-80-bold: 700 80px / normal var(--font-family);
 }
 
 /* ================= Global Styles ================= */

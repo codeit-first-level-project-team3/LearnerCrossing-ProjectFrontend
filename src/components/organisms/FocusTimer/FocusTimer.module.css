@@ -1,0 +1,44 @@
+.timerDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.btnDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+}
+
+.gap {
+    width: 100%;
+    height: 100px;
+}
+
+.tagDiv{
+    width: 100%;
+    height: 100px;
+    padding: 24px 0 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* mobile */
+@media (max-width: 744px){
+    .btnDiv {
+        gap: 8px;
+    }
+
+    .gap {
+        height: 75px;
+    }
+
+    .tagDiv{
+        height: 64px;
+        padding: 16px 0 0;
+    }
+}

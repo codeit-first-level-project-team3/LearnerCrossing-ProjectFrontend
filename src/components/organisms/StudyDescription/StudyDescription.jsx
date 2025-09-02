@@ -1,8 +1,7 @@
-import Tag from "../../atoms/Tag/Tag";
 import GoToBtn from "../../molecules/GotoBtn/GoToBtn";
 import styles from "./StudyDescription.module.css";
-import pointIcon from "../../../assets/point_icon.svg";
-import DateKR from "../../molecules/DateKR/DateKR";
+import DateTag from "../../molecules/DateTag";
+import PointTag from "../../molecules/PointTag";
 
 function StudyDescription({
   title = "",
@@ -13,8 +12,8 @@ function StudyDescription({
   const infoName = isInfoPoint ? "현재까지 획득한 포인트" : "현재 시간";
 
   const info = {
-    true: <Tag img={pointIcon} text="340p" />,
-    false: <Tag text={<DateKR/>}/>,
+    true: <PointTag/>,
+    false: <DateTag/>,
   };
 
   return ( 

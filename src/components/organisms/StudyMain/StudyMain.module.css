@@ -4,8 +4,8 @@
 .studyMain{
     max-width: 1200px;
 
-    margin: 20px 16px 32px;
-    padding: 16px;
+    margin: 40px auto 70px;
+    padding: 40px;
 
     border-radius: 20px;
     background: #FFF;
@@ -17,19 +17,17 @@
 }
 
 /* Tablet 디자인 */
-@media (min-width: 744px){
+@media (max-width: 1200px){
     .studyMain{
         margin: 16px 24px 170px;
         padding: 24px;
     }
 }
 
-/* PC 디자인 */
-@media (min-width: 1300px){
+/* mobile 디자인 */
+@media (max-width: 744px){
     .studyMain{
-        max-width: 1200px;
-
-        margin: 40px auto 70px;
-        padding: 40px;
+        margin: 20px 16px 32px;
+        padding: 16px;
     }
 }
