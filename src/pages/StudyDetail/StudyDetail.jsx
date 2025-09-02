@@ -1,14 +1,15 @@
-import HabitWeekly from "../../components/molecules/HabitWeekly/HabitWeekly";
+import Toast from "../../components/atoms/Toast.jsx";
 import CheerTagGroup from "../../components/molecules/CheerTagGroup/CheerTagGroup.jsx";
 import EmojiPickerButton from "../../components/molecules/EmojiPickerButton/EmojiPickerButton.jsx";
 import GNB from "../../components/organisms/GNB/GNB.jsx";
 import StudyMain from "../../components/organisms/StudyMain/StudyMain.jsx";
 import StudyDescription from "../../components/organisms/StudyDescription/StudyDescription";
 import AuthPasswordModal from "../../components/organisms/AuthPasswordModal/AuthPasswordModal.jsX";
+import WeeklyHabitForm from "../../components/organisms/WeeklyHabitForm/WeeklyHabitForm.jsx";
 import styles from "./StudyDetail.module.css";
 import { useEffect, useState } from "react";
-import Toast from "../../components/atoms/Toast.jsx";
 import { useNavigate } from "react-router-dom";
+import { getHabitsList } from "./studyDetailAPI.jsx";
 
 function StudyDetail() {
   const gotobtn = [
@@ -16,13 +17,15 @@ function StudyDetail() {
     { to: "/focus", name: "오늘의 집중" },
   ];
 
-  // 이모지 선택창에서 선택한 이모지
-  const [chosenEmoji, setChosenEmoji] = useState(null);
+  const [chosenEmoji, setChosenEmoji] = useState(null); // 이모지 선택창에서 선택한 이모지
   const [isOpen, setIsOpen] = useState(false); // 모달창 열린 상태
   const [password, setPassword] = useState(""); // 비밀번호
+  const [warning, setWarning] = useState(false); // 경고창
+  const navigate = useNavigate(); // 페이지 이동
+  const [habits, setHabits] = useState([]); // habits 상태
 
   const title = "연우의 개발 공장"; //임시 타이틀
-  const pwd = "12390"; // 임시 비밀번호
+  const pwd = "1234"; // 임시 비밀번호
 
   // 임시 이모지 상태
   const [emojis, setEmojis] = useState({
@@ -82,12 +85,9 @@ function StudyDetail() {
     console.log(password);
   };
 
-  const [warning, setWarning] = useState(false); // 경고창
-  const navigate = useNavigate(); // 페이지 이동
-
   // 비밀번호 성공시 스터디 생성으로 페이지 이동(임시 함수)
   const handlePasswordsubmit = () => {
-    if(password === pwd) {
+    if (password === pwd) {
       setWarning(false);
       console.log("일치합니다.");
       navigate("/studyEdit");
@@ -97,53 +97,44 @@ function StudyDetail() {
   };
 
   const [buttonText, setButtonText] = useState("");
-  const handleUpdateClick = () => {
+  // 모달창 열기
+  const handleModalOpen = (btnText) => {
     setIsOpen(true);
-    setButtonText("수정하러 가기");
+    setButtonText(btnText);
+  };
+  // 모달창 닫기
+  const handleModalClose = () => {
+    setIsOpen(false);
+    setWarning(false);
   };
 
-  const handlDeleteClick = () => {
-    setIsOpen(true);
-    setButtonText("삭제하기");
+  // 스터디(id:3)의 habits 가져오기
+  const handleHabitsLoad = async () => {
+    try {
+      const result = await getHabitsList(3);
+      console.log("result:", result);
+      setHabits(result || []);
+    } catch (error) {
+      console.error("습관 불러오기 실패:", error.message);
+    }
   };
-
-  // 임시 일주일 습관 상태
-  const weeklyCheck1 = {
-    mon: false,
-    tue: true,
-    wed: true,
-    thu: true,
-    fri: true,
-    sat: false,
-    sun: false,
-  };
-  const weeklyCheck2 = {
-    mon: true,
-    tue: true,
-    wed: true,
-    thu: true,
-    fri: true,
-    sat: false,
-    sun: true,
-  };
-  const weeklyCheck3 = {
-    mon: false,
-    tue: false,
-    wed: false,
-    thu: true,
-    fri: false,
-    sat: true,
-    sun: true,
-  };
+  useEffect(() => {
+    handleHabitsLoad();
+  }, []);
 
   return (
     <>
-      {warning && <Toast text="비밀번호가 일치하지 않습니다. 다시 입력해주세요." type="warning"/>}
+      {warning && (
+        <Toast
+          text="비밀번호가 일치하지 않습니다. 다시 입력해주세요."
+          type="warning"
+        />
+      )}
       {isOpen && (
         <AuthPasswordModal
           isOpen={isOpen}
           onClick={handlePasswordsubmit}
-          onClose={() => setIsOpen(false)}
+          onClose={handleModalClose}
           buttonText={buttonText}
           title={title}
           value={password}
@@ -161,11 +152,11 @@ function StudyDetail() {
             <div className={styles.quickLinks}>
               <span>공유하기</span>
               <span>|</span>
-              <span onClick={() => handleUpdateClick()}>수정하기</span>
+              <span onClick={() => handleModalOpen("수정하기")}>수정하기</span>
               <span className={styles.delete}>|</span>
               <span
                 className={styles.delete}
-                onClick={() => handlDeleteClick()}
+                onClick={() => handleModalOpen("삭제하기")}
               >
                 스터디삭제하기
               </span>
@@ -176,33 +167,7 @@ function StudyDetail() {
             goToBtn={gotobtn}
             description="Slow And Steady Wins The Race! 다들 오늘 하루도 화이팅 :)"
           />
-
-          {/* 임시로 올려본 일주일 습관 */}
-          <HabitWeekly
-            isTop={true}
-            stickerColor="pink"
-            stickerNum={2}
-            weeklytodo="미라클 모닝 6시 기상"
-            weeklyState={weeklyCheck1}
-          />
-          <HabitWeekly
-            stickerColor="green"
-            stickerNum={2}
-            weeklytodo="아침 챙겨 먹기"
-            weeklyState={weeklyCheck2}
-          />
-          <HabitWeekly
-            stickerColor="blue"
-            stickerNum={1}
-            weeklytodo="일주일 습관표"
-            weeklyState={weeklyCheck3}
-          />
-          <HabitWeekly
-            stickerColor="purple"
-            stickerNum={0}
-            weeklytodo="스프린트 7..."
-            weeklyState={weeklyCheck2}
-          />
+          <WeeklyHabitForm habits={habits} color="purple" colorNum={2} />
         </StudyMain>
       </main>
     </>

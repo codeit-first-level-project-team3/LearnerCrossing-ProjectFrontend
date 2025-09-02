@@ -22,7 +22,7 @@
 
 .quickLinks span {
   color: var(--green-text-578246);
-  font:var(--font-16-medium);
+  font: var(--font-16-medium);
   text-align: center;
   position: relative;
   cursor: pointer;
@@ -32,4 +32,22 @@
 }
 .quickLinks .delete {
   color: var(--gray-818181);
+}
+
+/* Tablet */
+@media (max-width: 1200px) {
+}
+
+/* Mobile */
+@media (max-width: 744px) {
+  .utilityBar {
+    flex-direction: column-reverse;
+    align-content: stretch;
+  }
+  .emojiBox {
+    margin-top: 16px;
+  }
+  .quickLinks {
+    justify-content: flex-end;
+  }
 }
