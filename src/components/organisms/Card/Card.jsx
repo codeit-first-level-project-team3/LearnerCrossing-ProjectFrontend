@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Card.module.css";
 import dpIcon from "../../../../src/assets/point_icon.svg"; 
 
-export default function Card({ studies = [] }) {
+export default function Card({ studies = [], onClick }) { 
   const calculateDays = (createdAt) => {
     const start = new Date(createdAt);
     const today = new Date();
@@ -38,7 +38,6 @@ export default function Card({ studies = [] }) {
 
         const days = calculateDays(createdAt);
 
-        // nickname 색상 조건부 적용
         const nicknameColor = background === "#E1EDDE"
           ? "#578246"
           : background === "#FFF1CC"
@@ -50,8 +49,12 @@ export default function Card({ studies = [] }) {
           : undefined;
 
         return (
-          <div key={id} className={cardClass} style={bgStyle}>
-            {/* 상단: 닉네임 + name + Points */}
+          <div
+            key={id}
+            className={cardClass}
+            style={bgStyle}
+            onClick={onClick} 
+          >
             <div className={styles.header}>
               <div className={styles.userInfo}>
                 <span className={styles.nickname} style={{ color: nicknameColor }}>
@@ -67,13 +70,9 @@ export default function Card({ studies = [] }) {
               </div>
             </div>
 
-            {/* 진행 일수 */}
             <div className={styles.studyName}>{days}일째 진행 중</div>
-
-            {/* 소개 */}
             <div className={styles.description}>{description}</div>
 
-            {/* 하단 태그: 이모지로 표시 */}
             <div className={styles.tagList}>
               {tags.slice(0, 3).map((tag, idx) => (
                 <div key={idx} className={styles.tag}>

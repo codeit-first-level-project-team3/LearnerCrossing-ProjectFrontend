@@ -1,5 +1,5 @@
-// Home.jsx
 import React, { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import Card from "../../components/organisms/Card/Card";
 import GNB from "../../components/organisms/GNB/GNB";
 import Search from "../../components/molecules/Search/Search";
@@ -11,6 +11,8 @@ import bg4 from "../../assets/backgrounds/bg4.svg";
 import styles from "./Home.module.css";
 
 export default function Home() {
+  const navigate = useNavigate();
+
   const recentStudies = [
     { id: 1, nickname: "채환", name: "의 공부", description: "React 공부중", background: bg1, points: 120, createdAt: "2025-09-01T00:00:00Z", tags: [{ emoji: "🔥", count: 5 }, { emoji: "💡", count: 3 }, { emoji: "📚", count: 2 }] },
     { id: 2, nickname: "하드", name: "의 학습", description: "Node.js 실습중", background: "#E1EDDE", points: 90, createdAt: "2025-08-28T00:00:00Z", tags: [{ emoji: "⚡", count: 4 }, { emoji: "📝", count: 2 }] },
@@ -70,7 +72,13 @@ export default function Home() {
           {recentStudies.length === 0 ? (
             <p className={styles.emptyMessage}>아직 조회한 스터디가 없어요</p>
           ) : (
-            recentStudies.map((study) => <Card key={study.id} studies={[study]} />)
+            recentStudies.map((study) => (
+              <Card
+                key={study.id}
+                studies={[study]}
+                onClick={() => navigate("/studyDetail")} // ✅ 모든 카드 클릭 시 /studyDetail 이동
+              />
+            ))
           )}
         </div>
       </section>
@@ -87,7 +95,13 @@ export default function Home() {
           {filteredStudies.length === 0 ? (
             <p className={styles.emptyMessage}>아직 둘러볼 스터디가 없어요</p>
           ) : (
-            filteredStudies.slice(0, visibleCount).map((study) => <Card key={study.id} studies={[study]} />)
+            filteredStudies.slice(0, visibleCount).map((study) => (
+              <Card
+                key={study.id}
+                studies={[study]}
+                onClick={() => navigate("/studyDetail")} // ✅ 하드코드 이동
+              />
+            ))
           )}
         </div>
 
