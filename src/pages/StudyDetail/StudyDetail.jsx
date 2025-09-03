@@ -87,6 +87,8 @@ function StudyDetail() {
   };
 
   // 비밀번호 성공시 스터디 생성으로 페이지 이동(임시 함수)
+  //  각 버튼마다 이동 위치 분리... 
+  // 1. 상태를 통해 무슨 액션인지 관리해서 분기 2. 함수를 상태에 저장해서 그걸 모달로 넘기기
   const handlePasswordsubmit = () => {
     if (password === pwd) {
       setWarning(false);
@@ -107,12 +109,17 @@ function StudyDetail() {
     setIsOpen(false);
     setWarning(false);
   };
+  // gotobtn click
+  const gotoclick = (e) => {
+    e.preventDefault(); // Link 이동 막기
+    setIsOpen(true);
+    setButtonText("이동하기");
+  }
 
   // 스터디(id:3)의 habits 가져오기
   const handleHabitsLoad = async () => {
     try {
       const result = await getHabitsAsync(3);
-      console.log("result:", result);
       setHabits(result || []);
     } catch (error) {
       console.error("습관 불러오기 실패:", error.message);
@@ -126,12 +133,14 @@ function StudyDetail() {
 
   return (
     <>
+      {/* 경고창 */}
       {warning && (
         <Toast
           text="비밀번호가 일치하지 않습니다. 다시 입력해주세요."
           type="warning"
         />
       )}
+      {/* 모달창 */}
       {isOpen && (
         <AuthPasswordModal
           isOpen={isOpen}
@@ -168,6 +177,7 @@ function StudyDetail() {
             title={title}
             goToBtn={gotobtn}
             description="Slow And Steady Wins The Race! 다들 오늘 하루도 화이팅 :)"
+            onClick={gotoclick}
           />
           <div className={styles.habitsContainer}>
             <h1>습관 기록표</h1>

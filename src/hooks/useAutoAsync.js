@@ -1,6 +1,7 @@
 import { useState } from "react";
 
-// async 자동 실행 훅. (ex. 새 페이지로 넘어가면 데이터를 받아와서 새 페이지에 보여줘야한다)
+// async 자동 실행 로딩처리 훅
+// (ex. 새 페이지로 넘어가면 데이터를 받아와서 새 페이지에 보여줘야한다)
 function useAutoAsync(asyncFunction) {
   const [pending, setPending] = useState(true); // 현재 async 상태
   const [error, setError] = useState(null); // 에러 상태
