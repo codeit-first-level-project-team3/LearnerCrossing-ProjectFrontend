@@ -5,7 +5,7 @@ import bg1 from "../../assets/backgrounds/bg1.svg";
 import bg2 from "../../assets/backgrounds/bg2.svg";
 import bg3 from "../../assets/backgrounds/bg3.svg";
 import bg4 from "../../assets/backgrounds/bg4.svg";
-import styles from "../../components/organisms/StudyForm/StudyForm.module.css";
+import styles from "../StudyCreate/StudyCreate.module.css";
 
 export default function StudyEdit() {
   // 하드코딩된 기존 스터디 정보
