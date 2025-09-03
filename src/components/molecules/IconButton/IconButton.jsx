@@ -9,7 +9,7 @@ export default function IconButton({
 }) {
   return (
     <Button className={className || styles.iconBtn} {...props}>
-      {icon && <img src={icon} alt={iconAlt} className={styles.icon} />}
+      {icon && <img src={icon} alt={iconAlt} className={className ?  null : styles.icon} />}
     </Button>
   );
 }
