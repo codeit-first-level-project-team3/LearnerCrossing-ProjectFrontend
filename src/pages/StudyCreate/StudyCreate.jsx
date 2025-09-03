@@ -7,7 +7,7 @@ import bg1 from "../../assets/backgrounds/bg1.svg";
 import bg2 from "../../assets/backgrounds/bg2.svg";
 import bg3 from "../../assets/backgrounds/bg3.svg";
 import bg4 from "../../assets/backgrounds/bg4.svg";
-import styles from "../../components/organisms/StudyForm/StudyForm.module.css";
+import pageStyles from "./StudyCreate.module.css"; 
 
 export default function StudyCreate() {
   const [formData, setFormData] = useState({
@@ -37,12 +37,10 @@ export default function StudyCreate() {
         }
       );
 
+      console.log(response);
+
       alert("스터디 생성 완료!");
-      //api 응답 확인
-      console.log(response.data);
-       
       
-      //생성된 스터디 상세 페이지로 이동
       navigate(`/studies/${response.data.id}`);
     } catch (error) {
       console.error("스터디 생성 실패:", error);
@@ -56,10 +54,10 @@ export default function StudyCreate() {
   };
 
   return (
-    <div className={styles.pageWrapper}>
+    <div className={pageStyles.pageWrapper}>
       <GNB showCreateStudy={false} />
-      <div className={styles.contentWrapper}>
-        <h1 className={styles.pageTitle}>스터디 만들기</h1>
+      <div className={pageStyles.contentWrapper}>
+        <h1 className={pageStyles.pageTitle}>스터디 만들기</h1>
         <StudyForm
           formData={formData}
           setFormData={setFormData}
