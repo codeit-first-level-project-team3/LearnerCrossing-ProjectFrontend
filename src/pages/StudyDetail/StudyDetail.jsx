@@ -10,6 +10,7 @@ import styles from "./StudyDetail.module.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getHabitsList } from "./studyDetailAPI.jsx";
+import useAsync from "../../hooks/useAutoAsync.js";
 
 function StudyDetail() {
   const gotobtn = [
@@ -23,6 +24,7 @@ function StudyDetail() {
   const [warning, setWarning] = useState(false); // 경고창
   const navigate = useNavigate(); // 페이지 이동
   const [habits, setHabits] = useState([]); // habits 상태
+  const [isLoading, loadingError, getHabitsAsync] = useAsync(getHabitsList); // 습관 가져오기 로딩,에러처리
 
   const title = "연우의 개발 공장"; //임시 타이틀
   const pwd = "1234"; // 임시 비밀번호
@@ -82,14 +84,14 @@ function StudyDetail() {
   const handlePasswordChange = (e) => {
     const val = e.target.value;
     setPassword(val);
-    console.log(password);
   };
 
   // 비밀번호 성공시 스터디 생성으로 페이지 이동(임시 함수)
+  //  각 버튼마다 이동 위치 분리... 
+  // 1. 상태를 통해 무슨 액션인지 관리해서 분기 2. 함수를 상태에 저장해서 그걸 모달로 넘기기
   const handlePasswordsubmit = () => {
     if (password === pwd) {
       setWarning(false);
-      console.log("일치합니다.");
       navigate("/studyEdit");
     } else {
       setWarning(true);
@@ -107,29 +109,38 @@ function StudyDetail() {
     setIsOpen(false);
     setWarning(false);
   };
+  // gotobtn click
+  const gotoclick = (e) => {
+    e.preventDefault(); // Link 이동 막기
+    setIsOpen(true);
+    setButtonText("이동하기");
+  }
 
   // 스터디(id:3)의 habits 가져오기
   const handleHabitsLoad = async () => {
     try {
-      const result = await getHabitsList(3);
-      console.log("result:", result);
+      const result = await getHabitsAsync(3);
       setHabits(result || []);
     } catch (error) {
       console.error("습관 불러오기 실패:", error.message);
     }
   };
+
   useEffect(() => {
+    // 데이터 불러오기
     handleHabitsLoad();
   }, []);
 
   return (
     <>
+      {/* 경고창 */}
       {warning && (
         <Toast
           text="비밀번호가 일치하지 않습니다. 다시 입력해주세요."
           type="warning"
         />
       )}
+      {/* 모달창 */}
       {isOpen && (
         <AuthPasswordModal
           isOpen={isOpen}
@@ -166,8 +177,17 @@ function StudyDetail() {
             title={title}
             goToBtn={gotobtn}
             description="Slow And Steady Wins The Race! 다들 오늘 하루도 화이팅 :)"
+            onClick={gotoclick}
           />
-          <WeeklyHabitForm habits={habits} color="purple" colorNum={2} />
+          <div className={styles.habitsContainer}>
+            <h1>습관 기록표</h1>
+            <WeeklyHabitForm
+              habits={habits}
+              isLoading={isLoading}
+              color="purple"
+              colorNum={2}
+            />
+          </div>
         </StudyMain>
       </main>
     </>

@@ -7,7 +7,8 @@ function StudyDescription({
   title = "",
   goToBtn = [],
   description = "",
-  isInfoPoint = true,
+  isInfoPoint = true, 
+  onClick,
 }) {
   const infoName = isInfoPoint ? "현재까지 획득한 포인트" : "현재 시간";
 
@@ -23,7 +24,7 @@ function StudyDescription({
         <div className={styles.buttonDiv}>
           {goToBtn.map((e) => {
             const { to, name } = e;
-            return <GoToBtn to={to} name={name} />;
+            return <GoToBtn to={to} name={name} onClick={onClick}/>;
           })}
         </div>
       </div>

@@ -19,6 +19,5 @@ export async function getHabitsList(id) {
   if (res.status < 200 || res.status >= 300) {
     throw new Error(`습관들을 불러오는데 실패했습니다. (status: ${res.status})`);
   }
-  console.log(res.data);
   return res.data;
 }

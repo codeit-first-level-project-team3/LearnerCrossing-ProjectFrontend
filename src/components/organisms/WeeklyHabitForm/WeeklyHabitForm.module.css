@@ -1,3 +1,53 @@
-.weeklyHabitForm { 
+.weeklyHabitForm {
   width: 100%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* object empty */
+.empty {
+  color: var(--gray-818181);
+  font: var(--font-16-medium);
+  text-align: center;
+}
+
+/* loading */
+.loadingBox {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 11px;
+}
+
+.loadingSpinner {
+  width: 40px;
+  height: 40px;
+  border: 5px solid var(--green-text-578246);
+  border-top: 5px solid var(--gray-DDDDDD);
+  border-radius: 50%;
+  animation: rotate 2s linear infinite;
+}
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingText {
+  color: var(--green-text-578246);
+  font: var(--font-16-medium);
+  animation: fontColor 2s linear infinite alternate-reverse;
+}
+@keyframes fontColor {
+  from {
+    color: var(--green-text-578246);
+  }
+  to {
+    color: var(--gray-DDDDDD);
+  }
 }
