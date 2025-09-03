@@ -8,12 +8,13 @@
 }
 
 .wrapper{
-    width: 400px;
+    width: 100%;
     height: fit-content;
     margin: 0 auto;
 
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .list{
@@ -30,6 +31,20 @@
     height: fit-content;
 }
 
+.habitDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 0 44px 0 100px  
+}
+
+.plusBtnDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .input{
     width: 100%;
     max-width: 400px;
@@ -44,6 +59,8 @@
     text-decoration: underline;
     text-underline-offset: 2px; /* 밑줄 간격 조정 */
     text-align: center;
+
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
 .plusBtn {
@@ -66,4 +83,53 @@
     width: 100%;
     display: flex;
     gap: 24px;
+}
+
+.trashBtn{
+    width: 48px;
+    height: 48px;
+    margin: 0; 
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+    border: none;
+    background-color: var(--pink-FDE0E9);
+
+    flex-shrink: 0;
+      
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}   
+
+.trashBtn:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    filter: brightness(0.95);
+}
+
+.trashBtn img{
+    width: 24px;
+    height: 24px;
+}
+
+.input:focus{
+    color: #000000;
+
+    background-image: url('../../../assets/wave.svg');
+    background-size: cover;
+    background-position: center;
+    animation: waveMove 10s linear infinite;
+}
+
+.input:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    filter: brightness(0.95);
+}
+
+@keyframes waveMove {
+  0% { background-position: 0 0; }
+  100% { background-position: -1000px 0; }
 }

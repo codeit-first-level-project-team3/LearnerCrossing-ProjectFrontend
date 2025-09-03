@@ -24,7 +24,7 @@ function StudyDescription({
         <div className={styles.buttonDiv}>
           {goToBtn.map((e) => {
             const { to, name } = e;
-            return <GoToBtn to={to} name={name} onClick={onClick}/>;
+            return <GoToBtn to={to} name={name} key={goToBtn.indexOf(e)}/>;
           })}
         </div>
       </div>
