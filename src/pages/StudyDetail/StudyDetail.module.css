@@ -34,6 +34,20 @@
   color: var(--gray-818181);
 }
 
+.habitsContainer {
+  width: 100%;
+  border-radius: 20px;
+  border: 1px solid var(--gray-DDDDDD);
+  background: #fff;
+  padding: 24px;
+}
+.habitsContainer h1{
+  color: var(--black-414141);
+  font: var(--font-24-bold);
+  margin-bottom: 24px;
+}
+
+
 /* Tablet */
 @media (max-width: 1200px) {
 }
