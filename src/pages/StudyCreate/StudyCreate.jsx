@@ -37,11 +37,12 @@ export default function StudyCreate() {
         }
       );
 
-      console.log(response);
-
+      console.log("스터디 생성 응답:", response.data);
       alert("스터디 생성 완료!");
-      
+
+      // 나중에 StudyDetail 페이지 구조 변경 시, 이동 경로 및 파라미터 처리 수정 필요
       navigate(`/studies/${response.data.id}`);
+
     } catch (error) {
       console.error("스터디 생성 실패:", error);
 
