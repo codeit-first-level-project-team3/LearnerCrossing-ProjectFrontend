@@ -11,6 +11,7 @@ function EmojiPickerButton({ setChosenEmoji }) {
     // 이모지 추가 버튼 클릭
     setChosenEmoji(emojiData.emoji);
     setShowPicker(false); // 선택 후 닫기
+    console.log(emojiData);
   };
 
   return (
