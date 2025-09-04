@@ -25,7 +25,7 @@ function Focus(){
 function TodaysFocus(){
     const goToBtn = [
         {to: '/habits', name:'오늘의 습관'},
-        {to: '/', name:'홈'},
+        {to: '/studyDetail', name:'홈'},
     ]
 
     return (
