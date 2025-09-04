@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import GNB from '../../components/organisms/GNB/GNB.jsx';
 import StudyMain from '../../components/organisms/StudyMain/StudyMain.jsx';
@@ -6,6 +6,8 @@ import Button from '../../components/atoms/Button/Button.jsx';
 import HabitChip from '../../components/molecules/HabitChip/HabitChip.jsx';
 import StudyDescription from '../../components/organisms/StudyDescription/StudyDescription.jsx';
 import SetHabitModal from '../../components/organisms/SetHabitModal/SetHabitModal.jsx';
+
+import { getHabits, updateHabit } from '../../api/habit.js';
 
 import styles from './TodaysHabits.module.css';
 
@@ -32,7 +34,7 @@ function HabitList({ habits, handleToggle, setIsModalOpen }){
             <ul className={styles.routineList}>
                 {habits.map((habit) => {
                     const today = 0;
-                    const isClear = convertToArray(habit.weekly_clear)[today];
+                    const isClear = convertToArray(habit.weeklyClear)[today];
                     return(
                         <li key={habit.id}>
                             <HabitChip
@@ -52,68 +54,50 @@ function HabitList({ habits, handleToggle, setIsModalOpen }){
 function TodaysHabits(){
     const goToBtn = [
         {to: '/focus', name:'오늘의 집중'},
-        {to: '/', name:'홈'},
+        {to: '/studyDetail', name:'홈'},
     ]
 
-    
     //습관 컬럼을 받아온다.
     //일주일 치 달성 여부가 보인다.
-
-    const habitList = [
-        {
-            id: 0,
-            name: "미라클 모닝 6시 기상",
-            weekly_clear: "0|0|0|0|0|0|1"
-        },
-        {
-            id: 1,
-            name: "아침 챙겨 먹기",
-            weekly_clear: "0|0|0|0|0|0|1"
-        },
-        {
-            id: 2,
-            name: "React 스터디 책 1챕터 읽기",
-            weekly_clear: "0|0|0|0|0|0|1"
-        },
-        {
-            id: 3,
-            name: "스트레칭",
-            weekly_clear: "0|0|0|0|0|0|1"
-        },
-        {
-            id: 4,
-            name: "영양제 챙겨 먹기",
-            weekly_clear: "0|0|0|0|0|0|1"
-        },
-        {
-            id: 5,
-            name: "사이드 프로젝트",
-            weekly_clear: "0|0|0|0|0|0|1"
-        },
-        {
-            id: 6,
-            name: "물 2리터 먹기",
-            weekly_clear: "0|0|0|0|0|0|1"
-        },
-    ]
     
-    const [habits, setHabits] = useState(habitList);
+    const handleHabitsLoad = async () => {
+        try {
+            const result = await getHabits(3);
+            setHabits(result || []);
+        } catch (error) {
+            console.error("습관 불러오기 실패:", error.message);
+        }
+    };
+    
+    const [habits, setHabits] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleToggle = (habitId, isClear) => {
         //실제로는 리퀘스트를 보내야 한다. (PATCH)
         const today = 0;
         const newHabits = [...habits];
-        const newWeeklyClear = convertToArray(newHabits[habitId].weekly_clear);
+        const habit = newHabits.filter(e=>e.id === habitId)[0];
+        const newWeeklyClear = convertToArray(habit.weeklyClear);
         newWeeklyClear[today] = isClear?0:1;
-        newHabits[habitId].weekly_clear = convertToString(newWeeklyClear);
+        habit.weeklyClear = convertToString(newWeeklyClear);
 
+        const body = {
+            password: "1234",
+            name: habit.name,
+            weeklyClear: habit.weeklyClear
+        }
+
+        updateHabit(3, habitId, body);
         setHabits(newHabits);
     }
 
     const updateHabits = (_habits) => {
         setHabits(_habits);
     }
+
+    useEffect(() => {
+        handleHabitsLoad();
+    }, []);
 
     return (
         <>
