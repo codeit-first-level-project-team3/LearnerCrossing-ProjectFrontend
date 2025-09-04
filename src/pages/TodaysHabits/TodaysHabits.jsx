@@ -52,6 +52,9 @@ function HabitList({ habits, handleToggle, setIsModalOpen }){
 }
 
 function TodaysHabits(){
+
+    const [studyId, setStudyId] = useState(1);
+
     const goToBtn = [
         {to: '/focus', name:'오늘의 집중'},
         {to: '/studyDetail', name:'홈'},
@@ -62,7 +65,7 @@ function TodaysHabits(){
     
     const handleHabitsLoad = async () => {
         try {
-            const result = await getHabits(3);
+            const result = await getHabits(studyId);
             setHabits(result || []);
         } catch (error) {
             console.error("습관 불러오기 실패:", error.message);
@@ -87,12 +90,8 @@ function TodaysHabits(){
             weeklyClear: habit.weeklyClear
         }
 
-        updateHabit(3, habitId, body);
+        updateHabit(studyId, habitId, body);
         setHabits(newHabits);
-    }
-
-    const updateHabits = (_habits) => {
-        setHabits(_habits);
     }
 
     useEffect(() => {
@@ -118,7 +117,7 @@ function TodaysHabits(){
                     isOpen={isModalOpen}
                     setIsOpen={setIsModalOpen}
                     habitList={habits} 
-                    updateHabits={updateHabits}
+                    updateHabits={setHabits}
                 />
             </StudyMain>
         </main>

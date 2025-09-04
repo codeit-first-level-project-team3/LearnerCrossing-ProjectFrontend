@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getHabits, createHabit, updateHabit, deleteHabit } from '../../../api/habit';
+import { createHabit, updateHabit, deleteHabit } from '../../../api/habit';
 
 import plusIcon from '../../../assets/plus.svg';
 import TextButton from '../../molecules/TextButton/TextButton';
@@ -51,19 +51,12 @@ function HabitInputList({habits, handleChange, handleAdd, handelDelete}){
     );
 }
 
+/* 작동하게만 만들어서 리펙토링이 필요합니다 */
 export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabits}){
 
     const [habits, setHabits] = useState([...habitList].map(habit=>{return {...habit}}));
     const [rqQueue, setRqQueue] = useState([]);
-
-    const handleHabitsLoad = async () => {
-        try {
-            const result = await getHabits(3);
-            setHabits(result || []);
-        } catch (error) {
-            console.error("습관 불러오기 실패:", error.message);
-        }
-    };
+    const [studyId, setStudyId] = useState(1);
 
     useEffect(() => {
         if(isOpen){
@@ -127,7 +120,7 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
     }
 
     /*delete는 post가 기다려주지 않아도 된다.*/
-    const rqDelete = (studyId) => {
+    const rqDelete = () => {
         const deletePost = [];
         const queue = [...rqQueue];
         queue.forEach(async(e)=> {
@@ -149,18 +142,19 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
     }
 
     /*path 전에 post를 해주어야 해서 Promise.all */
-    const rqPost = async (studyId, queue) => {
+    const rqPost = async (queue) => {
         const newHabits = [...habits];
         
         //모든 post리퀘스트가 병렬 실행 되지만 모두 pending이 끝날 때까지 기다려준다.
         await Promise.all(queue.map(async(post) => {
+            const habit = newHabits.find(habit=>habit.id === post.tempId);
             const rqBody = {
                 password: "1234",
-                name: "post"
+                name: habit.name
             }
             const res = await createHabit(studyId, rqBody);
             post.realId = res.id;
-            newHabits.find(habit=>habit.id === post.tempId).id = res.id;
+            habit.id = res.id;
         })) 
         setHabits(newHabits);
         console.log("postResult:" + newHabits); 
@@ -168,7 +162,7 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
     }
 
     /*post가 끝나면 patch*/
-    const rqPatch = async (studyId, newHabits) => {
+    const rqPatch = async (newHabits) => {
         await Promise.all((newHabits||[]).map(async(habit) => {
             const rqBody = {
                 password: "1234",
@@ -180,14 +174,14 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
     }
 
     const runRqQueue = async (studyId) => {
-        const postQueue = rqDelete(studyId); //삭제 큐를 먼저 진행. 추가했다가 바로 삭제한 것은 추가 큐에서 제외.
-        const newHabits = await rqPost(studyId, postQueue); //추가 큐를 실행. post는 기다려준다.
-        await rqPatch(studyId, newHabits); //수정 - 모든 습관의 이름을 최신화
+        const postQueue = rqDelete(); //삭제 큐를 먼저 진행. 추가했다가 바로 삭제한 것은 추가 큐에서 제외.
+        const newHabits = await rqPost(postQueue); //추가 큐를 실행. post는 기다려준다.
+        await rqPatch(newHabits); //수정 - 모든 습관의 이름을 최신화
     }
 
     const handleSubmit = async(e) => {
         e.preventDefault();     
-        runRqQueue(3);    
+        runRqQueue(studyId);    
         updateHabits(habits);
         setIsOpen(false); //수정 후 모달을 닫아야 한다..
     };
