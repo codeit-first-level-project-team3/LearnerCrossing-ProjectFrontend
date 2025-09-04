@@ -12,7 +12,7 @@ const router = createBrowserRouter([
   { path: "/", element: <Home /> },
   { path: "/studyDetail", element: <StudyDetail /> },
   { path: "/studyCreate", element: <StudyCreate /> }, 
-  { path: "/studyEdit", element: <StudyEdit /> }, 
+  { path: "/studyEdit/:id", element: <StudyEdit /> }, 
   { path: "/habits", element: <TodaysHabits /> },
   { path: "/focus", element: <TodaysFocus /> },
   { path: "*", element: <NotFound /> },
