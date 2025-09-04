@@ -13,13 +13,9 @@ import { getHabitsList } from "./studyDetailAPI.jsx";
 import useAsync from "../../hooks/useAutoAsync.js";
 
 function StudyDetail() {
-  const gotobtn = [
-    { to: "/habits", name: "오늘의 습관" },
-    { to: "/focus", name: "오늘의 집중" },
-  ];
-
   const [chosenEmoji, setChosenEmoji] = useState(null); // 이모지 선택창에서 선택한 이모지
-  const [isOpen, setIsOpen] = useState(false); // 모달창 열린 상태
+  const [isModalOpen, setIsOpen] = useState(false); // 모달창 열린 상태
+  const [buttonText, setButtonText] = useState(""); // 모달창 버튼 이름
   const [password, setPassword] = useState(""); // 비밀번호
   const [warning, setWarning] = useState(false); // 경고창
   const navigate = useNavigate(); // 페이지 이동
@@ -86,35 +82,60 @@ function StudyDetail() {
     setPassword(val);
   };
 
-  // 비밀번호 성공시 스터디 생성으로 페이지 이동(임시 함수)
-  //  각 버튼마다 이동 위치 분리... 
+
+  //  각 버튼마다 이동 위치 분리...
   // 1. 상태를 통해 무슨 액션인지 관리해서 분기 2. 함수를 상태에 저장해서 그걸 모달로 넘기기
+  const [nextAction, setNextAction] = useState(null); // 다음에 일어날 함수
+
+  const gotobtn = [
+    {
+      to: "/habits",
+      name: "오늘의 습관",
+      onClick: (e) => {
+        e.preventDefault();
+        setNextAction(() => () => navigate("/habits"));
+        setIsOpen(true);
+        setButtonText("오늘의 습관으로 가기");
+      },
+    },
+    {
+      to: "/focus",
+      name: "오늘의 집중",
+      onClick: (e) => {
+        e.preventDefault();
+        setNextAction(() => () => navigate("/focus"));
+        setIsOpen(true);
+        setButtonText("오늘의 집중으로 가기");
+      },
+    },
+  ];
+  // 수정하기 클릭
+  const handleUpdateClick = () => {
+    setNextAction(() => () => navigate("/studyEdit"));
+    setIsOpen(true);
+    setButtonText("수정하러 가기");
+  };
+  // 삭제하기 클릭
+  const handleDeleteClick = () => {
+    setNextAction(() => () => console.log("삭제"));
+    setIsOpen(true);
+    setButtonText("삭제하기");
+  };
+  // 비밀번호 성공시 미리 저장해둔 nextAction 실행
   const handlePasswordsubmit = () => {
     if (password === pwd) {
       setWarning(false);
-      navigate("/studyEdit");
+      nextAction();
     } else {
       setWarning(true);
     }
   };
 
-  const [buttonText, setButtonText] = useState("");
-  // 모달창 열기
-  const handleModalOpen = (btnText) => {
-    setIsOpen(true);
-    setButtonText(btnText);
-  };
   // 모달창 닫기
   const handleModalClose = () => {
     setIsOpen(false);
     setWarning(false);
   };
-  // gotobtn click
-  const gotoclick = (e) => {
-    e.preventDefault(); // Link 이동 막기
-    setIsOpen(true);
-    setButtonText("이동하기");
-  }
 
   // 스터디(id:3)의 habits 가져오기
   const handleHabitsLoad = async () => {
@@ -141,9 +162,9 @@ function StudyDetail() {
         />
       )}
       {/* 모달창 */}
-      {isOpen && (
+      {isModalOpen && (
         <AuthPasswordModal
-          isOpen={isOpen}
+          isOpen={isModalOpen}
           onClick={handlePasswordsubmit}
           onClose={handleModalClose}
           buttonText={buttonText}
@@ -163,12 +184,9 @@ function StudyDetail() {
             <div className={styles.quickLinks}>
               <span>공유하기</span>
               <span>|</span>
-              <span onClick={() => handleModalOpen("수정하기")}>수정하기</span>
+              <span onClick={handleUpdateClick}>수정하기</span>
               <span className={styles.delete}>|</span>
-              <span
-                className={styles.delete}
-                onClick={() => handleModalOpen("삭제하기")}
-              >
+              <span className={styles.delete} onClick={handleDeleteClick}>
                 스터디삭제하기
               </span>
             </div>
@@ -177,7 +195,6 @@ function StudyDetail() {
             title={title}
             goToBtn={gotobtn}
             description="Slow And Steady Wins The Race! 다들 오늘 하루도 화이팅 :)"
-            onClick={gotoclick}
           />
           <div className={styles.habitsContainer}>
             <h1>습관 기록표</h1>
