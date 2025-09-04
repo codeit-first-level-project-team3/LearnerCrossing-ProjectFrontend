@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { getStudy } from "../api/studiesAPI";
+import { getStudy } from "../api/studyAPI";
 
 const StudyContext = createContext();
 

@@ -7,7 +7,7 @@ import HabitChip from '../../components/molecules/HabitChip/HabitChip.jsx';
 import StudyDescription from '../../components/organisms/StudyDescription/StudyDescription.jsx';
 import SetHabitModal from '../../components/organisms/SetHabitModal/SetHabitModal.jsx';
 
-import { getHabits, updateHabit } from '../../api/habit.js';
+import { getHabitList, updateHabit } from '../../api/habitAPI.js';
 
 import styles from './TodaysHabits.module.css';
 
@@ -65,7 +65,7 @@ function TodaysHabits(){
     
     const handleHabitsLoad = async () => {
         try {
-            const result = await getHabits(studyId);
+            const result = await getHabitList(studyId);
             setHabits(result || []);
         } catch (error) {
             console.error("습관 불러오기 실패:", error.message);

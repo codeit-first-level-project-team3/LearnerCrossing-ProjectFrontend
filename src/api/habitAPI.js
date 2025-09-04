@@ -1,12 +1,13 @@
 import api from "./example";
 
-export async function getHabits(studyId){
+// GET /studies/${id}/habits
+export async function getHabitList(studyId){
     const result = api.get(`/studies/${studyId}/habits`)
         .then(res => {
+            // 상태 코드 확인 (200~299 범위만 성공)
             if (res.status < 200 || res.status >= 300) {
                 throw new Error(`습관들을 불러오는데 실패했습니다. (status: ${res.status})`);
             }
-            //console.log(res.data);
             return res.data;
         })
         .catch(error => {
@@ -46,7 +47,7 @@ export async function updateHabit(studyId, habitId, data){
 export async function deleteHabit(studyId, habitId, data){
     /* 
     delete는 일반적으로 (url, config) 형태기 때문에
-    data (body)를 config 안에 넣어주어야 한다.
+    data (body)를 config 안에 넣어주어야 합니다.
     */
     const result = api.delete(`/studies/${studyId}/habits/${habitId}`, {data}) 
         .then(res => {

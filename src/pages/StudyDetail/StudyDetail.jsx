@@ -1,3 +1,10 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import useAsync from "../../hooks/useAutoAsync.js";
+import { getStudy } from "../../api/studyAPI.js";
+import { getHabitList } from "../../api/habitAPI.js";
+
 import Toast from "../../components/atoms/Toast.jsx";
 import CheerTagGroup from "../../components/molecules/CheerTagGroup/CheerTagGroup.jsx";
 import EmojiPickerButton from "../../components/molecules/EmojiPickerButton/EmojiPickerButton.jsx";
@@ -7,11 +14,6 @@ import StudyDescription from "../../components/organisms/StudyDescription/StudyD
 import AuthPasswordModal from "../../components/organisms/AuthPasswordModal/AuthPasswordModal.jsX";
 import WeeklyHabitForm from "../../components/organisms/WeeklyHabitForm/WeeklyHabitForm.jsx";
 import styles from "./StudyDetail.module.css";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { getHabitsList } from "../../api/habitsAPI.js";
-import useAsync from "../../hooks/useAutoAsync.js";
-import { getStudy } from "../../api/studiesAPI.js";
 
 function StudyDetail() {
   const [chosenEmoji, setChosenEmoji] = useState(null); // 이모지 선택창에서 선택한 이모지
@@ -21,7 +23,7 @@ function StudyDetail() {
   const [warning, setWarning] = useState(false); // 경고창
   const navigate = useNavigate(); // 페이지 이동
   const [habits, setHabits] = useState([]); // habits 상태
-  const [isLoading, loadingError, getHabitsAsync] = useAsync(getHabitsList); // 습관 가져오기 로딩,에러처리
+  const [isLoading, loadingError, getHabitsAsync] = useAsync(getHabitList); // 습관 가져오기 로딩,에러처리
 
   const studyId = 3; // 임시 스터디 아이디
   const pwd = "1234"; // 임시 비밀번호

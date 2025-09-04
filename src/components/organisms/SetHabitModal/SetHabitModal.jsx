@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { createHabit, updateHabit, deleteHabit } from '../../../api/habit';
+import { createHabit, updateHabit, deleteHabit } from '../../../api/habitAPI.js';
 
 import plusIcon from '../../../assets/plus.svg';
 import TextButton from '../../molecules/TextButton/TextButton';
 import IconButton from '../../molecules/IconButton/IconButton';
 import Modal from '../../atoms/modal/modal';
 
-import styles from './HabitInput.module.css';
+import styles from './SetHebitModal.module.css';
 
 import trashIcon from '../../../assets/trash.svg';
 
