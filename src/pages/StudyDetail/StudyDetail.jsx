@@ -9,29 +9,32 @@ import WeeklyHabitForm from "../../components/organisms/WeeklyHabitForm/WeeklyHa
 import styles from "./StudyDetail.module.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getHabitsList } from "./studyDetailAPI.jsx";
+import { getHabitsList } from "../../api/habitsAPI.js";
 import useAsync from "../../hooks/useAutoAsync.js";
+import { getStudy } from "../../api/studiesAPI.js";
 
 function StudyDetail() {
-  const gotobtn = [
-    { to: "/habits", name: "오늘의 습관" },
-    { to: "/focus", name: "오늘의 집중" },
-  ];
-
   const [chosenEmoji, setChosenEmoji] = useState(null); // 이모지 선택창에서 선택한 이모지
-  const [isOpen, setIsOpen] = useState(false); // 모달창 열린 상태
+  const [isModalOpen, setIsOpen] = useState(false); // 모달창 열린 상태
+  const [buttonText, setButtonText] = useState(""); // 모달창 버튼 이름
   const [password, setPassword] = useState(""); // 비밀번호
   const [warning, setWarning] = useState(false); // 경고창
   const navigate = useNavigate(); // 페이지 이동
   const [habits, setHabits] = useState([]); // habits 상태
   const [isLoading, loadingError, getHabitsAsync] = useAsync(getHabitsList); // 습관 가져오기 로딩,에러처리
 
-  const title = "연우의 개발 공장"; //임시 타이틀
+  const studyId = 3; // 임시 스터디 아이디
   const pwd = "1234"; // 임시 비밀번호
 
+  // 유니코드 -> 이모지
+  const unifiedToEmoji = (unified) => {
+    return String.fromCodePoint(
+      ...unified.split("-").map((u) => parseInt(u, 16))
+    );
+  };
   // 임시 이모지 상태
   const [emojis, setEmojis] = useState({
-    1: { emoji: "🏝️", count: 10 },
+    1: { emoji: unifiedToEmoji("1f47d"), count: 10 },
     // 2: { emoji: "👽", count: 78 },
   });
 
@@ -86,40 +89,90 @@ function StudyDetail() {
     setPassword(val);
   };
 
-  // 비밀번호 성공시 스터디 생성으로 페이지 이동(임시 함수)
-  //  각 버튼마다 이동 위치 분리... 
-  // 1. 상태를 통해 무슨 액션인지 관리해서 분기 2. 함수를 상태에 저장해서 그걸 모달로 넘기기
+  // 각 버튼마다 이동 위치 분리...
+  // 함수를 상태에 저장해서 그걸 모달로 넘기기
+  const [nextAction, setNextAction] = useState(null); // 다음에 일어날 함수
+
+  const gotobtn = [
+    {
+      to: "/habits",
+      name: "오늘의 습관",
+      onClick: (e) => {
+        e.preventDefault();
+        setNextAction(() => () => navigate("/habits"));
+        setIsOpen(true);
+        setButtonText("오늘의 습관으로 가기");
+      },
+    },
+    {
+      to: "/focus",
+      name: "오늘의 집중",
+      onClick: (e) => {
+        e.preventDefault();
+        setNextAction(() => () => navigate("/focus"));
+        setIsOpen(true);
+        setButtonText("오늘의 집중으로 가기");
+      },
+    },
+  ];
+  // 수정하기 클릭
+  const handleUpdateClick = () => {
+    setNextAction(() => () => navigate("/studyEdit"));
+    setIsOpen(true);
+    setButtonText("수정하러 가기");
+  };
+  // 삭제하기 클릭
+  const handleDeleteClick = () => {
+    setNextAction(() => () => console.log("삭제"));
+    setIsOpen(true);
+    setButtonText("삭제하기");
+  };
+  // 비밀번호 성공시 미리 저장해둔 nextAction 실행
   const handlePasswordsubmit = () => {
     if (password === pwd) {
       setWarning(false);
-      navigate("/studyEdit");
+      nextAction();
     } else {
       setWarning(true);
     }
   };
 
-  const [buttonText, setButtonText] = useState("");
-  // 모달창 열기
-  const handleModalOpen = (btnText) => {
-    setIsOpen(true);
-    setButtonText(btnText);
-  };
   // 모달창 닫기
   const handleModalClose = () => {
     setIsOpen(false);
     setWarning(false);
   };
-  // gotobtn click
-  const gotoclick = (e) => {
-    e.preventDefault(); // Link 이동 막기
-    setIsOpen(true);
-    setButtonText("이동하기");
-  }
+
+  const [studyData, setStudyData] = useState({
+    id: null,
+    nickname: "지윤",
+    name: "스터디방",
+    description: "반복해서 공부하는 react",
+    points: 0,
+  });
+  // 스터디 data 가져오기
+  const handleStudyLoad = async () => {
+    try {
+      const result = await getStudy(studyId);
+      setStudyData((prev) => ({
+        ...prev,
+        ...result,
+      }));
+      console.log("api 결과 : " + result.nickname);
+    } catch (error) {
+      console.error("해당 스터디 불러오기 실패:", error.message);
+    }
+  };
+
+  // 스터디 데이터 값 확인용도
+  useEffect(() => {
+    console.log("studyData가 업데이트됨:", studyData.nickname);
+  }, [studyData]);
 
   // 스터디(id:3)의 habits 가져오기
   const handleHabitsLoad = async () => {
     try {
-      const result = await getHabitsAsync(3);
+      const result = await getHabitsAsync(studyId);
       setHabits(result || []);
     } catch (error) {
       console.error("습관 불러오기 실패:", error.message);
@@ -129,6 +182,7 @@ function StudyDetail() {
   useEffect(() => {
     // 데이터 불러오기
     handleHabitsLoad();
+    handleStudyLoad();
   }, []);
 
   return (
@@ -141,13 +195,13 @@ function StudyDetail() {
         />
       )}
       {/* 모달창 */}
-      {isOpen && (
+      {isModalOpen && (
         <AuthPasswordModal
-          isOpen={isOpen}
+          isOpen={isModalOpen}
           onClick={handlePasswordsubmit}
           onClose={handleModalClose}
           buttonText={buttonText}
-          title={title}
+          title={studyData.name}
           value={password}
           onChange={handlePasswordChange}
         />
@@ -163,21 +217,17 @@ function StudyDetail() {
             <div className={styles.quickLinks}>
               <span>공유하기</span>
               <span>|</span>
-              <span onClick={() => handleModalOpen("수정하기")}>수정하기</span>
+              <span onClick={handleUpdateClick}>수정하기</span>
               <span className={styles.delete}>|</span>
-              <span
-                className={styles.delete}
-                onClick={() => handleModalOpen("삭제하기")}
-              >
+              <span className={styles.delete} onClick={handleDeleteClick}>
                 스터디삭제하기
               </span>
             </div>
           </div>
           <StudyDescription
-            title={title}
+            title={studyData.name}
             goToBtn={gotobtn}
-            description="Slow And Steady Wins The Race! 다들 오늘 하루도 화이팅 :)"
-            onClick={gotoclick}
+            description={studyData.description}
           />
           <div className={styles.habitsContainer}>
             <h1>습관 기록표</h1>

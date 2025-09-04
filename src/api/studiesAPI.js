@@ -1,7 +1,6 @@
-// 데이터 타입을 확인하기 위해 받아오는 임시 api 입니다!
+import api from "./example";
 
-import api from "../../api/example";
-
+// GET studies 
 export async function getStudyList(params = {}) {
   const res = await api.get('/studies', {
     params,
@@ -13,8 +12,9 @@ export async function getStudyList(params = {}) {
   return res.data;
 }
 
-export async function getHabitsList(id) {
-  const res = await api.get(`/studies/${id}/habits`);
+// GET studies/{id}
+export async function getStudy(id) {
+  const res = await api.get(`/studies/${id}`);
   // 상태 코드 확인 (200~299 범위만 성공)
   if (res.status < 200 || res.status >= 300) {
     throw new Error(`습관들을 불러오는데 실패했습니다. (status: ${res.status})`);
