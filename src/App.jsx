@@ -1,5 +1,6 @@
 import { RouterProvider } from "react-router-dom";
 import UserContext from './contexts/UserContext';
+import { StudyProvider } from './contexts/StudyContext'; 
 import router from "./router";
 
 import './global.css'
@@ -21,7 +22,9 @@ function App() {
 
   return (
     <UserContext.Provider value={contexts}>
-      <RouterProvider router={router}/>
+      <StudyProvider>
+        <RouterProvider router={router}/>
+      </StudyProvider>
     </UserContext.Provider>
   );
 }
