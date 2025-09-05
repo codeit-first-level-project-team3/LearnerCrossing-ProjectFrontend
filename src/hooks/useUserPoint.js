@@ -1,16 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getPoint, updatePoint } from '../api/pointAPI.js'
 
 export function useUserPoint(){
-  const getUserPoint = () => {
-    /* DB에서 유저 포인트 받아오기 */
-    //get api 구현.
-    return 340
-  }
+  const [point, setPoint] = useState(0);
 
-  const [point, setPoint] = useState(getUserPoint());
+  useEffect(()=>{
+    const handleLoadPoint = async() => {
+      setPoint(await getPoint(1));
+    }
+    handleLoadPoint();
+  }, []);
 
   const plusPoint = (amount) => {
     //patch api 구현.
+    updatePoint(1, amount)
     setPoint(point + amount);
   }
 

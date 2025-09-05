@@ -61,3 +61,17 @@ export async function deleteHabit(studyId, habitId, data){
         });
     return result;
 }
+
+export async function getLastSaveDate(studyId){
+    const result = api.get(`/studies/${studyId}/habits`)
+        .then(res => {
+            return res.data;
+        })
+        .catch(error => {
+            console.error(error);
+        });
+
+    return Array.isArray(result)
+        ? Math.min(...result.map(e=>new Date(e.updatedAt))) //ISO 8601 형식의 문자열을 Date로 변환 후 가장 오래된 것 반환
+        : result //에러 메세지
+}

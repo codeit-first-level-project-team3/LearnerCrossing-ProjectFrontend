@@ -1,32 +1,64 @@
-import { createContext, useState } from "react";
-import { getStudy } from "../api/studyAPI";
+import { createContext, useState, useContext } from "react";
+import { getStudy, createStudy as apiCreateStudy, updateStudy as apiUpdateStudy, deleteStudy as apiDeleteStudy } from "../api/studyAPI";
 
 const StudyContext = createContext();
 
-// 스터디/id Context
 export function StudyProvider({ children }) {
   const [selectedStudyId, setSelectedStudyId] = useState(null);
   const [studyData, setStudyData] = useState(null);
 
-  // 스터디 선택
+  // 스터디 선택 + 데이터 fetch
   const selectStudy = async (id) => {
-    setSelectedStudyId(id);
-    // 해당 스터디 가져오는 api 함수
-    const result = await getStudy(id);
-    setStudyData(result); // 받아온 데이터 stydyData 로 관리
+    try {
+      const result = await getStudy(id);
+      setSelectedStudyId(id);
+      setStudyData(result);
+    } catch (err) {
+      setSelectedStudyId(id);
+      setStudyData(null); // 존재하지 않으면 null
+      throw err;
+    }
+  };
+
+  // 스터디 생성
+  const createStudy = async (data) => {
+    const newStudy = await apiCreateStudy(data);
+    await selectStudy(newStudy.id);
+    return newStudy;
+  };
+
+  // 스터디 수정
+  const updateStudy = async (id, data) => {
+    const updated = await apiUpdateStudy(id, data);
+    if (id === selectedStudyId) setStudyData(updated);
+    return updated;
+  };
+
+  // 스터디 삭제
+  const deleteStudy = async (id) => {
+    await apiDeleteStudy(id);
+    if (id === selectedStudyId) {
+      setSelectedStudyId(null);
+      setStudyData(null);
+    }
   };
 
   return (
-    <StudyContext.Provider value={{ selectedStudyId, studyData, selectStudy }}>
+    <StudyContext.Provider
+      value={{
+        selectedStudyId,
+        studyData,
+        selectStudy,
+        createStudy,
+        updateStudy,
+        deleteStudy,
+      }}
+    >
       {children}
     </StudyContext.Provider>
   );
 }
 
-// 훅으로 꺼내쓰기
 export function useStudy() {
   return useContext(StudyContext);
-  // import { useStudy } from ...
-  // const { studyData } = useStudy(); 
-  // useStudy로 데이터 받아와서 사용 < 일부 데이터만 필요한 경우들을 위해 이 훅도 더 상세히 하기..?
 }

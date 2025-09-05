@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(358px, 1fr));
   gap: 20px;
+  justify-content: center;
 }
 
 .card {
@@ -29,9 +30,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 8px;
 }
 
-/* 닉네임 + name 묶음 */
 .userInfo {
   display: flex;
   align-items: center;
@@ -90,7 +91,7 @@
   font-family: var(--font-family);
   font-size: 16px;
   font-weight: 400;
-  line-height: 24px; /* 150% */
+  line-height: 24px;
   flex-grow: 1;
 }
 
@@ -120,7 +121,6 @@
   font-weight: 400;
 }
 
-/* ===== 이미지 배경일 때 ===== */
 .whiteText .nickname,
 .whiteText .name,
 .whiteText .studyName,
@@ -133,4 +133,47 @@
 .whiteText .points {
   background: rgba(0, 0, 0, 0.5) !important;
   border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ===== 반응형: 모바일 (744px 이하) ===== */
+@media screen and (max-width: 744px) {
+  .card {
+    width: 312px;
+    height: 180px;
+    padding: 12px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    justify-content: center;
+  }
+
+  /* header 세로로 쌓기 + points 맨 위 */
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .points {
+    order: -1; /* 포인트 맨 위 */
+    align-self: flex-start;
+  }
+
+  .nickname,
+  .name {
+    font-size: 16px;
+  }
+
+  .studyName {
+    font-size: 12px;
+    margin-top: 4px;
+    margin-bottom: 8px;
+  }
+
+  .description {
+    font-size: 14px;
+    flex-grow: 0;
+  }
 }

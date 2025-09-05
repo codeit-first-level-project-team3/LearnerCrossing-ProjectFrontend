@@ -1,12 +1,9 @@
-import Tag from '../../components/atoms/Tag/Tag.jsx';
 import GNB from '../../components/organisms/GNB/GNB.jsx';
 import StudyMain from '../../components/organisms/StudyMain/StudyMain.jsx';
 import StudyDescription from '../../components/organisms/StudyDescription/StudyDescription.jsx';
 import FocusTimer from '../../components/organisms/FocusTimer/FocusTimer.jsx';
 
 import styles from './TodaysFocus.module.css';
-
-import pointIcon from '../../assets/point_icon.svg';
 
 
 function Focus(){

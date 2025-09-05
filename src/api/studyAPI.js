@@ -1,4 +1,4 @@
-import api from "./example";
+import api from "./example"; 
 
 // GET studies
 export async function getStudyList(params = {}) {
@@ -10,7 +10,7 @@ export async function getStudyList(params = {}) {
       // 상태 코드 확인 (200~299 범위만 성공)
       if (res.status < 200 || res.status >= 300) {
         throw new Error(
-          `스터디를 불러오는데 실패했습니다. (status: ${res.status})`
+          `스터디 목록 조회 실패 (status: ${res.status})`
         );
       }
       return res.data;
@@ -21,7 +21,7 @@ export async function getStudyList(params = {}) {
   return result;
 }
 
-// GET studies/{id}
+// 특정 스터디를 가져옵니다 (GET /studies/:id)
 export async function getStudy(id) {
   const result = api
     .get(`/studies/${id}`)
@@ -29,7 +29,7 @@ export async function getStudy(id) {
       // 상태 코드 확인 (200~299 범위만 성공)
       if (res.status < 200 || res.status >= 300) {
         throw new Error(
-          `스터디를 불러오는데 실패했습니다. (status: ${res.status})`
+          `스터디 조회 실패 (status: ${res.status})`
         );
       }
       return res.data;
@@ -39,14 +39,15 @@ export async function getStudy(id) {
     });
   return result;
 }
-// POST
+
+// 새 스터디를 생성합니다 (POST /studies)
 export async function createStudy(data) {
   const result = api
-    .post(`/studies/${id}`, data)
+    .post("/studies", data)
     .then((res) => {
       if (res.status < 200 || res.status >= 300) {
         throw new Error(
-          `스터디를 생성하는 데 실패했습니다. (status: ${res.status})`
+          `스터디 생성 실패 (status: ${res.status})`
         );
       }
       return res.data;
@@ -56,12 +57,13 @@ export async function createStudy(data) {
     });
   return result;
 }
-// PATCH
-export async function updateStudy(data) {
+
+// 스터디 정보를 수정합니다 (PATCH /studies/:id)
+export async function updateStudy(id, data) {
   const result = api.patch(`/studies/${id}`, data)
     .then((res) => {
       if (res.status < 200 || res.status >= 300) {
-        throw new Error(`스터디를 수정하는 데 실패했습니다. (status: ${res.status})`);
+        throw new Error(`스터디 수정 실패 (status: ${res.status})`);
       }
       return res.data;
     })
@@ -71,6 +73,7 @@ export async function updateStudy(data) {
 
   return result;
 }
+
 // DELETE
 export async function deleteStudy(id, pwd) {
   const result = api

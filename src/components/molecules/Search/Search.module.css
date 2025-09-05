@@ -34,7 +34,7 @@
 }
 
 /* ================= Mobile (≤375px) ================= */
-@media (max-width: 375px) {
+@media (max-width: 744px) {
   .searchBox {
     width: 312px;       /* 모바일 너비 */
     height: 42px;       /* 모바일 높이 */
