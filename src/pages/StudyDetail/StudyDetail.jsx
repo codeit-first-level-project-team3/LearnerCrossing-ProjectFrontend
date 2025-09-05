@@ -23,7 +23,8 @@ function StudyDetail() {
   const [warning, setWarning] = useState(false); // 경고창
   const navigate = useNavigate(); // 페이지 이동
   const [habits, setHabits] = useState([]); // habits 상태
-  const [isLoading, loadingError, getHabitsAsync] = useAutoAsync(getHabitList); // 습관 가져오기 로딩,에러처리
+
+  const [isHabitsLoading, habitsLoadingError, getHabitsAsync] = useAutoAsync(getHabitList); // 습관 가져오기 로딩,에러처리
 
   const studyId = 1; // 임시 스터디 아이디
   const pwd = "1234"; // 임시 비밀번호
@@ -152,7 +153,7 @@ function StudyDetail() {
     description: "",
     points: 0,
   });
-  // 스터디 data 가져오기
+  // 스터디 data 가져오기(임시) <-- context로 받아온거 사용
   const handleStudyLoad = async () => {
     try {
       const result = await getStudy(studyId);
@@ -227,7 +228,8 @@ function StudyDetail() {
             </div>
           </div>
           <StudyDescription
-            title={studyData.name}
+            nickName={studyData.nickname}
+            name={studyData.name}
             goToBtn={gotobtn}
             description={studyData.description}
           />
@@ -235,7 +237,7 @@ function StudyDetail() {
             <h1>습관 기록표</h1>
             <WeeklyHabitForm
               habits={habits}
-              isLoading={isLoading}
+              isLoading={isHabitsLoading}
               color="purple"
               colorNum={2}
             />
