@@ -2,12 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import CheerTag from "../CheerTag/CheerTag";
 import styles from "./CheerTagGroup.module.css";
 
-function CheerTagGroup({ emojis, onClick }) {
-  // 이모지 객체를 [key, value] 형태의 배열로 변환
-  const emojisEntries = Object.entries(emojis);
+function CheerTagGroup({ emojis, onClick, isLoading }) {
+  // 이모지: {items: Array(5)} 형태
+  const emojisList = emojis.items;
+  const emojisLength = emojis.items?.length;
   const show = 3;
-  // 이모지 객체의 길이가 보여줄 길이보다 큰가?
-  const isMore = emojisEntries.length > show;
+  // 이모지 종류의 길이가 보여줄 길이보다 큰가?
+  const isMore = emojisLength > show;
 
   const [showEmojiMore, setShowEmojiMore] = useState(false); // 더보기창 상태
   const wrapperRef = useRef(null); // <div> emojiMore
@@ -31,30 +32,30 @@ function CheerTagGroup({ emojis, onClick }) {
 
   return (
     <div className={styles.cheerTagGroup}>
-      {emojisEntries.slice(0, show).map(([id, { emoji, count }]) => (
+      {!isLoading && emojisList.slice(0, show).map(({ emojiId, emoji, count }) => (
         <CheerTag
-          key={id}
-          id={id}
+          key={emojiId}
+          id={emojiId}
           emoji={emoji}
           count={count}
           onClick={onClick}
         />
       ))}
-      {isMore && (
+      {!isLoading && isMore && (
         <CheerTag
           emoji="+  "
-          count={`${emojisEntries.length - show} ..`}
+          count={`${emojisLength - show} ..`}
           onClick={() => setShowEmojiMore((prev) => !prev)}
         />
       )}
-      {showEmojiMore && (
+      {!isLoading && showEmojiMore && (
         <div className={styles.emojiMore} ref={wrapperRef}>
-          {emojisEntries
-            .slice(show, emojisEntries.length)
-            .map(([id, { emoji, count }]) => (
+          {emojisList
+            .slice(show, emojisLength)
+            .map(({ emojiId, emoji, count }) => (
               <CheerTag
-                key={id}
-                id={id}
+                key={emojiId}
+                id={emojiId}
                 emoji={emoji}
                 count={count}
                 onClick={onClick}

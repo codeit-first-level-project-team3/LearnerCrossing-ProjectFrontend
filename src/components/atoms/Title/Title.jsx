@@ -1,4 +1,6 @@
-function Title({ nickName, title, isColorBlack = true, highlightColor = "none"}) {
+import styles from "./Title.module.css";
+
+function Title({ nickName, name, isLarge=false, isColorBlack = true, highlightColor = "none"}) {
   const textColor = isColorBlack ? "var(--black-414141)" : "#FFF";
   // span 강조 색상 맵
   const highlightMap = {
@@ -9,19 +11,14 @@ function Title({ nickName, title, isColorBlack = true, highlightColor = "none"})
   // style
   const h1Style = {
     color: textColor,
-    fontFamily: "Pretendard",
-    fontSize: "18px",
-    fontStyle: "normal",
-    fontWeight: 700,
-    lineHeight: "normal",
   };
   const spanStyle = {
     color: highlightMap[highlightColor],
   };
 
   return (
-    <h1 style={h1Style}>
-      <span style={spanStyle}>{nickName}</span>의 {title}
+    <h1 style={h1Style} className={isLarge ? styles.large: styles.medium}>
+      <span style={spanStyle}>{nickName}</span>의 {name}
     </h1>
   );
 }

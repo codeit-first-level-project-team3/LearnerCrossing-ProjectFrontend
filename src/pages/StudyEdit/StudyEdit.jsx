@@ -36,6 +36,7 @@ export default function StudyEdit() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+
   // 알람 모달 관련 상태
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
@@ -43,6 +44,7 @@ export default function StudyEdit() {
   useEffect(() => {
     if (!id) return;
     const loadStudy = async () => {
+
       setLoading(true);
       setError(null);
       try {
@@ -52,6 +54,7 @@ export default function StudyEdit() {
       } finally {
         setLoading(false);
       }
+
     };
     loadStudy();
   }, [id]);
@@ -72,7 +75,9 @@ export default function StudyEdit() {
   const handleSubmit = async (data) => {
     try {
       const backgroundForServer =
-        Object.keys(imageMap).find((key) => imageMap[key] === data.background) || data.background;
+        Object.keys(imageMap).find(
+          (key) => imageMap[key] === data.background
+        ) || data.background;
 
       const payload = {
         nickname: data.nickname,
@@ -96,6 +101,7 @@ export default function StudyEdit() {
   };
 
   if (loading) return <div>로딩 중...</div>;
+  
   if (error) return <div>{error}</div>;
 
   return (

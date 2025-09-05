@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import useAsync from "../../hooks/useAutoAsync.js";
-import { getStudy } from "../../api/studyAPI.js";
+import { useAutoAsync, useActionAsync } from "../../hooks/useAsync.js";
+import { deleteStudy, getStudy } from "../../api/studyAPI.js";
 import { getHabitList } from "../../api/habitAPI.js";
+import { addStudyEmoji, getStudyEmojis } from "../../api/emojiAPI.js";
 
 import Toast from "../../components/atoms/Toast.jsx";
 import CheerTagGroup from "../../components/molecules/CheerTagGroup/CheerTagGroup.jsx";
@@ -23,7 +24,14 @@ function StudyDetail() {
   const [warning, setWarning] = useState(false); // 경고창
   const navigate = useNavigate(); // 페이지 이동
   const [habits, setHabits] = useState([]); // habits 상태
-  const [isLoading, loadingError, getHabitsAsync] = useAsync(getHabitList); // 습관 가져오기 로딩,에러처리
+  const [emojis, setEmojis] = useState([]);
+
+  const [isHabitsLoading, habitsLoadingError, getHabitsAsync] =
+    useAutoAsync(getHabitList); // 습관 가져오기 로딩,에러처리
+  const [isEmojisLoading, EmojisLoadingError, getEmojisAsync] =
+    useAutoAsync(getStudyEmojis); // 이모지 가져오기 로딩, 에러처리
+  const [addEmojiLoading, addEmojiLodingError, addEmojisAsync] =
+    useActionAsync(addStudyEmoji); // 이모지 추가 로딩, 에러처리
 
   const studyId = 3; // 임시 스터디 아이디
   const pwd = "1234"; // 임시 비밀번호
@@ -34,23 +42,33 @@ function StudyDetail() {
       ...unified.split("-").map((u) => parseInt(u, 16))
     );
   };
-  // 임시 이모지 상태
-  const [emojis, setEmojis] = useState({
-    1: { emoji: unifiedToEmoji("1f47d"), count: 10 },
-    // 2: { emoji: "👽", count: 78 },
-  });
+
+  const handleEmojisLoad = async () => {
+    try {
+      const result = await getEmojisAsync(studyId);
+      setEmojis(result);
+    } catch (error) {
+      console.error("습관 불러오기 실패:", error.message);
+    }
+  };
 
   // 이모지 카운트 증가 함수
-  function increaseCnt(id) {
-    setEmojis((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        count: prev[id].count + 1,
-      },
-    }));
+  async function increaseCnt(id) {
+    // setEmojis((prev) => ({
+    //   ...prev,
+    //   [id]: {
+    //     ...prev[id],
+    //     count: prev[id].count + 1,
+    //   },
+    // }));
     // console.log(chosenEmoji) // 이모지 픽커 이모지 확인
-    // console.log("id:", id); // 현재 클릭 아이디 확인용
+    console.log("id:", id); // 현재 클릭 아이디 확인용
+     try {
+      const result = await addEmojisAsync(studyId, id);
+      setEmojis(result);
+    } catch (error) {
+      console.error("습관 불러오기 실패:", error.message);
+    }
   }
   // 이모지 추가 함수
   function addEmoji(newEmoji) {
@@ -119,13 +137,13 @@ function StudyDetail() {
   ];
   // 수정하기 클릭
   const handleUpdateClick = () => {
-    setNextAction(() => () => navigate("/studyEdit"));
+    setNextAction(() => () => navigate(`/studyEdit/${studyId}`));
     setIsOpen(true);
     setButtonText("수정하러 가기");
   };
   // 삭제하기 클릭
   const handleDeleteClick = () => {
-    setNextAction(() => () => console.log("삭제"));
+    setNextAction(() => () => deleteStudy(18, pwd));
     setIsOpen(true);
     setButtonText("삭제하기");
   };
@@ -147,12 +165,12 @@ function StudyDetail() {
 
   const [studyData, setStudyData] = useState({
     id: null,
-    nickname: "지윤",
-    name: "스터디방",
-    description: "반복해서 공부하는 react",
+    nickname: "",
+    name: "",
+    description: "",
     points: 0,
   });
-  // 스터디 data 가져오기
+  // 스터디 data 가져오기(임시) <-- context로 받아온거 사용
   const handleStudyLoad = async () => {
     try {
       const result = await getStudy(studyId);
@@ -160,16 +178,16 @@ function StudyDetail() {
         ...prev,
         ...result,
       }));
-      console.log("api 결과 : " + result.nickname);
+      // console.log("api 결과 : " + result.nickname);
     } catch (error) {
       console.error("해당 스터디 불러오기 실패:", error.message);
     }
   };
 
-  // 스터디 데이터 값 확인용도
+  // 로드 된 데이터 값 확인용도
   useEffect(() => {
-    console.log("studyData가 업데이트됨:", studyData.nickname);
-  }, [studyData]);
+    console.log("studyData가 업데이트됨:", emojis.items?.length);
+  }, [emojis]);
 
   // 스터디(id:3)의 habits 가져오기
   const handleHabitsLoad = async () => {
@@ -185,6 +203,7 @@ function StudyDetail() {
     // 데이터 불러오기
     handleHabitsLoad();
     handleStudyLoad();
+    handleEmojisLoad();
   }, []);
 
   return (
@@ -213,7 +232,7 @@ function StudyDetail() {
         <StudyMain>
           <div className={styles.utilityBar}>
             <div className={styles.emojiBox}>
-              <CheerTagGroup emojis={emojis} onClick={increaseCnt} />
+              <CheerTagGroup emojis={emojis} onClick={increaseCnt} isLoading={isEmojisLoading}/>
               <EmojiPickerButton setChosenEmoji={setChosenEmoji} />
             </div>
             <div className={styles.quickLinks}>
@@ -227,7 +246,8 @@ function StudyDetail() {
             </div>
           </div>
           <StudyDescription
-            title={studyData.name}
+            nickName={studyData.nickname}
+            name={studyData.name}
             goToBtn={gotobtn}
             description={studyData.description}
           />
@@ -235,7 +255,7 @@ function StudyDetail() {
             <h1>습관 기록표</h1>
             <WeeklyHabitForm
               habits={habits}
-              isLoading={isLoading}
+              isLoading={isHabitsLoading}
               color="purple"
               colorNum={2}
             />
