@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
 import StudyForm from "../../components/organisms/StudyForm/StudyForm";
 import GNB from "../../components/organisms/GNB/GNB";
 import bg1 from "../../assets/backgrounds/bg1.svg";
@@ -8,12 +7,12 @@ import bg2 from "../../assets/backgrounds/bg2.svg";
 import bg3 from "../../assets/backgrounds/bg3.svg";
 import bg4 from "../../assets/backgrounds/bg4.svg";
 import styles from "../StudyCreate/StudyCreate.module.css";
-import useAutoAsync from "../../hooks/useAutoAsync"; 
-
+import { useStudy } from "../../contexts/StudyContext";
 
 export default function StudyEdit() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { studyData, selectStudy, updateStudy } = useStudy();
 
   const backgroundImages = [bg1, bg2, bg3, bg4];
   const imageMap = {
@@ -34,35 +33,41 @@ export default function StudyEdit() {
   const [errors, setErrors] = useState({});
   const backgrounds = Array(8).fill(0);
 
-  // useAutoAsync 훅 사용
-  const fetchStudy = async (studyId) => {
-    const res = await axios.get(`${import.meta.env.VITE_APP_API_URL}/studies/${studyId}`);
-    return res.data;
-  };
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const [loading, error, fetchStudyAsync] = useAutoAsync(fetchStudy);
+  // 알람 모달 관련 상태
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   useEffect(() => {
     if (!id) return;
-
     const loadStudy = async () => {
-      const study = await fetchStudyAsync(id);
-      if (!study) return;
-
-      const mappedBackground = imageMap[study.background] || study.background || bg1;
-
-      setFormData({
-        nickname: study.nickname || "",
-        name: study.name || "",
-        description: study.description || "",
-        background: mappedBackground,
-        password: "",
-        confirmPassword: "",
-      });
+      setLoading(true);
+      setError(null);
+      try {
+        await selectStudy(id);
+      } catch (err) {
+        setError("존재하지 않는 스터디입니다.");
+      } finally {
+        setLoading(false);
+      }
     };
-
     loadStudy();
   }, [id]);
+
+  useEffect(() => {
+    if (!studyData) return;
+    const mappedBackground = imageMap[studyData.background] || studyData.background || bg1;
+    setFormData({
+      nickname: studyData.nickname || "",
+      name: studyData.name || "",
+      description: studyData.description || "",
+      background: mappedBackground,
+      password: "",
+      confirmPassword: "",
+    });
+  }, [studyData]);
 
   const handleSubmit = async (data) => {
     try {
@@ -77,26 +82,21 @@ export default function StudyEdit() {
         password: data.password,
       };
 
-      const apiUrl = `${import.meta.env.VITE_APP_API_URL}/studies/${id}`;
-      const res = await axios.patch(apiUrl, payload);
-      console.log("스터디 PATCH 응답:", res.data);
+      await updateStudy(id, payload);
 
-      alert("스터디 정보가 수정되었습니다!");
-      navigate("/"); // 홈으로 이동
+      // 알람 모달 표시
+      setAlertMessage("스터디 정보가 수정되었습니다!");
+      setShowAlert(true);
+
     } catch (err) {
-      console.error("스터디 수정 오류:", err.response || err);
-      alert(err.response?.data?.message || "수정 중 오류가 발생했습니다.");
+      console.error("스터디 수정 오류:", err);
+      setAlertMessage(err.message || "수정 중 오류가 발생했습니다.");
+      setShowAlert(true);
     }
   };
 
   if (loading) return <div>로딩 중...</div>;
-  if (error)
-    return (
-      <div>
-        스터디 정보를 불러오는 중 오류가 발생했습니다.
-        <pre>{JSON.stringify(error.response?.data || error.message, null, 2)}</pre>
-      </div>
-    );
+  if (error) return <div>{error}</div>;
 
   return (
     <div className={styles.pageWrapper}>
@@ -114,6 +114,56 @@ export default function StudyEdit() {
           submitText="수정하기"
         />
       </div>
+
+      {/* 커스텀 알람 모달 */}
+      {showAlert && (
+        <div style={{
+          position: "fixed",
+          top: 0, left: 0, width: "100%", height: "100%",
+          backgroundColor: "rgba(0,0,0,0.5)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          zIndex: 1000
+        }}>
+          <div style={{
+            backgroundColor: "var(--white)",
+            padding: "32px 24px",
+            borderRadius: "16px",
+            textAlign: "center",
+            width: "320px",
+            boxShadow: "0 4px 16px rgba(0,0,0,0.25)"
+          }}>
+            <p style={{
+              marginBottom: "24px",
+              fontSize: "18px",
+              color: "var(--black-414141)",
+              fontFamily: "var(--font-family)"
+            }}>
+              {alertMessage}
+            </p>
+            <button
+              onClick={() => {
+                setShowAlert(false);
+                navigate(`/studies/${id}`);
+              }}
+              style={{
+                fontFamily: "var(--font-family-jeju)",
+                backgroundColor: "var(--brand-99C08E)",
+                color: "#fff",
+                border: "none",
+                borderRadius: "8px",
+                padding: "12px 24px",
+                fontSize: "16px",
+                cursor: "pointer",
+                transition: "0.2s",
+              }}
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
