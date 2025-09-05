@@ -15,7 +15,7 @@ export async function getHabitList(studyId){
         });
     return result;
 }
-
+// POST
 export async function createHabit(studyId, data){
     const result = api.post(`/studies/${studyId}/habits`, data)
         .then(res => {
@@ -29,7 +29,7 @@ export async function createHabit(studyId, data){
         });
     return result;
 }
-
+// PATCH
 export async function updateHabit(studyId, habitId, data){
     const result = api.patch(`/studies/${studyId}/habits/${habitId}`, data)
         .then(res => {
@@ -43,7 +43,7 @@ export async function updateHabit(studyId, habitId, data){
         });
     return result;
 }
-
+// DELETE
 export async function deleteHabit(studyId, habitId, data){
     /* 
     delete는 일반적으로 (url, config) 형태기 때문에

@@ -8,8 +8,7 @@ import bg2 from "../../assets/backgrounds/bg2.svg";
 import bg3 from "../../assets/backgrounds/bg3.svg";
 import bg4 from "../../assets/backgrounds/bg4.svg";
 import styles from "../StudyCreate/StudyCreate.module.css";
-import useAutoAsync from "../../hooks/useAutoAsync"; 
-
+import { useAutoAsync } from "../../hooks/useAsync";
 
 export default function StudyEdit() {
   const { id } = useParams();
@@ -36,7 +35,9 @@ export default function StudyEdit() {
 
   // useAutoAsync 훅 사용
   const fetchStudy = async (studyId) => {
-    const res = await axios.get(`${import.meta.env.VITE_APP_API_URL}/studies/${studyId}`);
+    const res = await axios.get(
+      `${import.meta.env.VITE_APP_API_URL}/studies/${studyId}`
+    );
     return res.data;
   };
 
@@ -49,7 +50,8 @@ export default function StudyEdit() {
       const study = await fetchStudyAsync(id);
       if (!study) return;
 
-      const mappedBackground = imageMap[study.background] || study.background || bg1;
+      const mappedBackground =
+        imageMap[study.background] || study.background || bg1;
 
       setFormData({
         nickname: study.nickname || "",
@@ -67,7 +69,9 @@ export default function StudyEdit() {
   const handleSubmit = async (data) => {
     try {
       const backgroundForServer =
-        Object.keys(imageMap).find((key) => imageMap[key] === data.background) || data.background;
+        Object.keys(imageMap).find(
+          (key) => imageMap[key] === data.background
+        ) || data.background;
 
       const payload = {
         nickname: data.nickname,
@@ -94,7 +98,9 @@ export default function StudyEdit() {
     return (
       <div>
         스터디 정보를 불러오는 중 오류가 발생했습니다.
-        <pre>{JSON.stringify(error.response?.data || error.message, null, 2)}</pre>
+        <pre>
+          {JSON.stringify(error.response?.data || error.message, null, 2)}
+        </pre>
       </div>
     );
 

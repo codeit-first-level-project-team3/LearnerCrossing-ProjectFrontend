@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import useAsync from "../../hooks/useAutoAsync.js";
-import { getStudy } from "../../api/studyAPI.js";
+import { useAutoAsync } from "../../hooks/useAsync.js";
+import { deleteStudy, getStudy } from "../../api/studyAPI.js";
 import { getHabitList } from "../../api/habitAPI.js";
 
 import Toast from "../../components/atoms/Toast.jsx";
@@ -23,9 +23,9 @@ function StudyDetail() {
   const [warning, setWarning] = useState(false); // 경고창
   const navigate = useNavigate(); // 페이지 이동
   const [habits, setHabits] = useState([]); // habits 상태
-  const [isLoading, loadingError, getHabitsAsync] = useAsync(getHabitList); // 습관 가져오기 로딩,에러처리
+  const [isLoading, loadingError, getHabitsAsync] = useAutoAsync(getHabitList); // 습관 가져오기 로딩,에러처리
 
-  const studyId = 3; // 임시 스터디 아이디
+  const studyId = 1; // 임시 스터디 아이디
   const pwd = "1234"; // 임시 비밀번호
 
   // 유니코드 -> 이모지
@@ -119,13 +119,13 @@ function StudyDetail() {
   ];
   // 수정하기 클릭
   const handleUpdateClick = () => {
-    setNextAction(() => () => navigate("/studyEdit"));
+    setNextAction(() => () => navigate(`/studyEdit/${studyId}`));
     setIsOpen(true);
     setButtonText("수정하러 가기");
   };
   // 삭제하기 클릭
   const handleDeleteClick = () => {
-    setNextAction(() => () => console.log("삭제"));
+    setNextAction(() => () => deleteStudy(18, pwd));
     setIsOpen(true);
     setButtonText("삭제하기");
   };
@@ -147,9 +147,9 @@ function StudyDetail() {
 
   const [studyData, setStudyData] = useState({
     id: null,
-    nickname: "지윤",
-    name: "스터디방",
-    description: "반복해서 공부하는 react",
+    nickname: "",
+    name: "",
+    description: "",
     points: 0,
   });
   // 스터디 data 가져오기
@@ -160,16 +160,16 @@ function StudyDetail() {
         ...prev,
         ...result,
       }));
-      console.log("api 결과 : " + result.nickname);
+      // console.log("api 결과 : " + result.nickname);
     } catch (error) {
       console.error("해당 스터디 불러오기 실패:", error.message);
     }
   };
 
-  // 스터디 데이터 값 확인용도
-  useEffect(() => {
-    console.log("studyData가 업데이트됨:", studyData.nickname);
-  }, [studyData]);
+  // // 스터디 데이터 값 확인용도
+  // useEffect(() => {
+  //   console.log("studyData가 업데이트됨:", studyData);
+  // }, [studyData]);
 
   // 스터디(id:3)의 habits 가져오기
   const handleHabitsLoad = async () => {
