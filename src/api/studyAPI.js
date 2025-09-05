@@ -44,3 +44,12 @@ export async function deleteStudy(id, data = {}) {
   }
   return res.data;
 }
+
+// 특정 스터디의 이모지를 가져옵니다 (GET /studies/:studyId/emojis)
+export async function getStudyEmojis(studyId) {
+  const res = await api.get(`/studies/${studyId}/emojis`);
+  if (res.status < 200 || res.status >= 300) {
+    throw new Error(`스터디 이모지 조회 실패 (status: ${res.status})`);
+  }
+  return res.data;
+}
