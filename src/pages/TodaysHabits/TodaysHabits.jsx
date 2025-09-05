@@ -62,7 +62,6 @@ function TodaysHabits(){
 
     //습관 컬럼을 받아온다.
     //일주일 치 달성 여부가 보인다.
-    
     const handleHabitsLoad = async () => {
         try {
             const result = await getHabitList(studyId);
@@ -76,7 +75,6 @@ function TodaysHabits(){
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleToggle = (habitId, isClear) => {
-        //실제로는 리퀘스트를 보내야 한다. (PATCH)
         const today = 0;
         const newHabits = [...habits];
         const habit = newHabits.filter(e=>e.id === habitId)[0];
