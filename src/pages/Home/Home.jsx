@@ -1,41 +1,104 @@
-import React, { useState, useMemo } from "react";
+// Home.jsx
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "../../components/organisms/Card/Card";
 import GNB from "../../components/organisms/GNB/GNB";
 import Search from "../../components/molecules/Search/Search";
 import Sort from "../../components/molecules/Sort/Sort";
-import bg1 from "../../assets/backgrounds/bg1.svg";
-import bg2 from "../../assets/backgrounds/bg2.svg";
-import bg3 from "../../assets/backgrounds/bg3.svg";
-import bg4 from "../../assets/backgrounds/bg4.svg";
 import styles from "./Home.module.css";
+import { useStudy } from "../../contexts/StudyContext";
+import { getStudyList, getStudyEmojis } from "../../api/studyAPI";
 
 export default function Home() {
   const navigate = useNavigate();
+  const { selectStudy } = useStudy();
 
-  const recentStudies = [
-    { id: 1, nickname: "채환", name: "의 공부", description: "React 공부중", background: bg1, points: 120, createdAt: "2025-09-01T00:00:00Z", tags: [{ emoji: "🔥", count: 5 }, { emoji: "💡", count: 3 }, { emoji: "📚", count: 2 }] },
-    { id: 2, nickname: "하드", name: "의 학습", description: "Node.js 실습중", background: "#E1EDDE", points: 90, createdAt: "2025-08-28T00:00:00Z", tags: [{ emoji: "⚡", count: 4 }, { emoji: "📝", count: 2 }] },
-    { id: 3, nickname: "민준", name: "공부방", description: "Python 공부중", background: "#FFF1CC", points: 75, createdAt: "2025-08-25T00:00:00Z", tags: [{ emoji: "🐍", count: 3 }, { emoji: "💻", count: 2 }] },
-  ];
-
-  const allStudies = [
-    ...recentStudies,
-    { id: 4, nickname: "소연", name: "스터디", description: "Django 프로젝트", background: "#FDE0E9", points: 50, createdAt: "2025-08-20T00:00:00Z", tags: [{ emoji: "🌐", count: 2 }, { emoji: "💡", count: 1 }] },
-    { id: 5, nickname: "지훈", name: "공부 싫어", description: "Frontend 연습중", background: "#FDE0E9", points: 60, createdAt: "2025-08-22T00:00:00Z", tags: [{ emoji: "🎨", count: 3 }, { emoji: "🔥", count: 2 }] },
-    { id: 6, nickname: "현수", name: "숙제", description: "React Native 앱 개발", background: "#E0F1F5", points: 80, createdAt: "2025-08-18T00:00:00Z", tags: [{ emoji: "📱", count: 4 }, { emoji: "⚡", count: 2 }] },
-    { id: 7, nickname: "은지", name: "시험", description: "AI 스터디", background: "#E0F1F5", points: 110, createdAt: "2025-08-10T00:00:00Z", tags: [{ emoji: "🤖", count: 3 }, { emoji: "📚", count: 2 }] },
-    { id: 8, nickname: "태현", name: "연습", description: "알고리즘 연습", background: "#E1EDDE", points: 95, createdAt: "2025-08-12T00:00:00Z", tags: [{ emoji: "🧩", count: 4 }, { emoji: "🔥", count: 2 }] },
-    { id: 9, nickname: "소연", name: "일기", description: "Django 프로젝트", background: bg2, points: 50, createdAt: "2025-08-20T00:00:00Z", tags: [{ emoji: "🌐", count: 2 }, { emoji: "💡", count: 1 }] },
-    { id: 10, nickname: "소연", name: "복습", description: "Django 프로젝트", background: bg3, points: 50, createdAt: "2025-08-20T00:00:00Z", tags: [{ emoji: "🌐", count: 2 }, { emoji: "💡", count: 1 }] },
-    { id: 11, nickname: "소연", name: "스터디", description: "Django 프로젝트", background: bg4, points: 50, createdAt: "2025-08-20T00:00:00Z", tags: [{ emoji: "🌐", count: 2 }, { emoji: "💡", count: 1 }] },
-  ];
-
+  const [allStudies, setAllStudies] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("최근 순");
   const [visibleCount, setVisibleCount] = useState(6);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
+  // 윈도우 크기 추적
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // 전체 스터디 + 이모지 불러오기
+  useEffect(() => {
+    const fetchStudies = async () => {
+      try {
+        const data = await getStudyList();
+        const studiesArray = data?.items ?? [];
+
+        const studiesWithEmojis = await Promise.all(
+          studiesArray.map(async (study) => {
+            try {
+              const emojiData = await getStudyEmojis(study.id);
+              return {
+                ...study,
+                tags: (emojiData.items || []).map((item) => ({
+                  emoji: item.emoji,
+                  count: item.count,
+                })),
+              };
+            } catch {
+              return { ...study, tags: [] };
+            }
+          })
+        );
+
+        setAllStudies(studiesWithEmojis);
+      } catch (err) {
+        console.error("스터디 불러오기 실패", err);
+        setAllStudies([]);
+      }
+    };
+
+    fetchStudies();
+  }, []);
+
+  // 카드 클릭
+  const handleCardClick = async (study) => {
+    try {
+      await selectStudy(study.id);
+
+      const stored = sessionStorage.getItem("recentStudies");
+      let recent = stored ? JSON.parse(stored) : [];
+
+      // 중복 제거
+      recent = recent.filter((s) => s.id !== study.id);
+      recent.unshift(study);
+
+      const maxRecent = windowWidth <= 744 ? 1 : windowWidth <= 1200 ? 2 : 3;
+      if (recent.length > maxRecent) recent = recent.slice(0, maxRecent);
+
+      sessionStorage.setItem("recentStudies", JSON.stringify(recent));
+
+      navigate(`/studyDetail/${study.id}`);
+    } catch (err) {
+      console.error("스터디 선택 실패", err);
+      navigate("/studyDetail");
+    }
+  };
+
+  // 최근 조회한 스터디
+  const recentStudies = useMemo(() => {
+    const stored = sessionStorage.getItem("recentStudies");
+    let items = stored ? JSON.parse(stored) : [];
+
+    const maxRecent = windowWidth <= 744 ? 1 : windowWidth <= 1200 ? 2 : 3;
+    if (items.length > maxRecent) items = items.slice(0, maxRecent);
+
+    return items;
+  }, [windowWidth]);
+
+  // 검색 + 정렬
   const filteredStudies = useMemo(() => {
+    if (!Array.isArray(allStudies)) return [];
+
     let filtered = allStudies.filter(
       (study) =>
         study.nickname.includes(searchTerm) ||
@@ -59,7 +122,7 @@ export default function Home() {
         break;
     }
     return filtered;
-  }, [searchTerm, sortOption]);
+  }, [allStudies, searchTerm, sortOption]);
 
   return (
     <div className={styles.container}>
@@ -68,7 +131,11 @@ export default function Home() {
       {/* 최근 조회한 스터디 */}
       <section className={styles.recentStudies}>
         <h2 className={styles.sectionTitle}>최근 조회한 스터디</h2>
-        <div className={`${styles.cardGridRecent} ${recentStudies.length === 0 ? styles.emptyGrid : ""}`}>
+        <div
+          className={`${styles.cardGridRecent} ${
+            recentStudies.length === 0 ? styles.emptyGrid : ""
+          }`}
+        >
           {recentStudies.length === 0 ? (
             <p className={styles.emptyMessage}>아직 조회한 스터디가 없어요</p>
           ) : (
@@ -76,7 +143,7 @@ export default function Home() {
               <Card
                 key={study.id}
                 studies={[study]}
-                onClick={() => navigate("/studyDetail")}
+                onClick={() => handleCardClick(study)}
               />
             ))
           )}
@@ -87,11 +154,26 @@ export default function Home() {
       <section className={styles.allStudies}>
         <h2 className={styles.sectionTitle}>스터디 둘러보기</h2>
         <div className={styles.controlsAll}>
-          <Search placeholder="스터디 검색" onChange={(e) => setSearchTerm(e.target.value)} />
-          <Sort label={sortOption} onChange={(option) => setSortOption(option)} />
+          <div className={styles.searchWrapper}>
+            <Search
+              placeholder="스터디 검색"
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+
+          <div className={styles.sortWrapper}>
+            <Sort
+              label={sortOption}
+              onChange={(option) => setSortOption(option)}
+            />
+          </div>
         </div>
 
-        <div className={`${styles.cardGridAll} ${filteredStudies.length === 0 ? styles.emptyGrid : ""}`}>
+        <div
+          className={`${styles.cardGridAll} ${
+            filteredStudies.length === 0 ? styles.emptyGrid : ""
+          }`}
+        >
           {filteredStudies.length === 0 ? (
             <p className={styles.emptyMessage}>아직 둘러볼 스터디가 없어요</p>
           ) : (
@@ -99,7 +181,7 @@ export default function Home() {
               <Card
                 key={study.id}
                 studies={[study]}
-                onClick={() => navigate("/studyDetail")}
+                onClick={() => handleCardClick(study)}
               />
             ))
           )}
