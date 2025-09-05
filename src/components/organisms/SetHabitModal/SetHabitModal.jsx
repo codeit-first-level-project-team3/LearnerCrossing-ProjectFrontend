@@ -66,13 +66,13 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
         }
     }, [isOpen]);
 
-    useEffect(() => {
-        console.log(rqQueue);
-    }, [rqQueue]);
+    // useEffect(() => {
+    //     console.log(rqQueue);
+    // }, [rqQueue]);
 
     const handleChange = (habitId, name) => {
         const newHabits = [...habits];
-        console.log(habitId);
+        //console.log(habitId);
         newHabits.find(e=>e.id===habitId).name = name;
 
         setHabits(newHabits);
@@ -102,7 +102,7 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
         newHabits.push(_habit);
         setHabits(newHabits);
 
-        console.log(newHabits);
+        //console.log(newHabits);
     }
 
     const handelDelete = (habitId) => {
@@ -132,7 +132,7 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
                 name: habit.name
             }
             const res = await updateHabit(studyId, habit.id, rqBody);
-            console.log(res); 
+            //console.log(res); 
         })
     }
 
@@ -147,10 +147,10 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
                 }
                 if(e.id > -1){
                     const res = await deleteHabit(studyId, e.id, rqBody);
-                    console.log(res); 
+                    //console.log(res); 
                 }else{
                     deletePost.push(e.id)
-                    console.log("delete: " + deletePost);
+                    //console.log("delete: " + deletePost);
                 }
             }
         });
@@ -173,7 +173,7 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
             habit.id = res.id;
         })) 
         setHabits(newHabits);
-        console.log("postResult:" + newHabits); 
+        //console.log("postResult:" + newHabits); 
     }
 
     const runRqQueue = async () => {

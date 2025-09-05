@@ -22,7 +22,7 @@ function convertToArray(weeklyClear){
     return '';
 }
 
-function HabitList({ habits, handleToggle, setIsModalOpen }){
+function HabitList({today, habits, handleToggle, setIsModalOpen }){
 
     return(
         <div className={styles.box}>
@@ -33,7 +33,6 @@ function HabitList({ habits, handleToggle, setIsModalOpen }){
             </div>
             <ul className={styles.routineList}>
                 {habits.map((habit) => {
-                    const today = 0;
                     const isClear = convertToArray(habit.weeklyClear)[today];
                     return(
                         <li key={habit.id}>
@@ -54,28 +53,52 @@ function HabitList({ habits, handleToggle, setIsModalOpen }){
 function TodaysHabits(){
 
     const [studyId, setStudyId] = useState(1);
-
+    const [today, setToday] = useState((new Date().getDay() + 6) % 7);
+    const [habits, setHabits] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    
+    
     const goToBtn = [
         {to: '/focus', name:'오늘의 집중'},
         {to: '/studyDetail', name:'홈'},
     ]
 
+    /* 
+    <크리티컬 에러>
+    어떤 특이한 사람이 일주일 넘어가기 전에 습관 페이지에 접속한 후에,
+    다음 주가 되어서 토글을 건드리면 분명 에러가 생긴다.
+    */
+    // const WeeklyReload = (habits) => {
+    //     if(!habits){return []}
+    //     const monday = new Date().getDate() - today;
+    //     const lastSaveDate = Math.min(...habits.map(e=>new Date(e.updatedAt)));//가장 오래된 수정 날짜 확인
+    //     if(lastSaveDate < monday){ //이번 주 월요일보다 이전 날짜면 모든 습관 달성도를 리셋.
+    //         habits.forEach(habit=>{               
+    //             const body = {
+    //                 password: "1234",
+    //                 name: habit.name,
+    //                 weeklyClear: '0|0|0|0|0|0|0'
+    //             }
+    //             updateHabit(studyId, habitId, body);
+    //             habit.weeklyClear = '0|0|0|0|0|0|0';
+    //         });
+    //     }
+    //     return habits;
+    // }
+
     //습관 컬럼을 받아온다.
     //일주일 치 달성 여부가 보인다.
     const handleHabitsLoad = async () => {
         try {
-            const result = await getHabitList(studyId);
-            setHabits(result || []);
+            const _habits = await getHabitList(studyId);
+            // const _habits = WeeklyReload(result); // 매주 리셋 함수
+            setHabits(_habits || []);
         } catch (error) {
             console.error("습관 불러오기 실패:", error.message);
         }
     };
-    
-    const [habits, setHabits] = useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleToggle = (habitId, isClear) => {
-        const today = 0;
         const newHabits = [...habits];
         const habit = newHabits.filter(e=>e.id === habitId)[0];
         const newWeeklyClear = convertToArray(habit.weeklyClear);
@@ -107,6 +130,7 @@ function TodaysHabits(){
                     isInfoPoint={false}
                 />
                 <HabitList 
+                    today={today}
                     habits={habits} 
                     handleToggle={handleToggle}
                     setIsModalOpen={setIsModalOpen}

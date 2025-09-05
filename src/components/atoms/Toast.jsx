@@ -1,4 +1,4 @@
-function Toast({ text, type }) {
+function Toast({ text, type, className='' }) {
   const toastType = {
     warning: {
       textColor: "var(--red-F50E0E)",
@@ -33,7 +33,7 @@ function Toast({ text, type }) {
   };
 
   return (
-    <div style={toastStyle}>
+    <div style={toastStyle} className={className}>
       {icon} {text}
     </div>
   );
