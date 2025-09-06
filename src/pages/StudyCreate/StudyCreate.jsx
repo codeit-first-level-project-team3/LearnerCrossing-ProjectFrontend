@@ -98,8 +98,8 @@ export default function StudyCreate() {
             <button
               onClick={() => {
                 setShowAlert(false);
-                // 새로 생성된 스터디 상세 페이지로 이동
-                navigate(`/studies/${formData.name ? formData.name : ""}`);
+                // 새로 생성된 스터디 상세 페이지로 이동(id를 어떻게 알아서 넘길 것인가?)
+                navigate(`/studyDetail`);
               }}
               style={{
                 fontFamily: "var(--font-family-jeju)",

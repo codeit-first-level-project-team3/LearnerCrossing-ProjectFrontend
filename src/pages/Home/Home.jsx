@@ -1,4 +1,3 @@
-// Home.jsx
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "../../components/organisms/Card/Card";
@@ -7,7 +6,8 @@ import Search from "../../components/molecules/Search/Search";
 import Sort from "../../components/molecules/Sort/Sort";
 import styles from "./Home.module.css";
 import { useStudy } from "../../contexts/StudyContext";
-import { getStudyList, getStudyEmojis } from "../../api/studyAPI";
+// import { getStudyList, getStudyEmojis } from "../../api/studyAPI"; hook처리 예정
+import { getStudyList } from "../../api/studyAPI";
 
 export default function Home() {
   const navigate = useNavigate();

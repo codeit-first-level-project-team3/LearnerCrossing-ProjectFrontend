@@ -151,7 +151,7 @@ export default function StudyEdit() {
             <button
               onClick={() => {
                 setShowAlert(false);
-                navigate(`/studies/${id}`);
+                navigate(`/studyDetail`);
               }}
               style={{
                 fontFamily: "var(--font-family-jeju)",
