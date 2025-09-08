@@ -5,13 +5,13 @@ import GNB from "../../components/organisms/GNB/GNB";
 import Search from "../../components/molecules/Search/Search";
 import Sort from "../../components/molecules/Sort/Sort";
 import styles from "./Home.module.css";
-import { useStudy } from "../../contexts/StudyContext";
+import useStudy from "../../contexts/StudyStorage";
 import { getStudyList } from "../../api/studyAPI";
 
 export default function Home() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { selectStudy } = useStudy();
+  const { resetStudy, selectStudy } = useStudy();
 
   const [allStudies, setAllStudies] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -31,6 +31,9 @@ export default function Home() {
 
   // 전체 스터디 불러오기
   useEffect(() => {
+    //스터디 정보 리셋
+    resetStudy();
+    
     const fetchStudies = async () => {
       try {
         const data = await getStudyList();
@@ -79,7 +82,8 @@ export default function Home() {
     sessionStorage.setItem("recentStudies", JSON.stringify(recent));
     setRecentStudiesIds(recent.map(s => s.id)); // 상태도 갱신
 
-    navigate(`/studyDetail/${study.id}`);
+    selectStudy(study.id);
+    navigate(`/studyDetail`);
   };
 
   // 검색 + 정렬

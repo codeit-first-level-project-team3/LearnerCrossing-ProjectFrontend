@@ -35,11 +35,11 @@ function StudyDetail() {
     useAutoAsync(getHabitList); // 습관 가져오기 로딩,에러처리
 
   const { studyId, studyData, selectStudy, checkPw } = useStudy();
-  //const studyId = 3; // 임시 스터디 아이디
-
-  useEffect(()=>{
-    selectStudy(1);
-  }, []);
+  
+  //임시 아이디 1
+  // useEffect(()=>{
+  //   selectStudy(1);
+  // }, []);
 
   // emojis 훅
   const {
