@@ -19,7 +19,7 @@ export function StudyProvider({ children }) {
       throw err;
     }
   };
-
+  
   // 스터디 생성
   const createStudy = async (data) => {
     const newStudy = await apiCreateStudy(data);
@@ -51,7 +51,7 @@ export function StudyProvider({ children }) {
         selectStudy,
         createStudy,
         updateStudy,
-        deleteStudy,
+        deleteStudy, 
       }}
     >
       {children}
