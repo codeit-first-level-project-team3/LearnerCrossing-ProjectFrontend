@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useAutoAsync, useActionAsync } from "../../hooks/useAsync.js";
-import { deleteStudy, getStudy } from "../../api/studyAPI.js";
 import { getHabitList } from "../../api/habitAPI.js";
 import { addStudyEmoji, getStudyEmojis } from "../../api/emojiAPI.js";
 
@@ -15,6 +14,7 @@ import StudyDescription from "../../components/organisms/StudyDescription/StudyD
 import AuthPasswordModal from "../../components/organisms/AuthPasswordModal/AuthPasswordModal.jsX";
 import WeeklyHabitForm from "../../components/organisms/WeeklyHabitForm/WeeklyHabitForm.jsx";
 import styles from "./StudyDetail.module.css";
+import { useStudy } from "../../contexts/StudyContext.jsx";
 
 function StudyDetail() {
   const [chosenEmoji, setChosenEmoji] = useState(null); // 이모지 선택창에서 선택한 이모지
@@ -33,7 +33,8 @@ function StudyDetail() {
   const [addEmojiLoading, addEmojiLodingError, addEmojisAsync] =
     useActionAsync(addStudyEmoji); // 이모지 추가 로딩, 에러처리
 
-  const studyId = 3; // 임시 스터디 아이디
+  const { studyId, studyData, checkPw } = useStudy();
+  //const studyId = 3; // 임시 스터디 아이디
   const pwd = "1234"; // 임시 비밀번호
 
   // 유니코드 -> 이모지
@@ -148,8 +149,8 @@ function StudyDetail() {
     setButtonText("삭제하기");
   };
   // 비밀번호 성공시 미리 저장해둔 nextAction 실행
-  const handlePasswordsubmit = () => {
-    if (password === pwd) {
+  const handlePasswordsubmit = async() => {
+    if (await checkPw(password)) {
       setWarning(false);
       nextAction();
     } else {
@@ -163,26 +164,26 @@ function StudyDetail() {
     setWarning(false);
   };
 
-  const [studyData, setStudyData] = useState({
-    id: null,
-    nickname: "",
-    name: "",
-    description: "",
-    points: 0,
-  });
-  // 스터디 data 가져오기(임시) <-- context로 받아온거 사용
-  const handleStudyLoad = async () => {
-    try {
-      const result = await getStudy(studyId);
-      setStudyData((prev) => ({
-        ...prev,
-        ...result,
-      }));
-      // console.log("api 결과 : " + result.nickname);
-    } catch (error) {
-      console.error("해당 스터디 불러오기 실패:", error.message);
-    }
-  };
+  // const [studyData, setStudyData] = useState({
+  //   id: null,
+  //   nickname: "",
+  //   name: "",
+  //   description: "",
+  //   points: 0,
+  // });
+  // // 스터디 data 가져오기(임시) <-- context로 받아온거 사용
+  // const handleStudyLoad = async () => {
+  //   try {
+  //     const result = await getStudy(studyId);
+  //     setStudyData((prev) => ({
+  //       ...prev,
+  //       ...result,
+  //     }));
+  //     // console.log("api 결과 : " + result.nickname);
+  //   } catch (error) {
+  //     console.error("해당 스터디 불러오기 실패:", error.message);
+  //   }
+  // };
 
   // 로드 된 데이터 값 확인용도
   useEffect(() => {
@@ -202,7 +203,7 @@ function StudyDetail() {
   useEffect(() => {
     // 데이터 불러오기
     handleHabitsLoad();
-    handleStudyLoad();
+    //handleStudyLoad();
     handleEmojisLoad();
   }, []);
 

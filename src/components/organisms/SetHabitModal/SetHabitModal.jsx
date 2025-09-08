@@ -9,6 +9,7 @@ import Modal from '../../atoms/modal/modal';
 import styles from './SetHebitModal.module.css';
 
 import trashIcon from '../../../assets/trash.svg';
+import { useStudy } from '../../../contexts/StudyContext.jsx';
 
 function HabitInput({habit, onChange}){    
     return (
@@ -54,10 +55,10 @@ function HabitInputList({habits, handleChange, handleAdd, handelDelete}){
 /* 작동하게만 만들어서 리펙토링이 필요합니다 */
 export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabits}){
 
+    const { studyId } = useStudy();
     const [habits, setHabits] = useState([...habitList].map(habit=>({...habit})));
     const [rqQueue, setRqQueue] = useState([]);
-    const [studyId, setStudyId] = useState(1);
-
+    
     useEffect(() => {
         if(isOpen){
             //handleHabitsLoad();
