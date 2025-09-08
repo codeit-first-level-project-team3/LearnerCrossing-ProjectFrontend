@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useStudy } from "../../contexts/StudyContext.jsx";
-import { deleteStudy } from "../../api/studyAPI.js";
 import { getHabitList } from "../../api/habitAPI.js";
 import { useAutoAsync } from "../../hooks/useAsync.js";
 import useEmojis from "../../hooks/useEmojis.js";
@@ -16,11 +14,14 @@ import StudyDescription from "../../components/organisms/StudyDescription/StudyD
 import AuthPasswordModal from "../../components/organisms/AuthPasswordModal/AuthPasswordModal.jsX";
 import WeeklyHabitForm from "../../components/organisms/WeeklyHabitForm/WeeklyHabitForm.jsx";
 import styles from "./StudyDetail.module.css";
+
 import TwoButtonModal from "../../components/molecules/TwoButtonModal.jsx";
 import OneButtonModal from "../../components/molecules/OneButtonModal.jsx";
 
+import useStudy from "../../contexts/StudyStorage.jsx";
+
 function StudyDetail() {
-  const { selectedStudyId, studyData } = useStudy();
+
   const [isModalOpen, setIsOpen] = useState(false); // 모달창 열린 상태
   const [buttonText, setButtonText] = useState(""); // 모달창 버튼 이름
   const [isReconfirmOpen, setReconfirmOpen] = useState(false); // 한 번 더 확인용 모달
@@ -33,6 +34,13 @@ function StudyDetail() {
   const [isHabitsLoading, habitsLoadingError, getHabitsAsync] =
     useAutoAsync(getHabitList); // 습관 가져오기 로딩,에러처리
 
+  const { studyId, studyData, selectStudy, checkPw } = useStudy();
+  //const studyId = 3; // 임시 스터디 아이디
+
+  useEffect(()=>{
+    selectStudy(1);
+  }, []);
+
   // emojis 훅
   const {
     emojis,
@@ -42,10 +50,9 @@ function StudyDetail() {
     handleEmojisAdd,
     isEmojisLoading,
     isEmojisAdding,
-  } = useEmojis(selectedStudyId);
+  } = useEmojis(studyId);
 
-  const pwd = "1234"; // 임시 비밀번호
-
+  
   // input 변경 시 password 변경
   const handlePasswordChange = (e) => {
     const val = e.target.value;
@@ -80,7 +87,7 @@ function StudyDetail() {
   ];
   // 수정하기 클릭
   const handleUpdateClick = () => {
-    setNextAction(() => () => navigate(`/studyEdit/${selectedStudyId}`));
+    setNextAction(() => () => navigate(`/studyEdit/${studyId}`));
     setIsOpen(true);
     setButtonText("수정하러 가기");
   };
@@ -91,8 +98,8 @@ function StudyDetail() {
     setButtonText("삭제하기");
   };
   // 비밀번호 성공시 미리 저장해둔 nextAction 실행
-  const handlePasswordsubmit = () => {
-    if (password === pwd) {
+  const handlePasswordsubmit = async() => {
+    if (await checkPw(password)) {
       setWarning(false);
       setIsOpen(false);
       nextAction();
@@ -102,7 +109,7 @@ function StudyDetail() {
   };
   // 삭제 한번 더 확인
   const handleReconfirm = async () => {
-    await deleteStudy(selectedStudyId, pwd);
+    await deleteStudy(studyId, pwd);
     setReconfirmOpen(false);
     setDeleteSuccess(true);
   };
@@ -146,7 +153,7 @@ function StudyDetail() {
   // 스터디 habits 가져오기
   const handleHabitsLoad = async () => {
     try {
-      const result = await getHabitsAsync(selectedStudyId);
+      const result = await getHabitsAsync(studyId);
       setHabits(result || []);
     } catch (error) {
       console.error("습관 불러오기 실패:", error.message);
@@ -223,8 +230,6 @@ function StudyDetail() {
             </div>
           </div>
           <StudyDescription
-            nickName={studyData.nickname}
-            name={studyData.name}
             goToBtn={gotobtn}
             description={studyData.description}
           />

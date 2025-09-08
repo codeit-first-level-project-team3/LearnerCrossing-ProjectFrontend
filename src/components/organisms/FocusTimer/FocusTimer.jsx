@@ -1,5 +1,5 @@
-import { useState, useContext, useEffect  } from 'react';
-import UserContext from "../../../contexts/UserContext";
+import { useState} from 'react';
+import useStudy from '../../../contexts/StudyStorage.jsx';
 
 import CntdownTimer from '../../molecules/CntDownTimer/CntDownTimer.jsx';
 import SetTimerInput from '../../molecules/SetTimerInput/SetTimerInput.jsx';
@@ -15,7 +15,6 @@ import styles from './FocusTimer.module.css';
 
 import timerIcon from '../../../assets/ic_timer.svg';
 import FadeToast from '../../molecules/FadeToast/FadeToast.jsx';
-import Toast from '../../atoms/Toast.jsx';
 
 /* 타이머 인풋 / 카운트 / 버튼 모두 합친 조직 컴포넌트 */
 export default function FocusTimer(){    
@@ -27,7 +26,7 @@ export default function FocusTimer(){
     const [isPause, setIsPause] = useState(false);
 
     /* 포인트 기능 */
-    const { plusPoint } = useContext(UserContext);
+    const { plusPoint } = useStudy();
     const [isClear, setIsClear] = useState(false);
     const [gettingPoint, setGettingPoint] = useState(0);
 

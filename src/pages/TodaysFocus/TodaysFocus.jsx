@@ -5,7 +5,6 @@ import FocusTimer from '../../components/organisms/FocusTimer/FocusTimer.jsx';
 
 import styles from './TodaysFocus.module.css';
 
-
 function Focus(){
     return (
         <div className={styles.box}>
@@ -20,6 +19,7 @@ function Focus(){
 }
 
 function TodaysFocus(){
+
     const goToBtn = [
         {to: '/habits', name:'오늘의 습관'},
         {to: '/studyDetail', name:'홈'},

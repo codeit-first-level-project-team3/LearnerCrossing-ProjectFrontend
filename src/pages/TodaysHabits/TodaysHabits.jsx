@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import useStudy from '../../contexts/StudyStorage.jsx';
+import { getHabitList, updateHabit } from '../../api/habitAPI.js';
 
 import GNB from '../../components/organisms/GNB/GNB.jsx';
 import StudyMain from '../../components/organisms/StudyMain/StudyMain.jsx';
@@ -7,9 +9,8 @@ import HabitChip from '../../components/molecules/HabitChip/HabitChip.jsx';
 import StudyDescription from '../../components/organisms/StudyDescription/StudyDescription.jsx';
 import SetHabitModal from '../../components/organisms/SetHabitModal/SetHabitModal.jsx';
 
-import { getHabitList, updateHabit } from '../../api/habitAPI.js';
-
 import styles from './TodaysHabits.module.css';
+
 
 
 function convertToString(weeklyClear){
@@ -52,12 +53,11 @@ function HabitList({today, habits, handleToggle, setIsModalOpen }){
 
 function TodaysHabits(){
 
-    const [studyId, setStudyId] = useState(1);
+    const { studyId, password, selectStudy } = useStudy();
     const [today, setToday] = useState((new Date().getDay() + 6) % 7);
     const [habits, setHabits] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    
-    
+
     const goToBtn = [
         {to: '/focus', name:'오늘의 집중'},
         {to: '/studyDetail', name:'홈'},
@@ -106,7 +106,7 @@ function TodaysHabits(){
         habit.weeklyClear = convertToString(newWeeklyClear);
 
         const body = {
-            password: "1234",
+            password: password,
             name: habit.name,
             weeklyClear: habit.weeklyClear
         }
@@ -125,7 +125,6 @@ function TodaysHabits(){
         <main>
             <StudyMain>
                 <StudyDescription
-                    title='연우의 개발 공장'
                     goToBtn={goToBtn}
                     isInfoPoint={false}
                 />

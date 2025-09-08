@@ -10,7 +10,7 @@ import StudyEdit from "./pages/StudyEdit/StudyEdit.jsx";
 // React Router 6.4v 데이터 라우터 API 방식
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
-  { path: "/studyDetail/:id", element: <StudyDetail /> },
+  { path: "/studyDetail", element: <StudyDetail /> },
   { path: "/studyCreate", element: <StudyCreate /> }, 
   { path: "/studyEdit/:id", element: <StudyEdit /> }, 
   { path: "/habits", element: <TodaysHabits /> },
