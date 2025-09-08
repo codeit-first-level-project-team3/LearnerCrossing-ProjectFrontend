@@ -1,4 +1,4 @@
-/* ===== 그리드 ===== */
+/* 그리드 */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(358px, 1fr));
@@ -6,7 +6,7 @@
   justify-content: center;
 }
 
-/* ===== 카드 기본 스타일 ===== */
+/* 카드 기본 스타일 */
 .card {
   width: 358px;
   height: 243px;
@@ -28,7 +28,7 @@
   filter: brightness(0.95);
 }
 
-/* ===== 카드 헤더 ===== */
+/* 카드 헤더 */
 .header {
   display: flex;
   justify-content: space-between;
@@ -36,11 +36,11 @@
   gap: 8px;
 }
 
-/* ===== 유저 정보 ===== */
+/* 유저 정보 */
 .userInfo {
   display: flex;
   align-items: center;
-  gap: 2px; /* nickname, '의', name 사이 기본 간격 */
+  gap: 2px;
 }
 
 .nickname {
@@ -56,7 +56,7 @@
   font-weight: 700;
   line-height: normal;
   color: var(--black-414141);
-  margin-right: 4px; /* '의'와 name 사이 한 칸 여백 */
+  margin-right: 4px;
 }
 
 .name {
@@ -67,7 +67,7 @@
   line-height: normal;
 }
 
-/* ===== 포인트 ===== */
+/* 포인트 */
 .points {
   display: flex;
   padding: 4px 8px;
@@ -90,7 +90,7 @@
   height: 16px;
 }
 
-/* ===== 스터디 정보 ===== */
+/* 스터디 정보 */
 .studyName {
   color: var(--gray-818181);
   font-family: var(--font-family);
@@ -110,7 +110,7 @@
   flex-grow: 1;
 }
 
-/* ===== 태그 ===== */
+/* 태그 */
 .tagList {
   display: flex;
   align-items: flex-start;
@@ -137,7 +137,7 @@
   font-weight: 400;
 }
 
-/* ===== 흰색 텍스트 카드 (이미지 배경) ===== */
+/* 흰색 텍스트 카드 (이미지 배경) */
 .whiteText .nickname,
 .whiteText .name,
 .whiteText .separator,
@@ -153,12 +153,14 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* ===== 반응형: 모바일 (744px 이하) ===== */
+/* 반응형: 모바일 (744px 이하) */
 @media screen and (max-width: 744px) {
   .card {
     width: 312px;
-    height: 180px;
-    padding: 12px;
+    height: 180px; /* 기존 카드 높이 유지 */
+    padding: 12px; /* 불필요한 패딩 최소화 */
+    justify-content: flex-start; /* 내부 여백 제거 */
+    gap: 4px; /* 카드 내부 요소 간 최소 간격 */
   }
 
   .grid {
@@ -170,28 +172,38 @@
   .header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 6px;
+    gap: 6px; /* header 내부 요소 간 최소 간격 */
+    margin: 0; /* 불필요한 margin 제거 */
   }
 
   .points {
     order: -1;
     align-self: flex-start;
+    padding: 4px 8px; /* 기존 padding 유지 */
+    margin: 0; /* 불필요한 margin 제거 */
   }
 
   .nickname,
   .separator,
   .name {
     font-size: 16px;
+    margin: 0; /* 불필요한 margin 제거 */
   }
 
   .studyName {
     font-size: 12px;
-    margin-top: 4px;
-    margin-bottom: 8px;
+    margin-top: 0;
+    margin-bottom: 12px; /* description과 12px 간격 */
   }
 
   .description {
     font-size: 14px;
+    margin: 0; /* 불필요한 margin 제거 */
     flex-grow: 0;
+    padding-bottom: 11px;
+  }
+
+  .tagList {
+    gap: 4px; /* 최소 간격 유지 */
   }
 }
