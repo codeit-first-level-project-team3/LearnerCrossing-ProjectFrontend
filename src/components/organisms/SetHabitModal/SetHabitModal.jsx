@@ -55,7 +55,7 @@ function HabitInputList({habits, handleChange, handleAdd, handelDelete}){
 /* 작동하게만 만들어서 리펙토링이 필요합니다 */
 export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabits}){
 
-    const { studyId } = useStudy();
+    const { studyId, password } = useStudy();
     const [habits, setHabits] = useState([...habitList].map(habit=>({...habit})));
     const [rqQueue, setRqQueue] = useState([]);
     
@@ -129,7 +129,7 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
             if(prev.find(e=>e.id===habit.id).name === habit.name){return;} //기존과 변동이 없으면 수정 x
 
             const rqBody = {
-                password: "1234",
+                password: password,
                 name: habit.name
             }
             const res = await updateHabit(studyId, habit.id, rqBody);
@@ -144,7 +144,7 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
         queue.forEach(async(e)=> {
             if(e.requset === 'delete'){
                 const rqBody = {
-                    password: "1234"
+                    password: password
                 }
                 if(e.id > -1){
                     const res = await deleteHabit(studyId, e.id, rqBody);
@@ -167,7 +167,7 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
         await Promise.all(queue.map(async(post) => {
             const habit = newHabits.find(habit=>habit.id === post.tempId);
             const rqBody = {
-                password: "1234",
+                password: password,
                 name: habit.name
             }
             const res = await createHabit(studyId, rqBody);

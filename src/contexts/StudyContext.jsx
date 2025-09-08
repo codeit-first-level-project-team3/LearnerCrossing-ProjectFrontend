@@ -6,6 +6,7 @@ import { updatePoint } from "../api/pointAPI";
 const StudyContext = createContext();
 
 export function StudyProvider({ children }) {
+  
   const [studyId, setStudyId] = useState(1);
   const [studyData, setStudyData] = useState({
     id: null,
@@ -17,9 +18,8 @@ export function StudyProvider({ children }) {
   const [password, setPassword] = useState('');
   const [point, setPoint] = useState(0);
 
-  //임시로 넣었습니다 스터디 id 1 테스트용
   useEffect(()=>{
-    selectStudy(1);
+    //selectStudy(1); //임시로 넣었습니다 스터디 id 1 테스트용
   }, []);
 
   const resetStudy = () => {
@@ -35,6 +35,7 @@ export function StudyProvider({ children }) {
     try {
       const result = await getStudy(id);
       setStudyId(id);
+      localStorage.setItem('studyId', id);
       setStudyData(result);
       setPoint(result.points);
     } catch (err) {
