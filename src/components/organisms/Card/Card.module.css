@@ -1,3 +1,4 @@
+/* ===== 그리드 ===== */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(358px, 1fr));
@@ -5,6 +6,7 @@
   justify-content: center;
 }
 
+/* ===== 카드 기본 스타일 ===== */
 .card {
   width: 358px;
   height: 243px;
@@ -26,6 +28,7 @@
   filter: brightness(0.95);
 }
 
+/* ===== 카드 헤더 ===== */
 .header {
   display: flex;
   justify-content: space-between;
@@ -33,10 +36,11 @@
   gap: 8px;
 }
 
+/* ===== 유저 정보 ===== */
 .userInfo {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 2px; /* nickname, '의', name 사이 기본 간격 */
 }
 
 .nickname {
@@ -44,6 +48,15 @@
   font-size: 18px;
   font-weight: 700;
   line-height: normal;
+}
+
+.separator {
+  font-family: var(--font-family);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: normal;
+  color: var(--black-414141);
+  margin-right: 4px; /* '의'와 name 사이 한 칸 여백 */
 }
 
 .name {
@@ -54,6 +67,7 @@
   line-height: normal;
 }
 
+/* ===== 포인트 ===== */
 .points {
   display: flex;
   padding: 4px 8px;
@@ -76,6 +90,7 @@
   height: 16px;
 }
 
+/* ===== 스터디 정보 ===== */
 .studyName {
   color: var(--gray-818181);
   font-family: var(--font-family);
@@ -95,6 +110,7 @@
   flex-grow: 1;
 }
 
+/* ===== 태그 ===== */
 .tagList {
   display: flex;
   align-items: flex-start;
@@ -121,8 +137,10 @@
   font-weight: 400;
 }
 
+/* ===== 흰색 텍스트 카드 (이미지 배경) ===== */
 .whiteText .nickname,
 .whiteText .name,
+.whiteText .separator,
 .whiteText .studyName,
 .whiteText .description,
 .whiteText .points,
@@ -149,7 +167,6 @@
     justify-content: center;
   }
 
-  /* header 세로로 쌓기 + points 맨 위 */
   .header {
     flex-direction: column;
     align-items: flex-start;
@@ -157,11 +174,12 @@
   }
 
   .points {
-    order: -1; /* 포인트 맨 위 */
+    order: -1;
     align-self: flex-start;
   }
 
   .nickname,
+  .separator,
   .name {
     font-size: 16px;
   }

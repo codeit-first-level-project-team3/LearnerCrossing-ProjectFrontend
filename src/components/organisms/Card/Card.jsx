@@ -34,19 +34,22 @@ export default function Card({ studies = [], onClick }) {
               backgroundPosition: "center",
             };
 
+        // 이미지 배경이면 whiteText 클래스 적용
         const cardClass = `${styles.card} ${!isColorBg ? styles.whiteText : ""}`;
 
         const days = calculateDays(createdAt);
 
-        const nicknameColor = background === "#E1EDDE"
-          ? "#578246"
-          : background === "#FFF1CC"
-          ? "#C18E1B"
-          : background === "#FDE0E9"
-          ? "#BC3C6A"
-          : background === "#E0F1F5"
-          ? "#418099"
-          : undefined;
+        const nicknameColor = isColorBg
+          ? background === "#E1EDDE"
+            ? "#578246"
+            : background === "#FFF1CC"
+            ? "#C18E1B"
+            : background === "#FDE0E9"
+            ? "#BC3C6A"
+            : background === "#E0F1F5"
+            ? "#418099"
+            : undefined
+          : undefined; // 이미지 배경이면 whiteText로 흰색
 
         return (
           <div
@@ -60,6 +63,7 @@ export default function Card({ studies = [], onClick }) {
                 <span className={styles.nickname} style={{ color: nicknameColor }}>
                   {nickname}
                 </span>
+                <span className={styles.separator}>의</span>
                 <span className={styles.name}>{name}</span>
               </div>
               <div className={styles.points}>
