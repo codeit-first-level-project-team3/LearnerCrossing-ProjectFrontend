@@ -1,5 +1,5 @@
 import { useState} from 'react';
-import { useStudy } from '../../../contexts/StudyContext.jsx';
+import useStudy from '../../../contexts/StudyStorage.jsx';
 
 import CntdownTimer from '../../molecules/CntDownTimer/CntDownTimer.jsx';
 import SetTimerInput from '../../molecules/SetTimerInput/SetTimerInput.jsx';

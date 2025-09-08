@@ -1,6 +1,6 @@
 import Tag from '../atoms/Tag/Tag';
 import pointIcon from "../../assets/point_icon.svg";
-import { useStudy } from '../../contexts/StudyContext';
+import useStudy from '../../contexts/StudyStorage'; 
 
 export default function PointTag(){
     const { point, plusPoint } = useStudy();

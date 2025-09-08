@@ -14,7 +14,7 @@ import StudyDescription from "../../components/organisms/StudyDescription/StudyD
 import AuthPasswordModal from "../../components/organisms/AuthPasswordModal/AuthPasswordModal.jsX";
 import WeeklyHabitForm from "../../components/organisms/WeeklyHabitForm/WeeklyHabitForm.jsx";
 import styles from "./StudyDetail.module.css";
-import { useStudy } from "../../contexts/StudyContext.jsx";
+import useStudy from "../../contexts/StudyStorage.jsx";
 
 function StudyDetail() {
   const [chosenEmoji, setChosenEmoji] = useState(null); // 이모지 선택창에서 선택한 이모지
@@ -33,9 +33,13 @@ function StudyDetail() {
   const [addEmojiLoading, addEmojiLodingError, addEmojisAsync] =
     useActionAsync(addStudyEmoji); // 이모지 추가 로딩, 에러처리
 
-  const { studyId, studyData, checkPw } = useStudy();
+  const { studyId, studyData, selectStudy, checkPw } = useStudy();
   //const studyId = 3; // 임시 스터디 아이디
   const pwd = "1234"; // 임시 비밀번호
+
+  useEffect(()=>{
+    selectStudy(1);
+  }, []);
 
   // 유니코드 -> 이모지
   const unifiedToEmoji = (unified) => {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useStudy } from '../../contexts/StudyContext.jsx';
+import useStudy from '../../contexts/StudyStorage.jsx';
 import { getHabitList, updateHabit } from '../../api/habitAPI.js';
 
 import GNB from '../../components/organisms/GNB/GNB.jsx';
@@ -125,7 +125,6 @@ function TodaysHabits(){
         <main>
             <StudyMain>
                 <StudyDescription
-                    title='연우의 개발 공장'
                     goToBtn={goToBtn}
                     isInfoPoint={false}
                 />
