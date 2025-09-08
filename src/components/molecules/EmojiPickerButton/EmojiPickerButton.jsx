@@ -12,7 +12,6 @@ function EmojiPickerButton({ setChosenEmoji }) {
     const emojiId = emojiData.unified.toUpperCase(); // 유니코드 대문자로 변환
     setChosenEmoji(emojiId); 
     setShowPicker(false); // 선택 후 닫기
-    console.log(emojiData);
   };
 
   return (

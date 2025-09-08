@@ -32,6 +32,7 @@ function useEmojis(studyId) {
   };
 
   useEffect(() => {
+    if(chosenEmoji === null) return;
     handleEmojisAdd(chosenEmoji);
   }, [chosenEmoji]);
 

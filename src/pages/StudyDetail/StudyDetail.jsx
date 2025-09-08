@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useStudy } from "../../contexts/StudyContext.jsx";
 import { deleteStudy } from "../../api/studyAPI.js";
 import { getHabitList } from "../../api/habitAPI.js";
-import { useAutoAsync, useActionAsync } from "../../hooks/useAsync.js";
+import { useAutoAsync } from "../../hooks/useAsync.js";
 import useEmojis from "../../hooks/useEmojis.js";
 
 import Toast from "../../components/atoms/Toast.jsx";
@@ -16,11 +16,15 @@ import StudyDescription from "../../components/organisms/StudyDescription/StudyD
 import AuthPasswordModal from "../../components/organisms/AuthPasswordModal/AuthPasswordModal.jsX";
 import WeeklyHabitForm from "../../components/organisms/WeeklyHabitForm/WeeklyHabitForm.jsx";
 import styles from "./StudyDetail.module.css";
+import TwoButtonModal from "../../components/molecules/TwoButtonModal.jsx";
+import OneButtonModal from "../../components/molecules/OneButtonModal.jsx";
 
 function StudyDetail() {
   const { selectedStudyId, studyData } = useStudy();
   const [isModalOpen, setIsOpen] = useState(false); // 모달창 열린 상태
   const [buttonText, setButtonText] = useState(""); // 모달창 버튼 이름
+  const [isReconfirmOpen, setReconfirmOpen] = useState(false); // 한 번 더 확인용 모달
+  const [deleteSuccess, setDeleteSuccess] = useState(false); // 삭제 성공 여부
   const [password, setPassword] = useState(""); // 비밀번호
   const [warning, setWarning] = useState(false); // 경고창
   const navigate = useNavigate(); // 페이지 이동
@@ -40,7 +44,6 @@ function StudyDetail() {
     isEmojisAdding,
   } = useEmojis(selectedStudyId);
 
-  // const selectedStudyId = 1; // 임시 스터디 아이디
   const pwd = "1234"; // 임시 비밀번호
 
   // input 변경 시 password 변경
@@ -81,20 +84,32 @@ function StudyDetail() {
     setIsOpen(true);
     setButtonText("수정하러 가기");
   };
-  // 삭제하기 클릭 
+  // 삭제하기 클릭
   const handleDeleteClick = () => {
-    setNextAction(() => () => deleteStudy(selectedStudyId, pwd));
+    setNextAction(() => () => setReconfirmOpen(true)); // 한번 더 확인 모달창 열기
     setIsOpen(true);
     setButtonText("삭제하기");
   };
-  // 비밀번호 성공시 미리 저장해둔 nextAction 실행 
+  // 비밀번호 성공시 미리 저장해둔 nextAction 실행
   const handlePasswordsubmit = () => {
     if (password === pwd) {
       setWarning(false);
+      setIsOpen(false);
       nextAction();
     } else {
       setWarning(true);
     }
+  };
+  // 삭제 한번 더 확인
+  const handleReconfirm = async () => {
+    await deleteStudy(selectedStudyId, pwd);
+    setReconfirmOpen(false);
+    setDeleteSuccess(true);
+  };
+  // 삭제하기 완료
+  const handleDeleteSuccess = () => {
+    setDeleteSuccess(false);
+    navigate("/");
   };
 
   // 모달창 닫기
@@ -102,11 +117,11 @@ function StudyDetail() {
     setIsOpen(false);
     setWarning(false);
   };
-
-  // 로드 된 데이터 값 확인용도
-  useEffect(() => {
-    console.log("emojis:", emojis.items);
-  }, [emojis]);
+  // 한번 더 확인 모달창 닫기
+  const handleReconfirmClose = () => {
+    setReconfirmOpen(false);
+    handleModalClose();
+  };
 
   // 스터디 habits 가져오기
   const handleHabitsLoad = async () => {
@@ -132,6 +147,26 @@ function StudyDetail() {
           text="비밀번호가 일치하지 않습니다. 다시 입력해주세요."
           type="warning"
         />
+      )}
+      {deleteSuccess && (
+        <OneButtonModal
+          isOpen={deleteSuccess}
+          onClick={handleDeleteSuccess}
+          buttonText="홈으로 돌아가기"
+        >
+          <span>스터디를 삭제했습니다.</span>
+        </OneButtonModal>
+      )}
+      {/* 다시 한번 더 확인 */}
+      {isReconfirmOpen && (
+        <TwoButtonModal
+          isOpen={isReconfirmOpen}
+          onClose={handleReconfirmClose}
+          onClick={handleReconfirm}
+          buttonText="삭제하기"
+        >
+          <span>정말 해당 스터디를 삭제하시겠습니까?</span>
+        </TwoButtonModal>
       )}
       {/* 모달창 */}
       {isModalOpen && (

@@ -19,6 +19,7 @@ export default function Home() {
   const [visibleCount, setVisibleCount] = useState(6);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
+
   // 윈도우 크기 추적
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
