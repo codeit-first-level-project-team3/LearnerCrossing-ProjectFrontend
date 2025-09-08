@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Card from "../../components/organisms/Card/Card";
 import GNB from "../../components/organisms/GNB/GNB";
 import Search from "../../components/molecules/Search/Search";
 import Sort from "../../components/molecules/Sort/Sort";
 import styles from "./Home.module.css";
 import { useStudy } from "../../contexts/StudyContext";
-// import { getStudyList, getStudyEmojis } from "../../api/studyAPI"; hook처리 예정
 import { getStudyList } from "../../api/studyAPI";
 
 export default function Home() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { selectStudy } = useStudy();
 
   const [allStudies, setAllStudies] = useState([]);
@@ -19,6 +19,9 @@ export default function Home() {
   const [visibleCount, setVisibleCount] = useState(6);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
+  // 최근 조회한 스터디 ID만 관리
+  const [recentStudiesIds, setRecentStudiesIds] = useState([]);
+
   // 윈도우 크기 추적
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -26,29 +29,17 @@ export default function Home() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // 전체 스터디 + 이모지 불러오기
+  // 전체 스터디 불러오기
   useEffect(() => {
     const fetchStudies = async () => {
       try {
         const data = await getStudyList();
         const studiesArray = data?.items ?? [];
 
-        const studiesWithEmojis = await Promise.all(
-          studiesArray.map(async (study) => {
-            try {
-              const emojiData = await getStudyEmojis(study.id);
-              return {
-                ...study,
-                tags: (emojiData.items || []).map((item) => ({
-                  emoji: item.emoji,
-                  count: item.count,
-                })),
-              };
-            } catch {
-              return { ...study, tags: [] };
-            }
-          })
-        );
+        const studiesWithEmojis = studiesArray.map(study => ({
+          ...study,
+          tags: [], // 이모지는 나중에 처리
+        }));
 
         setAllStudies(studiesWithEmojis);
       } catch (err) {
@@ -60,40 +51,36 @@ export default function Home() {
     fetchStudies();
   }, []);
 
-  // 카드 클릭
-  const handleCardClick = async (study) => {
-    try {
-      await selectStudy(study.id);
-
-      const stored = sessionStorage.getItem("recentStudies");
-      let recent = stored ? JSON.parse(stored) : [];
-
-      // 중복 제거
-      recent = recent.filter((s) => s.id !== study.id);
-      recent.unshift(study);
-
-      const maxRecent = windowWidth <= 744 ? 1 : windowWidth <= 1200 ? 2 : 3;
-      if (recent.length > maxRecent) recent = recent.slice(0, maxRecent);
-
-      sessionStorage.setItem("recentStudies", JSON.stringify(recent));
-
-      navigate(`/studyDetail/${study.id}`);
-    } catch (err) {
-      console.error("스터디 선택 실패", err);
-      navigate("/studyDetail");
-    }
-  };
-
-  // 최근 조회한 스터디
-  const recentStudies = useMemo(() => {
+  // 페이지 진입 또는 URL 변경 시 최근 조회한 스터디 ID 로드
+  useEffect(() => {
     const stored = sessionStorage.getItem("recentStudies");
-    let items = stored ? JSON.parse(stored) : [];
+    const ids = stored ? JSON.parse(stored).map(s => s.id) : [];
+    setRecentStudiesIds(ids);
+  }, [location]);
 
+  // 실제 화면에 표시할 최근 조회한 스터디
+  const recentStudies = useMemo(() => {
     const maxRecent = windowWidth <= 744 ? 1 : windowWidth <= 1200 ? 2 : 3;
-    if (items.length > maxRecent) items = items.slice(0, maxRecent);
+    const studies = recentStudiesIds
+      .map(id => allStudies.find(s => s.id === id))
+      .filter(Boolean); // allStudies에 없는 ID 제거
+    return studies.slice(0, maxRecent);
+  }, [recentStudiesIds, allStudies, windowWidth]);
 
-    return items;
-  }, [windowWidth]);
+  // 카드 클릭
+  const handleCardClick = (study) => {
+    const stored = sessionStorage.getItem("recentStudies");
+    let recent = stored ? JSON.parse(stored) : [];
+
+    // 중복 제거 후 앞쪽에 추가
+    recent = recent.filter((s) => s.id !== study.id);
+    recent.unshift(study);
+
+    sessionStorage.setItem("recentStudies", JSON.stringify(recent));
+    setRecentStudiesIds(recent.map(s => s.id)); // 상태도 갱신
+
+    navigate(`/studyDetail/${study.id}`);
+  };
 
   // 검색 + 정렬
   const filteredStudies = useMemo(() => {
