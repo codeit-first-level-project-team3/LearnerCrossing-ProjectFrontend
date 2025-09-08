@@ -1,5 +1,4 @@
 import api from "./example";
-import { getStudy } from "./studyAPI";
 
 export async function getPoint(studyId){
     const result = api.get(`/studies/${studyId}`)

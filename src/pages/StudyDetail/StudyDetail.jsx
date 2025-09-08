@@ -251,8 +251,6 @@ function StudyDetail() {
             </div>
           </div>
           <StudyDescription
-            nickName={studyData.nickname}
-            name={studyData.name}
             goToBtn={gotobtn}
             description={studyData.description}
           />

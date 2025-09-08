@@ -7,16 +7,15 @@ const useStudy = create(
   devtools(
     persist(
       (set, get) => ({
-        studyId: 1,
+        studyId: -1,
         studyData: {
             id: null,   
             nickname: "",
             name: "",
             description: "",
-            points: 0,
+            points: -1,
         },
         password: '',
-        point: -1,
         resetStudy: () => set({
             studyId: -1,
             studyData: {
@@ -27,14 +26,12 @@ const useStudy = create(
                 points: 0,
             },
             password: '',
-            point: -1,
         }),
         selectStudy: async (id) => {
             const result = await getStudy(id);
             set({
                 studyId: id,
                 studyData: result,
-                point: result.points,
             })
         },
         createStudy: async () => {
@@ -42,7 +39,6 @@ const useStudy = create(
             set({
                 studyId: id,
                 studyData: newStudy,
-                point: newStudy.points,
             })
             return newStudy;
         },
@@ -51,7 +47,6 @@ const useStudy = create(
             set({
                 studyId: id,
                 studyData: updated,
-                point: updated.points,
             })
             return updated;
         },
@@ -68,7 +63,12 @@ const useStudy = create(
         },
         plusPoint: (amount) => {
             updatePoint(get().studyId, amount);
-            set((state) => ({ point: state.point + amount }));
+            set((state) => ({ 
+                studyData: {
+                    ...(state.studyData),
+                    points: state.studyData.points + amount 
+                }
+            }));
         }
       }),
       { name: 'study-storage' }
