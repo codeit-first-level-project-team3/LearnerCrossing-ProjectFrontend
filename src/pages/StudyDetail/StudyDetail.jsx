@@ -123,6 +123,26 @@ function StudyDetail() {
     handleModalClose();
   };
 
+  // 공유하기 -> 링크 복사창 만들기
+  const handleShare = () => {
+    const url = window.location.href;
+
+    navigator.clipboard.writeText(url);
+
+    if (navigator.share) {
+      navigator
+        .share({
+          title: document.title,
+          url: url,
+        })
+        .then(() => console.log("공유 성공"))
+        .catch((error) => console.log("공유 실패", error));
+    } else {
+      navigator.clipboard.writeText(url);
+      alert("URL이 클립보드에 복사되었습니다!");
+    }
+  };
+
   // 스터디 habits 가져오기
   const handleHabitsLoad = async () => {
     try {
@@ -193,7 +213,7 @@ function StudyDetail() {
               <EmojiPickerButton setChosenEmoji={setChosenEmoji} />
             </div>
             <div className={styles.quickLinks}>
-              <span>공유하기</span>
+              <span onClick={handleShare}>공유하기</span>
               <span>|</span>
               <span onClick={handleUpdateClick}>수정하기</span>
               <span className={styles.delete}>|</span>
