@@ -16,6 +16,7 @@
   align-items: flex-start;
   border-radius: 20px;
   margin-bottom: 40px;
+  margin-top: 40px; /* PC 기준 GNB와 간격 */
   background: var(--white-FFFFFF);
 }
 
@@ -105,6 +106,7 @@
   .allStudies {
     width: 771px;
     padding: 20px;
+    margin-top: 20px; /* 태블릿 GNB와 간격 */
   }
 
   .cardGridRecent,
@@ -118,12 +120,12 @@
   }
 
   .recentStudies {
-  gap: 18px; 
-}
+    gap: 18px; 
+  }
 
-.allStudies {
-  gap: 18px; 
-}
+  .allStudies {
+    gap: 18px; 
+  }
 }
 
 /* 반응형: 모바일 (744px 이하) */
@@ -132,6 +134,7 @@
   .allStudies {
     width: 344px;
     padding: 16px;
+    margin-top: 20px; /* 모바일 GNB와 간격 */
   }
 
   .cardGridRecent,
@@ -157,11 +160,12 @@
   .controlsAll .sortWrapper {
     align-self: flex-end;
   }
-  .recentStudies {
-  gap: 10px; 
-}
 
-.allStudies {
-  gap: 10px; 
-}
+  .recentStudies {
+    gap: 10px; 
+  }
+
+  .allStudies {
+    gap: 10px; 
+  }
 }

@@ -1,29 +1,31 @@
 .gnb {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start; /* 로고는 왼쪽, 버튼은 절대 위치로 이동 */
   height: 100px;
+  width: 100%;
+  max-width: 1920px; /* PC 기본 */
+  padding: 20px 120px 20px 120px;
   background: var(--bg-F6F4EF);
   box-sizing: border-box;
-  padding: 20px 240px 20px 220px;
-  width: 100%;
-  max-width: 1920px;
-  position: relative;
+  gap: 486px;
 }
 
-/* PC/Tablet/Mobile 레이아웃 미디어쿼리만 남김 */
+/* 태블릿 */
+@media (max-width: 1200px) {
+  .gnb {
+    max-width: 1200px;
+    padding: 20px 24px;
+    gap: 385px;
+  }
+}
+
+/* 모바일 */
 @media (max-width: 744px) {
   .gnb {
-    width: 100%;
     max-width: 744px;
-    padding: 20px 24px;
-  } 
-}
-
-@media (max-width: 375px) {
-  .gnb {
-    width: 100%;
-    max-width: 375px;
-    padding: 32px 16px;
+    padding: 20px 16px;
+    gap: 114px;
   }
 }
