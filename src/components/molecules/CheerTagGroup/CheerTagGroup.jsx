@@ -13,7 +13,7 @@ function CheerTagGroup({ emojis, onClick, isLoading }) {
   const [showEmojiMore, setShowEmojiMore] = useState(false); // 더보기창 상태
   const wrapperRef = useRef(null); // <div> emojiMore
 
-  useEffect(() => {
+  useEffect(() => { 
     if (!showEmojiMore) return;
     
     function handleClickOutside(e) {

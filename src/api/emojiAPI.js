@@ -23,9 +23,7 @@ export async function getStudyEmojis(id) {
 export async function addStudyEmoji(id, emoji) {
   const result = api
     .post(`/studies/${id}`, {
-      data: {
         unified: emoji,
-      },
     })
     .then((res) => {
       if (res.status < 200 || res.status >= 300) {

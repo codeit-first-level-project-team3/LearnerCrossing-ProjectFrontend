@@ -9,7 +9,8 @@ function EmojiPickerButton({ setChosenEmoji }) {
 
   const handleEmojiClick = (emojiData) => {
     // 이모지 추가 버튼 클릭
-    setChosenEmoji(emojiData.emoji);
+    const emojiId = emojiData.unified.toUpperCase(); // 유니코드 대문자로 변환
+    setChosenEmoji(emojiId); 
     setShowPicker(false); // 선택 후 닫기
     console.log(emojiData);
   };
