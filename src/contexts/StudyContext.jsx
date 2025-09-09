@@ -18,9 +18,9 @@ export function StudyProvider({ children }) {
   const [password, setPassword] = useState('');
   const [point, setPoint] = useState(0);
 
-  useEffect(()=>{
-    //selectStudy(1); //임시로 넣었습니다 스터디 id 1 테스트용
-  }, []);
+  // useEffect(()=>{
+  //   //selectStudy(1); //임시로 넣었습니다 스터디 id 1 테스트용
+  // }, []);
 
   const resetStudy = () => {
     //홈 page로 이동 시 스터디 정보 초기화

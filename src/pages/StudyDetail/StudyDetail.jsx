@@ -13,19 +13,19 @@ import StudyMain from "../../components/organisms/StudyMain/StudyMain.jsx";
 import StudyDescription from "../../components/organisms/StudyDescription/StudyDescription";
 import AuthPasswordModal from "../../components/organisms/AuthPasswordModal/AuthPasswordModal.jsX";
 import WeeklyHabitForm from "../../components/organisms/WeeklyHabitForm/WeeklyHabitForm.jsx";
-import styles from "./StudyDetail.module.css";
-
 import TwoButtonModal from "../../components/molecules/TwoButtonModal.jsx";
 import OneButtonModal from "../../components/molecules/OneButtonModal.jsx";
+import styles from "./StudyDetail.module.css";
+import icCopy from "../../assets/ic_copy.png";
 
 import useStudy from "../../contexts/StudyStorage.jsx";
 
 function StudyDetail() {
-
   const [isModalOpen, setIsOpen] = useState(false); // 모달창 열린 상태
   const [buttonText, setButtonText] = useState(""); // 모달창 버튼 이름
   const [isReconfirmOpen, setReconfirmOpen] = useState(false); // 한 번 더 확인용 모달
   const [deleteSuccess, setDeleteSuccess] = useState(false); // 삭제 성공 여부
+  const [share, setShare] = useState(false); // 공유하기 창
   const [password, setPassword] = useState(""); // 비밀번호
   const [warning, setWarning] = useState(false); // 경고창
   const navigate = useNavigate(); // 페이지 이동
@@ -34,8 +34,8 @@ function StudyDetail() {
   const [isHabitsLoading, habitsLoadingError, getHabitsAsync] =
     useAutoAsync(getHabitList); // 습관 가져오기 로딩,에러처리
 
-  const { studyId, studyData, selectStudy, checkPw } = useStudy();
-  
+  const { studyId, studyData, selectStudy, checkPw, deleteStudy } = useStudy();
+
   //임시 아이디 1
   // useEffect(()=>{
   //   selectStudy(1);
@@ -52,7 +52,6 @@ function StudyDetail() {
     isEmojisAdding,
   } = useEmojis(studyId);
 
-  
   // input 변경 시 password 변경
   const handlePasswordChange = (e) => {
     const val = e.target.value;
@@ -65,21 +64,21 @@ function StudyDetail() {
 
   const gotobtn = [
     {
-      to: "/habits",
+      to: "./habits",
       name: "오늘의 습관",
       onClick: (e) => {
         e.preventDefault();
-        setNextAction(() => () => navigate("/habits"));
+        setNextAction(() => () => navigate("./habits"));
         setIsOpen(true);
         setButtonText("오늘의 습관으로 가기");
       },
     },
     {
-      to: "/focus",
+      to: "./focus",
       name: "오늘의 집중",
       onClick: (e) => {
         e.preventDefault();
-        setNextAction(() => () => navigate("/focus"));
+        setNextAction(() => () => navigate("./focus"));
         setIsOpen(true);
         setButtonText("오늘의 집중으로 가기");
       },
@@ -87,7 +86,7 @@ function StudyDetail() {
   ];
   // 수정하기 클릭
   const handleUpdateClick = () => {
-    setNextAction(() => () => navigate(`/studyEdit/${studyId}`));
+    setNextAction(() => () => navigate("./studyEdit"));
     setIsOpen(true);
     setButtonText("수정하러 가기");
   };
@@ -98,7 +97,7 @@ function StudyDetail() {
     setButtonText("삭제하기");
   };
   // 비밀번호 성공시 미리 저장해둔 nextAction 실행
-  const handlePasswordsubmit = async() => {
+  const handlePasswordsubmit = async () => {
     if (await checkPw(password)) {
       setWarning(false);
       setIsOpen(false);
@@ -107,9 +106,9 @@ function StudyDetail() {
       setWarning(true);
     }
   };
-  // 삭제 한번 더 확인
+  // 삭제 한번 더 확인, 삭제
   const handleReconfirm = async () => {
-    await deleteStudy(studyId, pwd);
+    await deleteStudy(studyId, password);
     setReconfirmOpen(false);
     setDeleteSuccess(true);
   };
@@ -129,25 +128,21 @@ function StudyDetail() {
     setReconfirmOpen(false);
     handleModalClose();
   };
-
-  // 공유하기 -> 링크 복사창 만들기
-  const handleShare = () => {
-    const url = window.location.href;
-
+  
+  const url = window.location.href;
+  // 공유하기 클릭
+  const handleShareClick = () => {
+    setShare(prev => !prev);
+  };
+  const [alert, setAlert] = useState(false);
+  // 복사 아이콘 클릭
+  const handleCopyClick = () => {
     navigator.clipboard.writeText(url);
+    setAlert(true);
 
-    if (navigator.share) {
-      navigator
-        .share({
-          title: document.title,
-          url: url,
-        })
-        .then(() => console.log("공유 성공"))
-        .catch((error) => console.log("공유 실패", error));
-    } else {
-      navigator.clipboard.writeText(url);
-      alert("URL이 클립보드에 복사되었습니다!");
-    }
+    setTimeout(() => {
+      setAlert(false);
+    }, 1000);
   };
 
   // 스터디 habits 가져오기
@@ -220,13 +215,21 @@ function StudyDetail() {
               <EmojiPickerButton setChosenEmoji={setChosenEmoji} />
             </div>
             <div className={styles.quickLinks}>
-              <span onClick={handleShare}>공유하기</span>
+              <span onClick={handleShareClick}>공유하기</span>
               <span>|</span>
               <span onClick={handleUpdateClick}>수정하기</span>
               <span className={styles.delete}>|</span>
               <span className={styles.delete} onClick={handleDeleteClick}>
                 스터디삭제하기
               </span>
+              {share && <div className={styles.copyBox}>
+                <p>스터디 공유하기</p>
+                <div className={styles.linkBox}>
+                  <input type="text" value={url} disabled />
+                  <img src={icCopy} alt=" ic_copy" onClick={handleCopyClick}/>
+                </div>
+                {alert && <p className={styles.copyAlert}>링크가 복사되었습니다.</p>}
+              </div>}
             </div>
           </div>
           <StudyDescription

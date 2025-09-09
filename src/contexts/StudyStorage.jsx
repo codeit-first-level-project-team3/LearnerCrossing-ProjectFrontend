@@ -50,8 +50,8 @@ const useStudy = create(
             })
             return updated;
         },
-        deleteStudy: (id) => {
-            deleteStudy(id);
+        deleteStudy: async (id, password) => {
+            await deleteStudy(id, password);
             get().resetStudy();
         },
         checkPw: async(pw) => {

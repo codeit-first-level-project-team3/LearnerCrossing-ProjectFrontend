@@ -71,7 +71,7 @@ export default function Home() {
   }, [recentStudiesIds, allStudies, windowWidth]);
 
   // 카드 클릭
-  const handleCardClick = (study) => {
+  const handleCardClick = async (study) => {
     const stored = sessionStorage.getItem("recentStudies");
     let recent = stored ? JSON.parse(stored) : [];
 
@@ -82,8 +82,8 @@ export default function Home() {
     sessionStorage.setItem("recentStudies", JSON.stringify(recent));
     setRecentStudiesIds(recent.map(s => s.id)); // 상태도 갱신
 
-    selectStudy(study.id);
-    navigate(`/studyDetail`);
+    await selectStudy(study.id);
+    navigate(`/studyDetail/${study.id}`);
   };
 
   // 검색 + 정렬
