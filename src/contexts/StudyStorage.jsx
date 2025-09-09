@@ -9,66 +9,66 @@ const useStudy = create(
       (set, get) => ({
         studyId: -1,
         studyData: {
-            id: null,   
-            nickname: "",
-            name: "",
-            description: "",
-            points: -1,
+          id: null,   
+          nickname: "",
+          name: "",
+          description: "",
+          points: 0,
         },
         password: '',
         resetStudy: () => set({
-            studyId: -1,
-            studyData: {
-                id: null,
-                nickname: "",
-                name: "",
-                description: "",
-                points: 0,
-            },
-            password: '',
+          studyId: -1,
+          studyData: {
+            id: null,
+            nickname: "",
+            name: "",
+            description: "",
+            points: 0,
+          },
+          password: '',
         }),
         selectStudy: async (id) => {
-            const result = await getStudy(id);
-            set({
-                studyId: id,
-                studyData: result,
-            })
+          const result = await getStudy(id);
+          set({
+            studyId: id,
+            studyData: result,
+          });
         },
-        createStudy: async () => {
-            const newStudy = await createStudy(data);
-            set({
-                studyId: id,
-                studyData: newStudy,
-            })
-            return newStudy;
+        createStudy: async (data) => {
+          const newStudy = await createStudy(data); // API 호출
+          set({
+            studyId: newStudy.id,
+            studyData: newStudy,
+          });
+          return newStudy; // 생성된 스터디 반환
         },
-        updateStudy: async(id, data) => {
-            const updated = await updateStudy(id, data);
-            set({
-                studyId: id,
-                studyData: updated,
-            })
-            return updated;
+        updateStudy: async (id, data) => {
+          const updated = await updateStudy(id, data);
+          set({
+            studyId: id,
+            studyData: updated,
+          });
+          return updated;
         },
-        deleteStudy: (id) => {
-            deleteStudy(id);
-            get().resetStudy();
+        deleteStudy: async (id) => {
+          await deleteStudy(id);
+          get().resetStudy();
         },
-        checkPw: async(pw) => {
-            if(await checkStudyPw(get().studyId , pw)){
-                set({password: pw});
-                return true;
-            }
-            return false;
+        checkPw: async (pw) => {
+          if (await checkStudyPw(get().studyId, pw)) {
+            set({ password: pw });
+            return true;
+          }
+          return false;
         },
         plusPoint: (amount) => {
-            updatePoint(get().studyId, amount);
-            set((state) => ({ 
-                studyData: {
-                    ...(state.studyData),
-                    points: state.studyData.points + amount 
-                }
-            }));
+          updatePoint(get().studyId, amount);
+          set((state) => ({ 
+            studyData: {
+              ...state.studyData,
+              points: state.studyData.points + amount,
+            }
+          }));
         }
       }),
       { name: 'study-storage' }
