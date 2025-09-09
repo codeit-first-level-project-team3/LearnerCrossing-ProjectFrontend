@@ -16,8 +16,10 @@ export async function getHabitList(studyId){
     return result;
 }
 // POST
-export async function createHabit(studyId, data){
-    const result = api.post(`/studies/${studyId}/habits`, data)
+export async function createHabit(studyId, data, token){
+    const config = { headers: { Authorization: `Bearer ${token}` } };
+
+    const result = api.post(`/studies/${studyId}/habits`, data, config)
         .then(res => {
             if (res.status < 200 || res.status >= 300) {
                 throw new Error(`습관을 추가하는 데 실패했습니다. (status: ${res.status})`);
@@ -30,8 +32,10 @@ export async function createHabit(studyId, data){
     return result;
 }
 // PATCH
-export async function updateHabit(studyId, habitId, data){
-    const result = api.patch(`/studies/${studyId}/habits/${habitId}`, data)
+export async function updateHabit(studyId, habitId, data, token){
+    const config = { headers: { Authorization: `Bearer ${token}` } };
+    
+    const result = api.patch(`/studies/${studyId}/habits/${habitId}`, data, config)
         .then(res => {
             if (res.status < 200 || res.status >= 300) {
                 throw new Error(`습관을 수정하는 데 실패했습니다. (status: ${res.status})`);
@@ -44,12 +48,10 @@ export async function updateHabit(studyId, habitId, data){
     return result;
 }
 // DELETE
-export async function deleteHabit(studyId, habitId, data){
-    /* 
-    delete는 일반적으로 (url, config) 형태기 때문에
-    data (body)를 config 안에 넣어주어야 합니다.
-    */
-    const result = api.delete(`/studies/${studyId}/habits/${habitId}`, {data}) 
+export async function deleteHabit(studyId, habitId, token){
+    const config = { headers: { Authorization: `Bearer ${token}` } };
+
+    const result = api.delete(`/studies/${studyId}/habits/${habitId}`, config) 
         .then(res => {
             if (res.status < 200 || res.status >= 300) {
                 throw new Error(`습관을 삭제하는 데 실패했습니다. (status: ${res.status})`);
@@ -62,16 +64,16 @@ export async function deleteHabit(studyId, habitId, data){
     return result;
 }
 
-export async function getLastSaveDate(studyId){
-    const result = api.get(`/studies/${studyId}/habits`)
-        .then(res => {
-            return res.data;
-        })
-        .catch(error => {
-            console.error(error);
-        });
+// export async function getLastSaveDate(studyId){
+//     const result = api.get(`/studies/${studyId}/habits`)
+//         .then(res => {
+//             return res.data;
+//         })
+//         .catch(error => {
+//             console.error(error);
+//         });
 
-    return Array.isArray(result)
-        ? Math.min(...result.map(e=>new Date(e.updatedAt))) //ISO 8601 형식의 문자열을 Date로 변환 후 가장 오래된 것 반환
-        : result //에러 메세지
-}
+//     return Array.isArray(result)
+//         ? Math.min(...result.map(e=>new Date(e.updatedAt))) //ISO 8601 형식의 문자열을 Date로 변환 후 가장 오래된 것 반환
+//         : result //에러 메세지
+// }

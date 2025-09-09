@@ -57,7 +57,7 @@ function HabitInputList({habits, handleChange, handleAdd, handelDelete}){
 export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabits}){
 
     const { id: studyId } = useParams();
-    const { password } = useStudy();
+    const { token } = useStudy();
     const [habits, setHabits] = useState([...habitList].map(habit=>({...habit})));
     const [rqQueue, setRqQueue] = useState([]);
     
@@ -84,7 +84,6 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
     const handelAdd = () => {
         const newHabits = [...habits];
         const queue = [...rqQueue];
-        //const tempId = newHabits.length > 0 ? Math.max(...newHabits.map(e=>e.id)) + 1 : 0;
         const postQueue = queue.filter(e=>e.requset === "post");
         const tempId = postQueue.length > 0 ? Math.min(...postQueue.map(e=>e.tempId)) - 1 : -1;
 
@@ -104,8 +103,6 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
         }
         newHabits.push(_habit);
         setHabits(newHabits);
-
-        //console.log(newHabits);
     }
 
     const handelDelete = (habitId) => {
@@ -132,11 +129,10 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
             if(prev.find(e=>e.id===habit.id).name === habit.name){return;} //기존과 변동이 없으면 수정 x
 
             const rqBody = {
-                password: password,
                 name: habit.name,
                 weeklyClear: habit.weeklyClear
             }
-            const res = await updateHabit(studyId, habit.id, rqBody);
+            const res = await updateHabit(studyId, habit.id, rqBody, token);
             
         })
     }
@@ -147,11 +143,8 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
         const queue = [...rqQueue];
         queue.forEach(async(e)=> {
             if(e.requset === 'delete'){
-                const rqBody = {
-                    password: password
-                }
                 if(e.id > -1){
-                    const res = await deleteHabit(studyId, e.id, rqBody);
+                    const res = await deleteHabit(studyId, e.id, token);
                     //console.log(res); 
                 }else{
                     deletePost.push(e.id)
@@ -171,10 +164,9 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
         await Promise.all(queue.map(async(post) => {
             const habit = newHabits.find(habit=>habit.id === post.tempId);
             const rqBody = {
-                password: password,
                 name: habit.name
             }
-            const res = await createHabit(studyId, rqBody);
+            const res = await createHabit(studyId, token);
             habit.id = res.id;
         })) 
         setHabits(newHabits);

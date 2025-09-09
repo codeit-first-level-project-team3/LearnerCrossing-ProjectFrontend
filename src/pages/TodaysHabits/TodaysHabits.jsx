@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import useStudy from '../../contexts/StudyStorage.jsx';
 import { getHabitList, updateHabit } from '../../api/habitAPI.js';
 
@@ -10,9 +11,6 @@ import StudyDescription from '../../components/organisms/StudyDescription/StudyD
 import SetHabitModal from '../../components/organisms/SetHabitModal/SetHabitModal.jsx';
 
 import styles from './TodaysHabits.module.css';
-import { useParams } from 'react-router-dom';
-
-
 
 function convertToString(weeklyClear){
     if(Array.isArray(weeklyClear)){return weeklyClear.join('|')}
@@ -55,10 +53,10 @@ function HabitList({today, habits, handleToggle, setIsModalOpen }){
 function TodaysHabits(){
 
     const { id: studyId } = useParams();
-    const { password, selectStudy } = useStudy();
-    const [today, setToday] = useState((new Date().getDay() + 6) % 7);
-    const [habits, setHabits] = useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const { token } = useStudy();
+    const [ today, setToday ] = useState((new Date().getDay() + 6) % 7);
+    const [ habits, setHabits ] = useState([]);
+    const [ isModalOpen, setIsModalOpen ] = useState(false);
 
     const goToBtn = [
         {to: '../focus', name:'오늘의 집중'},
@@ -67,7 +65,7 @@ function TodaysHabits(){
 
     /* 
     <크리티컬 에러>
-    어떤 특이한 사람이 일주일 넘어가기 전에 습관 페이지에 접속한 후에,
+    일주일 넘어가기 전에 습관 페이지에 접속한 후에,
     다음 주가 되어서 토글을 건드리면 분명 에러가 생긴다.
     */
     // const WeeklyReload = (habits) => {
@@ -109,12 +107,11 @@ function TodaysHabits(){
 
         //console.log("토글 비밀번호: " + password);
         const body = {
-            password: password,
             name: habit.name,
             weeklyClear: habit.weeklyClear
         }
 
-        updateHabit(studyId, habitId, body);
+        updateHabit(studyId, habitId, body, token);
         setHabits(newHabits);
     }
 
