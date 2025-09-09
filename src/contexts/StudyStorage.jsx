@@ -50,9 +50,9 @@ const useStudy = create(
           });
           return updated;
         },
-        deleteStudy: async (id) => {
-          await deleteStudy(id);
-          get().resetStudy();
+        deleteStudy: async (id, password) => {
+            await deleteStudy(id, password);
+            get().resetStudy();
         },
         checkPw: async (pw) => {
           if (await checkStudyPw(get().studyId, pw)) {

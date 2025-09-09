@@ -80,8 +80,7 @@ export default function Home() {
 
   // 카드 클릭
   const handleCardClick = async (study) => {
-    // 최근 조회 리스트 업데이트
-    let stored = sessionStorage.getItem("recentStudies");
+    const stored = sessionStorage.getItem("recentStudies");
     let recent = stored ? JSON.parse(stored) : [];
     recent = recent.filter((s) => s.id !== study.id);
     recent.unshift(study);
@@ -91,8 +90,8 @@ export default function Home() {
     // studyStorage 상태에 선택
     await selectStudy(study.id);
 
-    selectStudy(study.id);
-    navigate(`/studyDetail`);
+    await selectStudy(study.id);
+    navigate(`/studyDetail/${study.id}`);
   };
 
   // 검색 + 정렬

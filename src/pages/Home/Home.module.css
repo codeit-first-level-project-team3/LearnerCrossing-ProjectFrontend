@@ -4,6 +4,9 @@
   margin: 0 auto;
   padding: 20px;
   font-family: var(--font-family);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* 최근 조회한 스터디 & 스터디 둘러보기 */
