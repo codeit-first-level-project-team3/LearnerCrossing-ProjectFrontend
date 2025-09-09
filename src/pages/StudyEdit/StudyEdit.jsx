@@ -7,7 +7,7 @@ import bg2 from "../../assets/backgrounds/bg2.svg";
 import bg3 from "../../assets/backgrounds/bg3.svg";
 import bg4 from "../../assets/backgrounds/bg4.svg";
 import styles from "../StudyCreate/StudyCreate.module.css";
-import { useStudy } from "../../contexts/StudyContext";
+import useStudy from "../../contexts/StudyStorage";
 
 export default function StudyEdit() {
   const { id } = useParams();
@@ -36,29 +36,28 @@ export default function StudyEdit() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-
   // 알람 모달 관련 상태
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
 
+  // 스터디 데이터 로드
   useEffect(() => {
     if (!id) return;
     const loadStudy = async () => {
-
       setLoading(true);
       setError(null);
       try {
-        await selectStudy(id);
+        await selectStudy(id); // 최신 데이터 불러오기
       } catch (err) {
         setError("존재하지 않는 스터디입니다.");
       } finally {
         setLoading(false);
       }
-
     };
     loadStudy();
-  }, [id]);
+  }, [id, selectStudy]);
 
+  // 스터디 데이터를 폼 데이터로 매핑
   useEffect(() => {
     if (!studyData) return;
     const mappedBackground = imageMap[studyData.background] || studyData.background || bg1;
@@ -72,6 +71,7 @@ export default function StudyEdit() {
     });
   }, [studyData]);
 
+  // 제출 처리
   const handleSubmit = async (data) => {
     try {
       const backgroundForServer =
@@ -87,7 +87,7 @@ export default function StudyEdit() {
         password: data.password,
       };
 
-      await updateStudy(id, payload);
+      await updateStudy(id, payload); // 수정 API 호출
 
       // 알람 모달 표시
       setAlertMessage("스터디 정보가 수정되었습니다!");
@@ -101,7 +101,6 @@ export default function StudyEdit() {
   };
 
   if (loading) return <div>로딩 중...</div>;
-  
   if (error) return <div>{error}</div>;
 
   return (
@@ -151,7 +150,7 @@ export default function StudyEdit() {
             <button
               onClick={() => {
                 setShowAlert(false);
-                navigate(`/studyDetail`);
+                navigate(`/studyDetail/${id}`); // 수정 후 Detail 페이지로 이동
               }}
               style={{
                 fontFamily: "var(--font-family-jeju)",

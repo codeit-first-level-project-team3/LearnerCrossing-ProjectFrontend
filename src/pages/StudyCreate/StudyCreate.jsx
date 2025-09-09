@@ -7,7 +7,7 @@ import bg2 from "../../assets/backgrounds/bg2.svg";
 import bg3 from "../../assets/backgrounds/bg3.svg";
 import bg4 from "../../assets/backgrounds/bg4.svg";
 import pageStyles from "./StudyCreate.module.css"; 
-import { useStudy } from "../../contexts/StudyContext";
+import useStudy from "../../contexts/StudyStorage";
 
 export default function StudyCreate() {
   const [formData, setFormData] = useState({
@@ -16,20 +16,19 @@ export default function StudyCreate() {
     background: "",
     password: "",
     description: "",
-    confirmPassword: "", // 검증용, API 전송 X
+    confirmPassword: "",
   });
 
   const [errors, setErrors] = useState({});
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+  const [newStudyId, setNewStudyId] = useState(null); // 새로 생성된 스터디 ID 저장
   const backgrounds = Array(8).fill(0);
   const backgroundImages = [bg1, bg2, bg3, bg4];
   const navigate = useNavigate();
 
-  // Context에서 createStudy 함수 가져오기
   const { createStudy } = useStudy();
 
-  // 제출 시 Context의 createStudy 사용
   const handleSubmit = async (data) => {
     try {
       const newStudy = await createStudy({
@@ -40,8 +39,8 @@ export default function StudyCreate() {
         description: data.description,
       });
 
-      // 모달 알람 표시
       setAlertMessage("스터디 생성 완료!");
+      setNewStudyId(newStudy.id); // 생성된 스터디 id 저장
       setShowAlert(true);
 
     } catch (error) {
@@ -68,7 +67,6 @@ export default function StudyCreate() {
         />
       </div>
 
-      {/* 커스텀 알람 모달 */}
       {showAlert && (
         <div style={{
           position: "fixed",
@@ -80,7 +78,7 @@ export default function StudyCreate() {
           zIndex: 1000
         }}>
           <div style={{
-            backgroundColor: "var(--white)",
+            backgroundColor: "#fff",
             padding: "32px 24px",
             borderRadius: "16px",
             textAlign: "center",
@@ -90,20 +88,19 @@ export default function StudyCreate() {
             <p style={{
               marginBottom: "24px",
               fontSize: "18px",
-              color: "var(--black-414141)",
-              fontFamily: "var(--font-family)"
+              color: "#414141",
             }}>
               {alertMessage}
             </p>
             <button
               onClick={() => {
                 setShowAlert(false);
-                // 새로 생성된 스터디 상세 페이지로 이동(id를 어떻게 알아서 넘길 것인가?)
-                navigate(`/studyDetail`);
+                if (newStudyId) {
+                  navigate(`/studyDetail/${newStudyId}`); // 생성된 스터디 상세로 이동
+                }
               }}
               style={{
-                fontFamily: "var(--font-family-jeju)",
-                backgroundColor: "var(--brand-99C08E)",
+                backgroundColor: "#99C08E",
                 color: "#fff",
                 border: "none",
                 borderRadius: "8px",
