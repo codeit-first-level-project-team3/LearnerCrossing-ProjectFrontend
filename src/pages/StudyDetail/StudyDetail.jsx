@@ -232,8 +232,8 @@ function StudyDetail() {
               </span>
               {share && <div className={styles.copyBox} ref={shareWrapperRef}>
                 <p>스터디 공유하기</p>
-                <div className={styles.linkBox}>
-                  <input type="text" value={url} disabled />
+                <div className={styles.linkBox} >
+                  <input type="text" value={url}  disabled />
                   <img src={icCopy} alt=" ic_copy" onClick={handleCopyClick}/>
                 </div>
                 {alert && <p className={styles.copyAlert}>링크가 복사되었습니다.</p>}
