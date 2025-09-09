@@ -78,7 +78,7 @@ export default function Card({ studies = [], onClick }) {
             <div className={styles.description}>{description}</div>
 
             <div className={styles.tagList}>
-              {tags.slice(0, 5).map((tag, idx) => (
+              {tags.slice(0, 3).map((tag, idx) => (
                 <div key={idx} className={styles.tag}>
                   <span className={styles.tagEmoji}>{tag.emoji}</span>
                   <span className={styles.tagNumber}>{tag.count}</span>
