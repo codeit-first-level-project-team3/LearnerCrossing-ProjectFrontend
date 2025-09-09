@@ -109,9 +109,32 @@ export async function checkStudyPw(id, pw) {
 
   // patch 리퀘스트를 한번 보내서 통과하는 지 검사. (비밀번호 검사 api를 백엔드에 따로 만드는 게 더 귀찮아요 ㅜ)
   const result = await api.patch(`/studies/${id}`, RqBody)
+    .then((res) => { return res.data })
+    .catch((error) => { console.error(error); return null });
+  return result;
+}
+
+export async function checkStudyToken(id, token) {
+  const getRes = await getStudy(id);
+
+  const RqBody = {
+    nickName: getRes.nickName,
+    name: getRes.name,
+    description: getRes.description,
+    background: getRes.background,
+  }
+
+  const config = {
+    headers: {
+        Authorization: `Bearer ${token}`, 
+      }
+  }
+
+  // patch 리퀘스트를 한번 보내서 통과하는 지 검사. (비밀번호 검사 api를 백엔드에 따로 만드는 게 더 귀찮아요 ㅜ)
+  const result = await api.patch(`/studies/${id}`, RqBody, config)
     .then((res) => {return (res.status >= 200 && res.status < 300) ? true : false;})
     .catch((error) => {console.error(error); return false;});
 
-  console.log("비밀번호 결과: " + (result ? '통과' : '실패') );
+  console.log("토큰 결과: " + (result ? '통과' : '실패') );
   return result;
 }

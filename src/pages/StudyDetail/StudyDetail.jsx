@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { getHabitList } from "../../api/habitAPI.js";
 import { useAutoAsync } from "../../hooks/useAsync.js";
@@ -22,6 +22,8 @@ import useStudy from "../../contexts/StudyStorage.jsx";
 import useOutsideClick from "../../hooks/useClickOutside.js";
 
 function StudyDetail() {
+
+  const { id } = useParams();
   const [isModalOpen, setIsOpen] = useState(false); // 모달창 열린 상태
   const [buttonText, setButtonText] = useState(""); // 모달창 버튼 이름
   const [isReconfirmOpen, setReconfirmOpen] = useState(false); // 한 번 더 확인용 모달
@@ -37,12 +39,11 @@ function StudyDetail() {
   const [isHabitsLoading, habitsLoadingError, getHabitsAsync] =
     useAutoAsync(getHabitList); // 습관 가져오기 로딩,에러처리
 
-  const { studyId, studyData, password, selectStudy, checkPw, deleteStudy } = useStudy();
-
-  //임시 아이디 1
-  // useEffect(()=>{
-  //   selectStudy(1);
-  // }, []);
+  const { studyId, studyData, selectStudy, checkPw } = useStudy();
+  
+  useEffect(()=>{
+    selectStudy(id);
+  }, [id, selectStudy]);
 
   // emojis 훅
   const {

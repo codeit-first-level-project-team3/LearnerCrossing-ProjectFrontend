@@ -9,7 +9,8 @@ import Modal from '../../atoms/modal/modal';
 import styles from './SetHebitModal.module.css';
 
 import trashIcon from '../../../assets/trash.svg';
-import { useStudy } from '../../../contexts/StudyContext.jsx';
+import useStudy from '../../../contexts/StudyStorage.jsx';
+import { useParams } from 'react-router-dom';
 
 function HabitInput({habit, onChange}){    
     return (
@@ -55,7 +56,8 @@ function HabitInputList({habits, handleChange, handleAdd, handelDelete}){
 /* 작동하게만 만들어서 리펙토링이 필요합니다 */
 export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabits}){
 
-    const { studyId, password } = useStudy();
+    const { id: studyId } = useParams();
+    const { password, token } = useStudy();
     const [habits, setHabits] = useState([...habitList].map(habit=>({...habit})));
     const [rqQueue, setRqQueue] = useState([]);
     
@@ -82,7 +84,6 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
     const handelAdd = () => {
         const newHabits = [...habits];
         const queue = [...rqQueue];
-        //const tempId = newHabits.length > 0 ? Math.max(...newHabits.map(e=>e.id)) + 1 : 0;
         const postQueue = queue.filter(e=>e.requset === "post");
         const tempId = postQueue.length > 0 ? Math.min(...postQueue.map(e=>e.tempId)) - 1 : -1;
 
@@ -102,8 +103,6 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
         }
         newHabits.push(_habit);
         setHabits(newHabits);
-
-        //console.log(newHabits);
     }
 
     const handelDelete = (habitId) => {
@@ -123,17 +122,26 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
     const rqPatch = async () => {
         const prev = [...habitList].map(habit=>({...habit}));
 
+        //console.log("모달 비밀번호: " + password);
         (habits||[]).map(async(habit) => {
 
             if(habit.id < 0){return;} //추가된 항목(임시 id)이면 수정  x 
             if(prev.find(e=>e.id===habit.id).name === habit.name){return;} //기존과 변동이 없으면 수정 x
 
+            /* 비밀번호 방식 */
             const rqBody = {
-                password: password,
-                name: habit.name
+                name: habit.name,
+                weeklyClear: habit.weeklyClear,
+                password: password
             }
             const res = await updateHabit(studyId, habit.id, rqBody);
-            //console.log(res); 
+
+            /* 토큰 방식 */
+            // const rqBody = {
+            //     name: habit.name,
+            //     weeklyClear: habit.weeklyClear
+            // }
+            // const res = await updateHabit(studyId, habit.id, rqBody, token);
         })
     }
 
@@ -143,11 +151,8 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
         const queue = [...rqQueue];
         queue.forEach(async(e)=> {
             if(e.requset === 'delete'){
-                const rqBody = {
-                    password: password
-                }
                 if(e.id > -1){
-                    const res = await deleteHabit(studyId, e.id, rqBody);
+                    const res = await deleteHabit(studyId, e.id, password);
                     //console.log(res); 
                 }else{
                     deletePost.push(e.id)
@@ -166,11 +171,19 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
         //모든 post리퀘스트가 병렬 실행 되지만 모두 pending이 끝날 때까지 기다려준다.
         await Promise.all(queue.map(async(post) => {
             const habit = newHabits.find(habit=>habit.id === post.tempId);
+
+            /* 비밀번호 방식 */
             const rqBody = {
-                password: password,
-                name: habit.name
+                name: habit.name,
+                password: password
             }
             const res = await createHabit(studyId, rqBody);
+
+            /* 토큰 방식 */
+            // const rqBody = {
+            //     name: habit.name
+            // }
+            // const res = await createHabit(studyId, rqBody, token);
             habit.id = res.id;
         })) 
         setHabits(newHabits);
@@ -180,7 +193,7 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
     const runRqQueue = async () => {
         rqPatch(); //수정 - 추가 or 삭제 되지않은 습관의 이름을 최신화
         const postQueue = rqDelete(); //삭제 - 삭제 큐가 끝나고 남은 추가 큐를 반환.
-        await rqPost(postQueue); //추가 - post는 기다려준 후에 실제 id를 State에 반영
+        await rqPost(postQueue); //추가 - 실제 id를 State에 반영
     }
 
     const handleSubmit = async(e) => {

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist, devtools } from 'zustand/middleware';
-import { getStudy, createStudy, updateStudy, deleteStudy, checkStudyPw } from "../api/studyAPI";
+import { getStudy, createStudy, updateStudy, deleteStudy, checkStudyPw, checkStudyToken } from "../api/studyAPI";
 import { updatePoint } from "../api/pointAPI";
 
 const useStudy = create(
@@ -16,16 +16,18 @@ const useStudy = create(
           points: 0,
         },
         password: '',
+        token: '',
         resetStudy: () => set({
-          studyId: -1,
-          studyData: {
-            id: null,
-            nickname: "",
-            name: "",
-            description: "",
-            points: 0,
-          },
-          password: '',
+            studyId: -1,
+            studyData: {
+                id: null,
+                nickname: "",
+                name: "",
+                description: "",
+                points: 0,
+            },
+            password: '',
+            token: '',
         }),
         selectStudy: async (id) => {
           const result = await getStudy(id);
@@ -54,12 +56,26 @@ const useStudy = create(
             await deleteStudy(id, password);
             get().resetStudy();
         },
-        checkPw: async (pw) => {
-          if (await checkStudyPw(get().studyId, pw)) {
-            set({ password: pw });
-            return true;
-          }
-          return false;
+        /* 비밀번호 버전 */
+        checkPw: async(pw) => {
+            const result = await checkStudyPw(get().studyId , pw);
+            if(result){
+                set({password: pw}); //비밀번호 일치 시 토큰 반환
+                return true;
+            }
+            return false;
+        },
+        /* 토큰 버전 */
+        // checkPw: async(pw) => {
+        //     const result = await checkStudyPw(get().studyId , pw);
+        //     if(typeof result === 'string'){
+        //         set({token: result}); //비밀번호 일치 시 토큰 반환
+        //         return result;
+        //     }
+        //     return null;
+        // },
+        checkToken: async(_token) => {
+            return await checkStudyToken(get().studyId , _token);
         },
         plusPoint: (amount) => {
           updatePoint(get().studyId, amount);

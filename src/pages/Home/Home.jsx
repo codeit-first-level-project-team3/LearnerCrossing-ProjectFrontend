@@ -1,19 +1,18 @@
-import React, { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Card from "../../components/organisms/Card/Card";
 import GNB from "../../components/organisms/GNB/GNB";
 import Search from "../../components/molecules/Search/Search";
 import Sort from "../../components/molecules/Sort/Sort";
 import styles from "./Home.module.css";
-
 import useStudy from "../../contexts/StudyStorage"; 
 import { getStudyList } from "../../api/studyAPI";
-import { getStudyEmojis } from "../../api/emojiAPI"; 
+import { getStudyEmojis } from "../../api/emojiAPI"; // 👈 이모지 API 추가
+
 
 export default function Home() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { resetStudy, selectStudy } = useStudy();
 
   const [allStudies, setAllStudies] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -32,9 +31,6 @@ export default function Home() {
 
   // 전체 스터디 불러오기 + 이모지까지 붙이기
   useEffect(() => {
-    //스터디 정보 리셋
-    resetStudy();
-    
     const fetchStudies = async () => {
       try {
         const data = await getStudyList();
@@ -87,10 +83,6 @@ export default function Home() {
     sessionStorage.setItem("recentStudies", JSON.stringify(recent));
     setRecentStudiesIds(recent.map((s) => s.id));
 
-    // studyStorage 상태에 선택
-    await selectStudy(study.id);
-
-    await selectStudy(study.id);
     navigate(`/studyDetail/${study.id}`);
   };
 
