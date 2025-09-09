@@ -59,7 +59,7 @@
   left: -100px;
 
   background: #fff;
-  padding: 12px;
+  padding: 16px;
   border-radius: 15px;
   border: 1px solid var(--gray-DDDDDD);
   background: #fff;
@@ -106,5 +106,12 @@
   }
   .quickLinks {
     justify-content: flex-end;
+    margin-right: 4px;
+  }
+
+  .copyBox {
+    top: 25px;
+    left: 50%;
+    transform: translateX(-50%);
   }
 }

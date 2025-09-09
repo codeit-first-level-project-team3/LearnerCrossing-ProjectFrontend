@@ -142,6 +142,7 @@ function StudyDetail() {
 
     setTimeout(() => {
       setAlert(false);
+      setShare(false);
     }, 1000);
   };
 

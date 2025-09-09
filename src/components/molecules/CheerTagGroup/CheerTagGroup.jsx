@@ -16,6 +16,8 @@ function CheerTagGroup({ emojis, onClick, isLoading }) {
 
   useEffect(() => {
     if (!showEmojiMore) return;
+    console.log("wrapperRef:", wrapperRef.current);
+    console.log("btnRef:", btnRef.current);
     function handleClickOutside(e) {
       // 해당 컨텐츠가 아니라 다른 곳을 클릭하면 setShowEmojiMore(false)
       if (
@@ -47,12 +49,13 @@ function CheerTagGroup({ emojis, onClick, isLoading }) {
         />
       ))}
       {isMore && (
-        <CheerTag
-          emoji="+  "
-          count={`${emojisLength - show} ..`}
-          onClick={() => setShowEmojiMore((prev) => !prev)}
-          ref={btnRef}
-        />
+        <div ref={btnRef}>
+          <CheerTag
+            emoji="+  "
+            count={`${emojisLength - show} ..`}
+            onClick={() => setShowEmojiMore((prev) => !prev)}
+          />
+        </div>
       )}
       {showEmojiMore && (
         <div className={styles.emojiMore} ref={wrapperRef}>
