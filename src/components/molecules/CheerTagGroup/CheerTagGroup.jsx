@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import CheerTag from "../CheerTag/CheerTag";
 import styles from "./CheerTagGroup.module.css";
+import useOutsideClick from "../../../hooks/useClickOutside";
 
 function CheerTagGroup({ emojis, onClick, isLoading }) {
   // 이모지: {items: Array(5)} 형태
@@ -14,28 +15,7 @@ function CheerTagGroup({ emojis, onClick, isLoading }) {
   const wrapperRef = useRef(null); // <div> emojiMore
   const btnRef = useRef(null); // more button
 
-  useEffect(() => {
-    if (!showEmojiMore) return;
-    console.log("wrapperRef:", wrapperRef.current);
-    console.log("btnRef:", btnRef.current);
-    function handleClickOutside(e) {
-      // 해당 컨텐츠가 아니라 다른 곳을 클릭하면 setShowEmojiMore(false)
-      if (
-        btnRef.current &&
-        !btnRef.current.contains(e.target) &&
-        wrapperRef.current &&
-        !wrapperRef.current.contains(e.target)
-      ) {
-        setShowEmojiMore(false);
-      }
-    }
-    // click할때 handleClickOutside 호출
-    document.addEventListener("mousedown", handleClickOutside);
-    // 사이드 이펙트 정리
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [showEmojiMore]); // showEmojiMore가 바뀌때만 실행되면 됨
+  useOutsideClick([wrapperRef, btnRef], () => setShowEmojiMore(false), showEmojiMore);
 
   return (
     <div className={styles.cheerTagGroup}>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { getHabitList } from "../../api/habitAPI.js";
@@ -19,6 +19,7 @@ import styles from "./StudyDetail.module.css";
 import icCopy from "../../assets/ic_copy.png";
 
 import useStudy from "../../contexts/StudyStorage.jsx";
+import useOutsideClick from "../../hooks/useClickOutside.js";
 
 function StudyDetail() {
   const [isModalOpen, setIsOpen] = useState(false); // 모달창 열린 상태
@@ -26,7 +27,9 @@ function StudyDetail() {
   const [isReconfirmOpen, setReconfirmOpen] = useState(false); // 한 번 더 확인용 모달
   const [deleteSuccess, setDeleteSuccess] = useState(false); // 삭제 성공 여부
   const [share, setShare] = useState(false); // 공유하기 창
-  const [password, setPassword] = useState(""); // 비밀번호
+  const shareWrapperRef = useRef(null);
+  const shareBtnRef = useRef(null);
+  const [inputPassword, setInputPassword] = useState(""); // 입력 비밀번호
   const [warning, setWarning] = useState(false); // 경고창
   const navigate = useNavigate(); // 페이지 이동
   const [habits, setHabits] = useState([]); // habits 상태
@@ -34,7 +37,7 @@ function StudyDetail() {
   const [isHabitsLoading, habitsLoadingError, getHabitsAsync] =
     useAutoAsync(getHabitList); // 습관 가져오기 로딩,에러처리
 
-  const { studyId, studyData, selectStudy, checkPw, deleteStudy } = useStudy();
+  const { studyId, studyData, password, selectStudy, checkPw, deleteStudy } = useStudy();
 
   //임시 아이디 1
   // useEffect(()=>{
@@ -55,7 +58,7 @@ function StudyDetail() {
   // input 변경 시 password 변경
   const handlePasswordChange = (e) => {
     const val = e.target.value;
-    setPassword(val);
+    setInputPassword(val);
   };
 
   // 각 버튼마다 이동 위치 분리...
@@ -86,6 +89,7 @@ function StudyDetail() {
   ];
   // 수정하기 클릭
   const handleUpdateClick = () => {
+    // 만약 토큰이 있다면 바로 action 실행
     setNextAction(() => () => navigate("./studyEdit"));
     setIsOpen(true);
     setButtonText("수정하러 가기");
@@ -98,7 +102,7 @@ function StudyDetail() {
   };
   // 비밀번호 성공시 미리 저장해둔 nextAction 실행
   const handlePasswordsubmit = async () => {
-    if (await checkPw(password)) {
+    if (await checkPw(inputPassword)) {
       setWarning(false);
       setIsOpen(false);
       nextAction();
@@ -108,7 +112,7 @@ function StudyDetail() {
   };
   // 삭제 한번 더 확인, 삭제
   const handleReconfirm = async () => {
-    await deleteStudy(studyId, password);
+    await deleteStudy(studyId, inputPassword);
     setReconfirmOpen(false);
     setDeleteSuccess(true);
   };
@@ -134,6 +138,9 @@ function StudyDetail() {
   const handleShareClick = () => {
     setShare(prev => !prev);
   };
+
+  useOutsideClick([shareWrapperRef, shareBtnRef], () => setShare(false), share);
+
   const [alert, setAlert] = useState(false);
   // 복사 아이콘 클릭
   const handleCopyClick = () => {
@@ -199,7 +206,7 @@ function StudyDetail() {
           onClose={handleModalClose}
           buttonText={buttonText}
           title={studyData.name}
-          value={password}
+          value={inputPassword}
           onChange={handlePasswordChange}
         />
       )}
@@ -216,14 +223,14 @@ function StudyDetail() {
               <EmojiPickerButton setChosenEmoji={setChosenEmoji} />
             </div>
             <div className={styles.quickLinks}>
-              <span onClick={handleShareClick}>공유하기</span>
+              <span onClick={handleShareClick} ref={shareBtnRef}>공유하기</span>
               <span>|</span>
               <span onClick={handleUpdateClick}>수정하기</span>
               <span className={styles.delete}>|</span>
               <span className={styles.delete} onClick={handleDeleteClick}>
                 스터디삭제하기
               </span>
-              {share && <div className={styles.copyBox}>
+              {share && <div className={styles.copyBox} ref={shareWrapperRef}>
                 <p>스터디 공유하기</p>
                 <div className={styles.linkBox}>
                   <input type="text" value={url} disabled />
