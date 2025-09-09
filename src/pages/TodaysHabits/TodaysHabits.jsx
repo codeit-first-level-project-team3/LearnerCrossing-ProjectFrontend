@@ -10,6 +10,7 @@ import StudyDescription from '../../components/organisms/StudyDescription/StudyD
 import SetHabitModal from '../../components/organisms/SetHabitModal/SetHabitModal.jsx';
 
 import styles from './TodaysHabits.module.css';
+import { useParams } from 'react-router-dom';
 
 
 
@@ -53,14 +54,15 @@ function HabitList({today, habits, handleToggle, setIsModalOpen }){
 
 function TodaysHabits(){
 
-    const { studyId, password, selectStudy } = useStudy();
+    const { id: studyId } = useParams();
+    const { password, selectStudy } = useStudy();
     const [today, setToday] = useState((new Date().getDay() + 6) % 7);
     const [habits, setHabits] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const goToBtn = [
-        {to: '/focus', name:'오늘의 집중'},
-        {to: '/studyDetail', name:'홈'},
+        {to: '../focus', name:'오늘의 집중'},
+        {to: '../', name:'홈'},
     ]
 
     /* 
@@ -105,6 +107,7 @@ function TodaysHabits(){
         newWeeklyClear[today] = isClear?0:1;
         habit.weeklyClear = convertToString(newWeeklyClear);
 
+        //console.log("토글 비밀번호: " + password);
         const body = {
             password: password,
             name: habit.name,

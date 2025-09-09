@@ -5,13 +5,14 @@ import GNB from "../../components/organisms/GNB/GNB";
 import Search from "../../components/molecules/Search/Search";
 import Sort from "../../components/molecules/Sort/Sort";
 import styles from "./Home.module.css";
-import useStudy from "../../contexts/StudyStorage";
+import useStudy from "../../contexts/StudyStorage"; 
 import { getStudyList } from "../../api/studyAPI";
+import { getStudyEmojis } from "../../api/emojiAPI"; // 👈 이모지 API 추가
 
 export default function Home() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { resetStudy, selectStudy } = useStudy();
+  const { selectStudy } = useStudy();
 
   const [allStudies, setAllStudies] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,7 +20,6 @@ export default function Home() {
   const [visibleCount, setVisibleCount] = useState(6);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  // 최근 조회한 스터디 ID만 관리
   const [recentStudiesIds, setRecentStudiesIds] = useState([]);
 
   // 윈도우 크기 추적
@@ -29,20 +29,25 @@ export default function Home() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // 전체 스터디 불러오기
+  // 전체 스터디 불러오기 + 이모지까지 붙이기
   useEffect(() => {
-    //스터디 정보 리셋
-    resetStudy();
-    
     const fetchStudies = async () => {
       try {
         const data = await getStudyList();
         const studiesArray = data?.items ?? [];
 
-        const studiesWithEmojis = studiesArray.map(study => ({
-          ...study,
-          tags: [], // 이모지는 나중에 처리
-        }));
+        const studiesWithEmojis = await Promise.all(
+          studiesArray.map(async (study) => {
+            try {
+              const emojiRes = await getStudyEmojis(study.id);
+              const tags = emojiRes?.items ?? []; // [{ emojiId, emoji, count }]
+              return { ...study, tags };
+            } catch (err) {
+              console.error(`이모지 불러오기 실패: ${study.id}`, err);
+              return { ...study, tags: [] };
+            }
+          })
+        );
 
         setAllStudies(studiesWithEmojis);
       } catch (err) {
@@ -50,46 +55,41 @@ export default function Home() {
         setAllStudies([]);
       }
     };
-
     fetchStudies();
   }, []);
 
-  // 페이지 진입 또는 URL 변경 시 최근 조회한 스터디 ID 로드
+  // 최근 조회한 스터디 ID 로드
   useEffect(() => {
     const stored = sessionStorage.getItem("recentStudies");
-    const ids = stored ? JSON.parse(stored).map(s => s.id) : [];
+    const ids = stored ? JSON.parse(stored).map((s) => s.id) : [];
     setRecentStudiesIds(ids);
   }, [location]);
 
-  // 실제 화면에 표시할 최근 조회한 스터디
+  // 화면에 표시할 최근 조회 스터디
   const recentStudies = useMemo(() => {
     const maxRecent = windowWidth <= 744 ? 1 : windowWidth <= 1200 ? 2 : 3;
     const studies = recentStudiesIds
-      .map(id => allStudies.find(s => s.id === id))
-      .filter(Boolean); // allStudies에 없는 ID 제거
+      .map((id) => allStudies.find((s) => s.id === id))
+      .filter(Boolean);
     return studies.slice(0, maxRecent);
   }, [recentStudiesIds, allStudies, windowWidth]);
 
   // 카드 클릭
-  const handleCardClick = (study) => {
-    const stored = sessionStorage.getItem("recentStudies");
+  const handleCardClick = async (study) => {
+    // 최근 조회 리스트 업데이트
+    let stored = sessionStorage.getItem("recentStudies");
     let recent = stored ? JSON.parse(stored) : [];
-
-    // 중복 제거 후 앞쪽에 추가
     recent = recent.filter((s) => s.id !== study.id);
     recent.unshift(study);
-
     sessionStorage.setItem("recentStudies", JSON.stringify(recent));
-    setRecentStudiesIds(recent.map(s => s.id)); // 상태도 갱신
-
-    selectStudy(study.id);
-    navigate(`/studyDetail`);
+    setRecentStudiesIds(recent.map((s) => s.id));
+    
+    navigate(`/studyDetail/${study.id}`);
   };
 
   // 검색 + 정렬
   const filteredStudies = useMemo(() => {
     if (!Array.isArray(allStudies)) return [];
-
     let filtered = allStudies.filter(
       (study) =>
         study.nickname.includes(searchTerm) ||
@@ -112,6 +112,7 @@ export default function Home() {
       default:
         break;
     }
+
     return filtered;
   }, [allStudies, searchTerm, sortOption]);
 
@@ -119,7 +120,7 @@ export default function Home() {
     <div className={styles.container}>
       <GNB showCreateStudy={true} />
 
-      {/* 최근 조회한 스터디 */}
+      {/* 최근 조회 스터디 */}
       <section className={styles.recentStudies}>
         <h2 className={styles.sectionTitle}>최근 조회한 스터디</h2>
         <div
@@ -141,7 +142,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 스터디 둘러보기 */}
+      {/* 전체 스터디 */}
       <section className={styles.allStudies}>
         <h2 className={styles.sectionTitle}>스터디 둘러보기</h2>
         <div className={styles.controlsAll}>

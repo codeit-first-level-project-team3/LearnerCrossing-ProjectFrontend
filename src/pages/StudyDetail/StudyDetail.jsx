@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { getHabitList } from "../../api/habitAPI.js";
 import { useAutoAsync } from "../../hooks/useAsync.js";
@@ -22,6 +22,7 @@ import useStudy from "../../contexts/StudyStorage.jsx";
 
 function StudyDetail() {
 
+  const { id } = useParams();
   const [isModalOpen, setIsOpen] = useState(false); // 모달창 열린 상태
   const [buttonText, setButtonText] = useState(""); // 모달창 버튼 이름
   const [isReconfirmOpen, setReconfirmOpen] = useState(false); // 한 번 더 확인용 모달
@@ -36,10 +37,9 @@ function StudyDetail() {
 
   const { studyId, studyData, selectStudy, checkPw } = useStudy();
   
-  //임시 아이디 1
-  // useEffect(()=>{
-  //   selectStudy(1);
-  // }, []);
+  useEffect(()=>{
+    selectStudy(id);
+  }, [id, selectStudy]);
 
   // emojis 훅
   const {
@@ -51,7 +51,6 @@ function StudyDetail() {
     isEmojisLoading,
     isEmojisAdding,
   } = useEmojis(studyId);
-
   
   // input 변경 시 password 변경
   const handlePasswordChange = (e) => {
@@ -65,21 +64,21 @@ function StudyDetail() {
 
   const gotobtn = [
     {
-      to: "/habits",
+      to: "./habits",
       name: "오늘의 습관",
       onClick: (e) => {
         e.preventDefault();
-        setNextAction(() => () => navigate("/habits"));
+        setNextAction(() => () => navigate("./habits"));
         setIsOpen(true);
         setButtonText("오늘의 습관으로 가기");
       },
     },
     {
-      to: "/focus",
+      to: "./focus",
       name: "오늘의 집중",
       onClick: (e) => {
         e.preventDefault();
-        setNextAction(() => () => navigate("/focus"));
+        setNextAction(() => () => navigate("./focus"));
         setIsOpen(true);
         setButtonText("오늘의 집중으로 가기");
       },
@@ -87,7 +86,7 @@ function StudyDetail() {
   ];
   // 수정하기 클릭
   const handleUpdateClick = () => {
-    setNextAction(() => () => navigate(`/studyEdit/${studyId}`));
+    setNextAction(() => () => navigate(`/studyDetail/${studyId}/studyEdit`));
     setIsOpen(true);
     setButtonText("수정하러 가기");
   };

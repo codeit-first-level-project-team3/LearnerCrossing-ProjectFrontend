@@ -9,7 +9,8 @@ import Modal from '../../atoms/modal/modal';
 import styles from './SetHebitModal.module.css';
 
 import trashIcon from '../../../assets/trash.svg';
-import { useStudy } from '../../../contexts/StudyContext.jsx';
+import useStudy from '../../../contexts/StudyStorage.jsx';
+import { useParams } from 'react-router-dom';
 
 function HabitInput({habit, onChange}){    
     return (
@@ -55,7 +56,8 @@ function HabitInputList({habits, handleChange, handleAdd, handelDelete}){
 /* 작동하게만 만들어서 리펙토링이 필요합니다 */
 export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabits}){
 
-    const { studyId, password } = useStudy();
+    const { id: studyId } = useParams();
+    const { password } = useStudy();
     const [habits, setHabits] = useState([...habitList].map(habit=>({...habit})));
     const [rqQueue, setRqQueue] = useState([]);
     
@@ -123,6 +125,7 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
     const rqPatch = async () => {
         const prev = [...habitList].map(habit=>({...habit}));
 
+        //console.log("모달 비밀번호: " + password);
         (habits||[]).map(async(habit) => {
 
             if(habit.id < 0){return;} //추가된 항목(임시 id)이면 수정  x 
@@ -130,10 +133,11 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
 
             const rqBody = {
                 password: password,
-                name: habit.name
+                name: habit.name,
+                weeklyClear: habit.weeklyClear
             }
             const res = await updateHabit(studyId, habit.id, rqBody);
-            //console.log(res); 
+            
         })
     }
 
@@ -180,7 +184,7 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
     const runRqQueue = async () => {
         rqPatch(); //수정 - 추가 or 삭제 되지않은 습관의 이름을 최신화
         const postQueue = rqDelete(); //삭제 - 삭제 큐가 끝나고 남은 추가 큐를 반환.
-        await rqPost(postQueue); //추가 - post는 기다려준 후에 실제 id를 State에 반영
+        await rqPost(postQueue); //추가 - 실제 id를 State에 반영
     }
 
     const handleSubmit = async(e) => {
