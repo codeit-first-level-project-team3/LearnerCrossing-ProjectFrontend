@@ -77,11 +77,12 @@
     transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
+.inputErr{
+    border: 1px solid var(--error-C41013);
+}
+
 .input:focus{
     color: #000000;
-
-    outline: none;
-    border: none;
 
     background-image: url('../../../assets/wave.svg');
     background-size: cover;
@@ -100,6 +101,11 @@
   100% { background-position: -1000px 0; }
 }
 
+.errMsg {
+    color: var(--error-C41013);
+    font: var(--font-14-medium);
+    text-align: center;
+}
 
 .plusBtn {
     display: flex;

@@ -12,33 +12,38 @@ import trashIcon from '../../../assets/trash.svg';
 import useStudy from '../../../contexts/StudyStorage.jsx';
 import { useParams } from 'react-router-dom';
 
-function HabitInput({habit, onChange}){    
+function HabitInput({habit, error, onChange}){    
     return (
         <input 
             type = "text"
             value={habit.name} 
-            className={styles.input}
+            className={`${styles.input} ${error && styles.inputErr}`}
             onChange={onChange}
         />
     )
 }
 
-function HabitInputList({habits, handleChange, handleAdd, handelDelete}){
+function HabitInputList({habits, error, handleChange, handleAdd, handelDelete}){
 
     return (
         <ul className={styles.list}>
             {habits.map(habit=>{
+                const err = error.find((e)=>e.id === habit.id)?.err??false;
                 return(
-                    <li key={habit.id} className={styles.habitDiv}>
-                        <HabitInput 
+                    <li key={habit.id}>
+                        <div className={styles.habitDiv}>
+                            <HabitInput 
                             habit={habit}
+                            error={err}
                             onChange={(e)=> handleChange(habit.id, e.target.value)}
-                        />
-                        <IconButton 
-                            icon={trashIcon} 
-                            className={styles.trashBtn}
-                            onClick={() => handelDelete(habit.id)}
-                        />
+                            />
+                            <IconButton 
+                                icon={trashIcon} 
+                                className={styles.trashBtn}
+                                onClick={() => handelDelete(habit.id)}
+                            />
+                        </div>
+                        {err && <p className={styles.errMsg}>습관 이름은 10자 이하로 작성해주세요!</p>}
                     </li>
                 )
             })}
@@ -59,15 +64,28 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
     const { id: studyId } = useParams();
     const { password, token } = useStudy();
     const [habits, setHabits] = useState([...habitList].map(habit=>({...habit})));
+    const [error, setError] = useState([]); //글자 길이 제한용 에러 여부
     const [rqQueue, setRqQueue] = useState([]);
     
     useEffect(() => {
         if(isOpen){
             //handleHabitsLoad();
             setHabits([...habitList].map(habit=>({...habit})));  
+            setError([...habitList].map(habit=> ({ 
+                id: habit.id,
+                err: (habit.name||[]).length > 11 ? true : false
+            })));
             setRqQueue([]);
         }
     }, [isOpen]);
+
+    useEffect(() => {
+        setError(habits.map(habit=> ({ 
+            id: habit.id,
+            err: (habit.name||[]).length > 11 ? true : false
+        })));
+        
+    }, [habits]);
 
     // useEffect(() => {
     //     console.log(rqQueue);
@@ -211,6 +229,7 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
                 <div className={styles.wrapper}>
                     <HabitInputList 
                         habits={habits}
+                        error={error}
                         handleChange={handleChange}
                         handleAdd={handelAdd}
                         handelDelete={handelDelete}
@@ -219,7 +238,7 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
                 
                 <div className={styles.btnDiv}>
                     <TextButton text='취소' isGreen={false} onClick={() => {setIsOpen(false);}}/>
-                    <TextButton text='수정 완료' type="submit"/>
+                    <TextButton text='수정 완료' type="submit" disabled={!error.every(e=>!e.err)}/>
                 </div>
             </form>
         </Modal>
