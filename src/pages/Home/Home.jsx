@@ -6,7 +6,7 @@ import Search from "../../components/molecules/Search/Search";
 import Sort from "../../components/molecules/Sort/Sort";
 import styles from "./Home.module.css";
 import { getStudyList } from "../../api/studyAPI";
-import { getStudyEmojis } from "../../api/emojiAPI"; 
+import { getStudyEmojis } from "../../api/emojiAPI";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -19,6 +19,7 @@ export default function Home() {
   const [totalPages, setTotalPages] = useState(1);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [loading, setLoading] = useState(false);
+  const [recentIds, setRecentIds] = useState([]);
 
   // 창 크기 추적
   useEffect(() => {
@@ -27,7 +28,7 @@ export default function Home() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // 스터디 + 이모지 불러오기 (페이지네이션)
+  // 전체 스터디 + 이모지 불러오기 (페이지네이션)
   const fetchStudies = async (currentPage) => {
     setLoading(true);
     try {
@@ -59,30 +60,26 @@ export default function Home() {
     }
   };
 
-  // 첫 로딩 시 page=1 데이터 불러오기
+  // 첫 로딩
   useEffect(() => {
     fetchStudies(1);
-  }, []);
 
-  // 최근 조회 스터디 (sessionStorage에서 직접 읽기)
-  const recentStudies = useMemo(() => {
+    // 최근 조회 ID 가져오기
     const stored = sessionStorage.getItem("recentStudies");
     const recent = stored ? JSON.parse(stored) : [];
-
-    let maxRecent = 3;
-    if (windowWidth <= 744) maxRecent = 1;
-    else if (windowWidth <= 1200) maxRecent = 2;
-
-    return recent.slice(0, maxRecent);
-  }, [windowWidth]);
+    setRecentIds(recent.map((s) => s.id));
+  }, []);
 
   // 카드 클릭
   const handleCardClick = (study) => {
+    // 최근 조회 갱신
     const stored = sessionStorage.getItem("recentStudies");
     let recent = stored ? JSON.parse(stored) : [];
     recent = recent.filter((s) => s.id !== study.id);
     recent.unshift(study);
     sessionStorage.setItem("recentStudies", JSON.stringify(recent));
+
+    setRecentIds(recent.map((s) => s.id));
 
     navigate(`/studyDetail/${study.id}`);
   };
@@ -115,6 +112,21 @@ export default function Home() {
 
     return filtered;
   }, [allStudies, searchTerm, sortOption]);
+
+  // 최근 조회 스터디 (allStudies에서 가져오기, tags 포함)
+  const recentStudies = useMemo(() => {
+    if (!Array.isArray(allStudies)) return [];
+    let maxRecent = 3;
+    if (windowWidth <= 744) maxRecent = 1;
+    else if (windowWidth <= 1200) maxRecent = 2;
+
+    const recent = recentIds
+      .map((id) => allStudies.find((s) => s.id === id))
+      .filter(Boolean)
+      .slice(0, maxRecent);
+
+    return recent;
+  }, [allStudies, recentIds, windowWidth]);
 
   return (
     <>
