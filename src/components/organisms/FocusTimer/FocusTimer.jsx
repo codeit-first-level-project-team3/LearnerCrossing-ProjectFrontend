@@ -15,9 +15,13 @@ import styles from './FocusTimer.module.css';
 
 import timerIcon from '../../../assets/ic_timer.svg';
 import FadeToast from '../../molecules/FadeToast/FadeToast.jsx';
+import TestToggle from '../../molecules/TestToggle/TestToggle.jsx';
 
 /* 타이머 인풋 / 카운트 / 버튼 모두 합친 조직 컴포넌트 */
 export default function FocusTimer(){    
+    /* 테스트 모드 */
+    const [isTestMode, setIsTestMode] = useState(false);
+
     /* 타이머 기능 */
     const [timeInput, setTimeInput] = useState(0);
     const [timerInterval, setTimerInterval] = useState(0);
@@ -31,13 +35,13 @@ export default function FocusTimer(){
     const [gettingPoint, setGettingPoint] = useState(0);
 
     /* 타이머 세팅시 나오는 태그용 텍스트 (설정 시간 표시)*/
-    const mins = String(Math.floor((timerInterval / (1000 * 60)) % 60)).padStart(2, '0');
-    const secs = String(Math.floor((timerInterval / 1000) % 60)).padStart(2, '0');
+    const mins = String(Math.floor(!isTestMode ? (timerInterval / (1000 * 60)) % 60 : (timerInterval / 1000) % 60)).padStart(2, '0');
+    const secs = String(Math.floor(!isTestMode ? (timerInterval / 1000) % 60 : (timerInterval % 1000) / 1000 * 60 )).padStart(2, '0');
     const timerTagText = `${mins}:${secs}`;
 
     const startTimer = () => {
         if(timeInput > 0){
-            setTimerInterval(timeInput + 900);
+            setTimerInterval(isTestMode ? timeInput + 900 : timeInput + 900);
             setIsRun(true);
             //설정 시간에 여유시간 0.9초(900밀리초) 추가 (UX 고려)
         }
@@ -74,7 +78,8 @@ export default function FocusTimer(){
     }
 
     return(
-        <>
+        <>  
+            <TestToggle isTestMode={isTestMode} onToggle={setIsTestMode}/>
             {isRun 
             ? ( <div className={styles.timerDiv}>
                     <div className={styles.tagDiv}>

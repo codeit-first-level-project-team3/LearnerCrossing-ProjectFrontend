@@ -25,7 +25,7 @@ function convertToArray(weeklyClear) {
 }
 
 function HabitList({ today, habits, handleToggle, setIsModalOpen }) {
-  const isAllClear = habits.every(habit=>convertToArray(habit.weeklyClear)[today]);
+  const isAllClear = habits.length > 0 ? habits.every(habit=>convertToArray(habit.weeklyClear)[today]) : false;
   return (
     <div className={`${styles.box} ${isAllClear && styles.allClear}`}>
       <div className={styles.routineWrapper}>
