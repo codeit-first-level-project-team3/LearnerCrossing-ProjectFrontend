@@ -22,7 +22,6 @@ import useStudy from "../../contexts/StudyStorage.jsx";
 import useOutsideClick from "../../hooks/useClickOutside.js";
 
 function StudyDetail() {
-
   const { id } = useParams();
   const [isModalOpen, setIsOpen] = useState(false); // 모달창 열린 상태
   const [buttonText, setButtonText] = useState(""); // 모달창 버튼 이름
@@ -39,10 +38,13 @@ function StudyDetail() {
   const [isHabitsLoading, habitsLoadingError, getHabitsAsync] =
     useAutoAsync(getHabitList); // 습관 가져오기 로딩,에러처리
 
-  const { studyId, studyData, selectStudy, checkPw } = useStudy();
-  
-  useEffect(()=>{
-    selectStudy(id);
+  const { studyId, studyData, selectStudy, checkPw, resetStudy } = useStudy();
+
+  useEffect(() => {
+    (async () => {
+      resetStudy();
+      await selectStudy(id);
+    })();
   }, [id, selectStudy]);
 
   // emojis 훅
@@ -54,7 +56,7 @@ function StudyDetail() {
     handleEmojisAdd,
     isEmojisLoading,
     isEmojisAdding,
-  } = useEmojis(studyId);
+  } = useEmojis(id);
 
   // input 변경 시 password 변경
   const handlePasswordChange = (e) => {
@@ -133,11 +135,11 @@ function StudyDetail() {
     setReconfirmOpen(false);
     handleModalClose();
   };
-  
+
   const url = window.location.href;
   // 공유하기 클릭
   const handleShareClick = () => {
-    setShare(prev => !prev);
+    setShare((prev) => !prev);
   };
 
   useOutsideClick([shareWrapperRef, shareBtnRef], () => setShare(false), share);
@@ -157,7 +159,7 @@ function StudyDetail() {
   // 스터디 habits 가져오기
   const handleHabitsLoad = async () => {
     try {
-      const result = await getHabitsAsync(studyId);
+      const result = await getHabitsAsync(id);
       setHabits(result || []);
     } catch (error) {
       console.error("습관 불러오기 실패:", error.message);
@@ -224,21 +226,31 @@ function StudyDetail() {
               <EmojiPickerButton setChosenEmoji={setChosenEmoji} />
             </div>
             <div className={styles.quickLinks}>
-              <span onClick={handleShareClick} ref={shareBtnRef}>공유하기</span>
+              <span onClick={handleShareClick} ref={shareBtnRef}>
+                공유하기
+              </span>
               <span>|</span>
               <span onClick={handleUpdateClick}>수정하기</span>
               <span className={styles.delete}>|</span>
               <span className={styles.delete} onClick={handleDeleteClick}>
                 스터디삭제하기
               </span>
-              {share && <div className={styles.copyBox} ref={shareWrapperRef}>
-                <p>스터디 공유하기</p>
-                <div className={styles.linkBox} >
-                  <input type="text" value={url}  disabled />
-                  <img src={icCopy} alt=" ic_copy" onClick={handleCopyClick}/>
+              {share && (
+                <div className={styles.copyBox} ref={shareWrapperRef}>
+                  <p>스터디 공유하기</p>
+                  <div className={styles.linkBox}>
+                    <input type="text" value={url} disabled />
+                    <img
+                      src={icCopy}
+                      alt=" ic_copy"
+                      onClick={handleCopyClick}
+                    />
+                  </div>
+                  {alert && (
+                    <p className={styles.copyAlert}>링크가 복사되었습니다.</p>
+                  )}
                 </div>
-                {alert && <p className={styles.copyAlert}>링크가 복사되었습니다.</p>}
-              </div>}
+              )}
             </div>
           </div>
           <StudyDescription
