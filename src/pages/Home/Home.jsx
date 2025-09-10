@@ -130,85 +130,88 @@ export default function Home() {
   }, [allStudies, searchTerm, sortOption]);
 
   return (
-    <div className={styles.container}>
+    <>
+      {/* ✅ 홈 최상단 (root 바로 아래) */}
       <GNB showCreateStudy={true} />
 
-      {/* 최근 조회 */}
-      <section className={styles.recentStudies}>
-        <h2 className={styles.sectionTitle}>최근 조회한 스터디</h2>
-        <div
-          className={`${styles.cardGridRecent} ${
-            recentStudies.length === 0 ? styles.emptyGrid : ""
-          }`}
-        >
-          {recentStudies.length === 0 ? (
-            <p className={styles.emptyMessage}>아직 조회한 스터디가 없어요</p>
-          ) : (
-            recentStudies.map((study) => (
-              <Card
-                key={study.id}
-                studies={[study]}
-                onClick={() => handleCardClick(study)}
+      <div className={styles.container}>
+        {/* 최근 조회 */}
+        <section className={styles.recentStudies}>
+          <h2 className={styles.sectionTitle}>최근 조회한 스터디</h2>
+          <div
+            className={`${styles.cardGridRecent} ${
+              recentStudies.length === 0 ? styles.emptyGrid : ""
+            }`}
+          >
+            {recentStudies.length === 0 ? (
+              <p className={styles.emptyMessage}>아직 조회한 스터디가 없어요</p>
+            ) : (
+              recentStudies.map((study) => (
+                <Card
+                  key={study.id}
+                  studies={[study]}
+                  onClick={() => handleCardClick(study)}
+                />
+              ))
+            )}
+          </div>
+        </section>
+
+        {/* 전체 스터디 */}
+        <section className={styles.allStudies}>
+          <h2 className={styles.sectionTitle}>스터디 둘러보기</h2>
+
+          <div className={styles.controlsAll}>
+            <div className={styles.searchWrapper}>
+              <Search
+                placeholder="스터디 검색"
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
-            ))
-          )}
-        </div>
-      </section>
-
-      {/* 전체 스터디 */}
-      <section className={styles.allStudies}>
-        <h2 className={styles.sectionTitle}>스터디 둘러보기</h2>
-
-        <div className={styles.controlsAll}>
-          <div className={styles.searchWrapper}>
-            <Search
-              placeholder="스터디 검색"
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-          <div className={styles.sortWrapper}>
-            <Sort
-              label={sortOption}
-              onChange={(option) => setSortOption(option)}
-            />
-          </div>
-        </div>
-
-        <div
-          className={`${styles.cardGridAll} ${
-            filteredStudies.length === 0 ? styles.emptyGrid : ""
-          }`}
-        >
-          {filteredStudies.length === 0 ? (
-            <p className={styles.emptyMessage}>아직 둘러볼 스터디가 없어요</p>
-          ) : (
-            filteredStudies.map((study) => (
-              <Card
-                key={study.id}
-                studies={[study]}
-                onClick={() => handleCardClick(study)}
+            </div>
+            <div className={styles.sortWrapper}>
+              <Sort
+                label={sortOption}
+                onChange={(option) => setSortOption(option)}
               />
-            ))
-          )}
-        </div>
-
-        {/* 더보기 버튼 */}
-        {page < totalPages && (
-          <div className={styles.moreBtnContainerAll}>
-            <button
-              className={styles.moreBtnAll}
-              onClick={() => {
-                const nextPage = page + 1;
-                setPage(nextPage);
-                fetchStudies(nextPage);
-              }}
-              disabled={loading}
-            >
-              {loading ? "불러오는 중..." : "더보기"}
-            </button>
+            </div>
           </div>
-        )}
-      </section>
-    </div>
+
+          <div
+            className={`${styles.cardGridAll} ${
+              filteredStudies.length === 0 ? styles.emptyGrid : ""
+            }`}
+          >
+            {filteredStudies.length === 0 ? (
+              <p className={styles.emptyMessage}>아직 둘러볼 스터디가 없어요</p>
+            ) : (
+              filteredStudies.map((study) => (
+                <Card
+                  key={study.id}
+                  studies={[study]}
+                  onClick={() => handleCardClick(study)}
+                />
+              ))
+            )}
+          </div>
+
+          {/* 더보기 버튼 */}
+          {page < totalPages && (
+            <div className={styles.moreBtnContainerAll}>
+              <button
+                className={styles.moreBtnAll}
+                onClick={() => {
+                  const nextPage = page + 1;
+                  setPage(nextPage);
+                  fetchStudies(nextPage);
+                }}
+                disabled={loading}
+              >
+                {loading ? "불러오는 중..." : "더보기"}
+              </button>
+            </div>
+          )}
+        </section>
+      </div>
+    </>
   );
 }
