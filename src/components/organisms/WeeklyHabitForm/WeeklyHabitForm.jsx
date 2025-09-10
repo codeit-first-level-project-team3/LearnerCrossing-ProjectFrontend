@@ -9,6 +9,7 @@ function WeeklyHabitForm({ habits, isLoading, color, colorNum }) {
     <div className={styles.weeklyHabitForm}>
       {!isLoading && isHabits && 
         <HabitWeekly
+          key={habits[0].id} // key 추가
           stickerColor={color}
           stickerNum={colorNum}
           weeklytodo={habits[0].name}
@@ -18,13 +19,14 @@ function WeeklyHabitForm({ habits, isLoading, color, colorNum }) {
       }
       {!isLoading && isHabits &&
         habitsEntries.slice(1, habitsEntries.length).map(([id, { name, weeklyClear }]) => (
-            <HabitWeekly
-              stickerColor={color}
-              stickerNum={colorNum}
-              weeklytodo={name}
-              weeklyState={weeklyClear}
-            />
-          ))
+          <HabitWeekly
+            key={id} // key 추가
+            stickerColor={color}
+            stickerNum={colorNum}
+            weeklytodo={name}
+            weeklyState={weeklyClear}
+          />
+        ))
       }
       {/* 습관이 없는 경우 */}
       {!isHabits && !isLoading &&
