@@ -15,9 +15,13 @@ import styles from './FocusTimer.module.css';
 
 import timerIcon from '../../../assets/ic_timer.svg';
 import FadeToast from '../../molecules/FadeToast/FadeToast.jsx';
+import TestToggle from '../../molecules/TestToggle/TestToggle.jsx';
 
 /* 타이머 인풋 / 카운트 / 버튼 모두 합친 조직 컴포넌트 */
 export default function FocusTimer(){    
+    /* 테스트 모드 */
+    const [isTestMode, setIsTestMode] = useState(false);
+
     /* 타이머 기능 */
     const [timeInput, setTimeInput] = useState(0);
     const [timerInterval, setTimerInterval] = useState(0);
@@ -45,7 +49,8 @@ export default function FocusTimer(){
 
     const pointGet = () => {
         if(timeLeft < 0 && isRun) { // 집중에 성공하면 포인트 추가
-            const mins = (timerInterval / (1000 * 60)) % 60 //분 단위 크기로 측정 (초 단위도 소수점으로 영향을 줍니다.)
+            //분 단위 크기로 측정 (초 단위도 소수점으로 영향을 줍니다.) (테스트 모드: 초단위로 점수 줍니다.)
+            const mins = !isTestMode ? (timerInterval / (1000 * 60)) % 60 :  (timerInterval / 1000) % 60
             const bonus = mins > 10 ? Math.sqrt(mins-10) * 3.5 : 0; //10분 이상 집중하면 지수적으로 증가하는 보너스 (배율: 3.5)
             const point = Math.floor(mins + bonus);
             if(point > 0){plusPoint(point);} //분 단위 집중과 보너스 합계를 포인트로 환산.      
@@ -74,7 +79,8 @@ export default function FocusTimer(){
     }
 
     return(
-        <>
+        <>  
+            <TestToggle isTestMode={isTestMode} onToggle={setIsTestMode}/>
             {isRun 
             ? ( <div className={styles.timerDiv}>
                     <div className={styles.tagDiv}>

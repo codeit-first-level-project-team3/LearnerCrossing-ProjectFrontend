@@ -18,7 +18,7 @@ export default function HabitChip({isClear, onToggle, name=''}){
 
     return (
         <Chip
-            className={styles.routineChip}
+            className={`${styles.routineChip} ${isClear ? styles.isClear : ''}`}
             toggleStyle={toggleStyle}
             isOn={isClear}
             onToggle={onToggle}

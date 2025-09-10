@@ -63,8 +63,9 @@
     max-width: 400px;
     height: 54px;
     
-    border-radius: 20px;
+    outline: none;
     border: none;
+    border-radius: 20px;
     background-color: var(--gray-EEEEEE);
 
     color: var(--gray-818181);
@@ -74,6 +75,36 @@
     text-align: center;
 
     transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.inputErr{
+    border: 1px solid var(--error-C41013);
+}
+
+.input:focus{
+    color: #000000;
+
+    background-image: url('../../../assets/wave.svg');
+    background-size: cover;
+    background-position: center;
+    animation: waveMove 10s linear infinite;
+}
+
+.input:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    filter: brightness(0.95);
+}
+
+@keyframes waveMove {
+  0% { background-position: 0 0; }
+  100% { background-position: -1000px 0; }
+}
+
+.errMsg {
+    color: var(--error-C41013);
+    font: var(--font-14-medium);
+    text-align: center;
 }
 
 .plusBtn {
@@ -125,26 +156,6 @@
 .trashBtn img{
     width: 24px;
     height: 24px;
-}
-
-.input:focus{
-    color: #000000;
-
-    background-image: url('../../../assets/wave.svg');
-    background-size: cover;
-    background-position: center;
-    animation: waveMove 10s linear infinite;
-}
-
-.input:hover{
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    filter: brightness(0.95);
-}
-
-@keyframes waveMove {
-  0% { background-position: 0 0; }
-  100% { background-position: -1000px 0; }
 }
 
 @media (max-width: 744px){

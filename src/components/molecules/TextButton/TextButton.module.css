@@ -26,6 +26,9 @@
 .gray {
   background: var(--gray-DDDDDD);
 }
+.disabled {
+  background: var(--gray-818181);
+}
 
 /* ================= Tablet (1200px ~ 744px) ================= */
 @media (max-width: 1200px) {
