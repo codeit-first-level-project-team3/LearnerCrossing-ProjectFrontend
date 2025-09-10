@@ -22,11 +22,10 @@ export default function StudyCreate() {
   const [errors, setErrors] = useState({});
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
-  const [newStudyId, setNewStudyId] = useState(null); // 새로 생성된 스터디 ID 저장
+  const [newStudyId, setNewStudyId] = useState(null);
   const backgrounds = Array(8).fill(0);
   const backgroundImages = [bg1, bg2, bg3, bg4];
   const navigate = useNavigate();
-
   const { createStudy } = useStudy();
 
   const handleSubmit = async (data) => {
@@ -39,8 +38,15 @@ export default function StudyCreate() {
         description: data.description,
       });
 
+      // 최근 조회 스터디에 추가
+      const stored = sessionStorage.getItem("recentStudies");
+      let recent = stored ? JSON.parse(stored) : [];
+      recent = recent.filter((s) => s.id !== newStudy.id);
+      recent.unshift(newStudy);
+      sessionStorage.setItem("recentStudies", JSON.stringify(recent));
+
       setAlertMessage("스터디 생성 완료!");
-      setNewStudyId(newStudy.id); // 생성된 스터디 id 저장
+      setNewStudyId(newStudy.id);
       setShowAlert(true);
 
     } catch (error) {
@@ -96,7 +102,7 @@ export default function StudyCreate() {
               onClick={() => {
                 setShowAlert(false);
                 if (newStudyId) {
-                  navigate(`/studyDetail/${newStudyId}`); // 생성된 스터디 상세로 이동
+                  navigate(`/studyDetail/${newStudyId}`);
                 }
               }}
               style={{
