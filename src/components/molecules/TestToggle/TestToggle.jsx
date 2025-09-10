@@ -12,7 +12,7 @@ export default function TestToggle({isTestMode=false, onToggle}){
                 </div>
             </div>
         </div>
-        {isTestMode ? <p>포인트를 분 단위로 지급</p> : <p>포인트를 초 단위로 지급</p>}
+        {isTestMode ? <p>포인트를 초 단위로 지급</p> : <p>포인트를 분 단위로 지급</p>}
         </>
         
     )
