@@ -129,19 +129,19 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
             if(prev.find(e=>e.id===habit.id).name === habit.name){return;} //기존과 변동이 없으면 수정 x
 
             /* 비밀번호 방식 */
-            const rqBody = {
-                name: habit.name,
-                weeklyClear: habit.weeklyClear,
-                password: password
-            }
-            const res = await updateHabit(studyId, habit.id, rqBody);
-
-            /* 토큰 방식 */
             // const rqBody = {
             //     name: habit.name,
-            //     weeklyClear: habit.weeklyClear
+            //     weeklyClear: habit.weeklyClear,
+            //     password: password
             // }
-            // const res = await updateHabit(studyId, habit.id, rqBody, token);
+            // const res = await updateHabit(studyId, habit.id, rqBody);
+
+            /* 토큰 방식 */
+            const rqBody = {
+                name: habit.name,
+                weeklyClear: habit.weeklyClear
+            }
+            const res = await updateHabit(studyId, habit.id, rqBody, token);
         })
     }
 
@@ -152,7 +152,7 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
         queue.forEach(async(e)=> {
             if(e.requset === 'delete'){
                 if(e.id > -1){
-                    const res = await deleteHabit(studyId, e.id, password);
+                    const res = await deleteHabit(studyId, e.id, token);
                     //console.log(res); 
                 }else{
                     deletePost.push(e.id)
@@ -173,17 +173,17 @@ export default function SetHabitModal({isOpen, setIsOpen, habitList, updateHabit
             const habit = newHabits.find(habit=>habit.id === post.tempId);
 
             /* 비밀번호 방식 */
-            const rqBody = {
-                name: habit.name,
-                password: password
-            }
-            const res = await createHabit(studyId, rqBody);
+            // const rqBody = {
+            //     name: habit.name,
+            //     password: password
+            // }
+            // const res = await createHabit(studyId, rqBody);
 
             /* 토큰 방식 */
-            // const rqBody = {
-            //     name: habit.name
-            // }
-            // const res = await createHabit(studyId, rqBody, token);
+            const rqBody = {
+                name: habit.name
+            }
+            const res = await createHabit(studyId, rqBody, token);
             habit.id = res.id;
         })) 
         setHabits(newHabits);

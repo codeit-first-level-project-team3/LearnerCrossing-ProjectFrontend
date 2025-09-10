@@ -96,19 +96,32 @@ export async function deleteStudy(id, pwd) {
   return result;
 }
 
+/* 비밀번호 버전 */
+// export async function checkStudyPw(id, pw) {
+//   const getRes = await getStudy(id);
+
+//   const RqBody = {
+//     nickName: getRes.nickName,
+//     name: getRes.name,
+//     description: getRes.description,
+//     background: getRes.background,
+//     password: pw.toString()
+//   }
+
+//   // patch 리퀘스트를 한번 보내서 통과하는 지 검사. (비밀번호 검사 api를 백엔드에 따로 만드는 게 더 귀찮아요 ㅜ)
+//   const result = await api.patch(`/studies/${id}`, RqBody)
+//     .then((res) => { return res.data })
+//     .catch((error) => { console.error(error); return null });
+//   return result;
+// }
+
+/* 토큰 버전 */
 export async function checkStudyPw(id, pw) {
-  const getRes = await getStudy(id);
-
-  const RqBody = {
-    nickName: getRes.nickName,
-    name: getRes.name,
-    description: getRes.description,
-    background: getRes.background,
-    password: pw.toString()
+  const body = {
+    studyId: id,
+    password: pw
   }
-
-  // patch 리퀘스트를 한번 보내서 통과하는 지 검사. (비밀번호 검사 api를 백엔드에 따로 만드는 게 더 귀찮아요 ㅜ)
-  const result = await api.patch(`/studies/${id}`, RqBody)
+  const result = await api.post("/auth", body)
     .then((res) => { return res.data })
     .catch((error) => { console.error(error); return null });
   return result;

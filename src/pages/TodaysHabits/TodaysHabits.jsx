@@ -110,21 +110,21 @@ function TodaysHabits() {
     //console.log("토글 비밀번호: " + password);
 
     /* 비밀번호 방식 */
-    const body = {
-        name: habit.name,
-        weeklyClear: habit.weeklyClear,
-        password: password
-    }
-
-    updateHabit(studyId, habitId, body);
-
-    /* 토큰 방식 */
     // const body = {
     //     name: habit.name,
-    //     weeklyClear: habit.weeklyClear
+    //     weeklyClear: habit.weeklyClear,
+    //     password: password
     // }
 
-    // updateHabit(studyId, habitId, body, token);
+    // updateHabit(studyId, habitId, body);
+
+    /* 토큰 방식 */
+    const body = {
+        name: habit.name,
+        weeklyClear: habit.weeklyClear
+    }
+
+    updateHabit(studyId, habitId, body, token);
     setHabits(newHabits);
   }
 
