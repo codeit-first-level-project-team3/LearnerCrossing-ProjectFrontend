@@ -5,10 +5,8 @@ import GNB from "../../components/organisms/GNB/GNB";
 import Search from "../../components/molecules/Search/Search";
 import Sort from "../../components/molecules/Sort/Sort";
 import styles from "./Home.module.css";
-import useStudy from "../../contexts/StudyStorage"; 
 import { getStudyList } from "../../api/studyAPI";
-import { getStudyEmojis } from "../../api/emojiAPI"; // 👈 이모지 API 추가
-
+import { getStudyEmojis } from "../../api/emojiAPI"; 
 
 export default function Home() {
   const navigate = useNavigate();
@@ -17,55 +15,65 @@ export default function Home() {
   const [allStudies, setAllStudies] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("최근 순");
-  const [visibleCount, setVisibleCount] = useState(6);
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(6);
+  const [totalPages, setTotalPages] = useState(1);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
   const [recentStudiesIds, setRecentStudiesIds] = useState([]);
+  const [loading, setLoading] = useState(false); // 로딩 상태 추가
 
-  // 윈도우 크기 추적
+  // 창 크기 추적
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // 전체 스터디 불러오기 + 이모지까지 붙이기
+  // 스터디 + 이모지 불러오기 (페이지네이션)
+  const fetchStudies = async (currentPage) => {
+    setLoading(true); // 로딩 시작
+    try {
+      const data = await getStudyList({ page: currentPage, pageSize });
+      const studiesArray = data?.items ?? [];
+      setTotalPages(data?.meta?.totalPages ?? 1);
+
+      const studiesWithEmojis = await Promise.all(
+        studiesArray.map(async (study) => {
+          try {
+            const emojiRes = await getStudyEmojis(study.id);
+            const tags = emojiRes?.items ?? [];
+            return { ...study, tags };
+          } catch {
+            return { ...study, tags: [] };
+          }
+        })
+      );
+
+      setAllStudies((prev) => {
+        const existingIds = new Set(prev.map((s) => s.id));
+        const newOnes = studiesWithEmojis.filter((s) => !existingIds.has(s.id));
+        return [...prev, ...newOnes];
+      });
+    } catch (err) {
+      console.error("스터디 불러오기 실패", err);
+    } finally {
+      setLoading(false); // 로딩 종료
+    }
+  };
+
+  // 첫 로딩 시 page=1 데이터 불러오기
   useEffect(() => {
-    const fetchStudies = async () => {
-      try {
-        const data = await getStudyList();
-        const studiesArray = data?.items ?? [];
-
-        const studiesWithEmojis = await Promise.all(
-          studiesArray.map(async (study) => {
-            try {
-              const emojiRes = await getStudyEmojis(study.id);
-              const tags = emojiRes?.items ?? []; 
-              return { ...study, tags };
-            } catch (err) {
-              console.error(`이모지 불러오기 실패: ${study.id}`, err);
-              return { ...study, tags: [] };
-            }
-          })
-        );
-
-        setAllStudies(studiesWithEmojis);
-      } catch (err) {
-        console.error("스터디 불러오기 실패", err);
-        setAllStudies([]);
-      }
-    };
-    fetchStudies();
+    fetchStudies(1);
   }, []);
 
-  // 최근 조회한 스터디 ID 로드
+  // 최근 조회 스터디 ID 로드
   useEffect(() => {
     const stored = sessionStorage.getItem("recentStudies");
     const ids = stored ? JSON.parse(stored).map((s) => s.id) : [];
     setRecentStudiesIds(ids);
   }, [location]);
 
-  // 화면에 표시할 최근 조회 스터디
+  // 최근 조회 스터디
   const recentStudies = useMemo(() => {
     const maxRecent = windowWidth <= 744 ? 1 : windowWidth <= 1200 ? 2 : 3;
     const studies = recentStudiesIds
@@ -75,7 +83,7 @@ export default function Home() {
   }, [recentStudiesIds, allStudies, windowWidth]);
 
   // 카드 클릭
-  const handleCardClick = async (study) => {
+  const handleCardClick = (study) => {
     const stored = sessionStorage.getItem("recentStudies");
     let recent = stored ? JSON.parse(stored) : [];
     recent = recent.filter((s) => s.id !== study.id);
@@ -119,7 +127,7 @@ export default function Home() {
     <div className={styles.container}>
       <GNB showCreateStudy={true} />
 
-      {/* 최근 조회 스터디 */}
+      {/* 최근 조회 */}
       <section className={styles.recentStudies}>
         <h2 className={styles.sectionTitle}>최근 조회한 스터디</h2>
         <div
@@ -144,6 +152,7 @@ export default function Home() {
       {/* 전체 스터디 */}
       <section className={styles.allStudies}>
         <h2 className={styles.sectionTitle}>스터디 둘러보기</h2>
+
         <div className={styles.controlsAll}>
           <div className={styles.searchWrapper}>
             <Search
@@ -151,7 +160,6 @@ export default function Home() {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-
           <div className={styles.sortWrapper}>
             <Sort
               label={sortOption}
@@ -168,7 +176,7 @@ export default function Home() {
           {filteredStudies.length === 0 ? (
             <p className={styles.emptyMessage}>아직 둘러볼 스터디가 없어요</p>
           ) : (
-            filteredStudies.slice(0, visibleCount).map((study) => (
+            filteredStudies.map((study) => (
               <Card
                 key={study.id}
                 studies={[study]}
@@ -178,13 +186,19 @@ export default function Home() {
           )}
         </div>
 
-        {filteredStudies.length > visibleCount && (
+        {/* 더보기 버튼 */}
+        {page < totalPages && (
           <div className={styles.moreBtnContainerAll}>
             <button
               className={styles.moreBtnAll}
-              onClick={() => setVisibleCount((prev) => prev + 6)}
+              onClick={() => {
+                const nextPage = page + 1;
+                setPage(nextPage);
+                fetchStudies(nextPage);
+              }}
+              disabled={loading} // 로딩 중이면 버튼 비활성화
             >
-              더보기
+              {loading ? "불러오는 중..." : "더보기"}
             </button>
           </div>
         )}
