@@ -69,7 +69,7 @@ const useStudy = create(
         checkPw: async(pw) => {
             const result = await checkStudyPw(get().studyId , pw);
             console.log("결과: " + result);
-            if(result.token){
+            if(result){
                 set({token: result.token}); //비밀번호 일치 시 토큰 설정
                 return true;
             }
