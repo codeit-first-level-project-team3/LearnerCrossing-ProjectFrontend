@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styles from './CntDownTimer.module.css';
 
-function CntdownTimer({ interval=0, isPause=false, _setTimeLeft, isTestMode=false }) {
+function CntdownTimer({ interval=0, isPause=false, _setTimeLeft }) {
   const [timeLeft, setTimeLeft] = useState(interval);
   
   const covertToTimerOutput = (diff) => {
@@ -15,16 +15,11 @@ function CntdownTimer({ interval=0, isPause=false, _setTimeLeft, isTestMode=fals
       return diff > 0 ? Math.floor(time) : Math.ceil(time) - 1;
     }
 
-    return isTestMode ? {
+    return {
       sign: Math.floor(diff/1000) > -1 ? '': '-',
       hours: Math.floor((abs / (1000 * 60 * 60)) % 24),
       minutes: Math.floor((abs / (1000 * 60)) % 60),
       seconds: secfloor((abs / 1000) % 60),
-    }
-    : {
-      sign: Math.floor(diff/1000) > -1 ? '': '-',
-      minutes: Math.floor((abs / 1000) % 60),
-      seconds: secfloor((abs % 1000) / 1000 * 60),
     };
   };
 

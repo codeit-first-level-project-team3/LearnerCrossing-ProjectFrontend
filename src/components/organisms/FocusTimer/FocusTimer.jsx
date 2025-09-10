@@ -35,13 +35,13 @@ export default function FocusTimer(){
     const [gettingPoint, setGettingPoint] = useState(0);
 
     /* 타이머 세팅시 나오는 태그용 텍스트 (설정 시간 표시)*/
-    const mins = String(Math.floor(!isTestMode ? (timerInterval / (1000 * 60)) % 60 : (timerInterval / 1000) % 60)).padStart(2, '0');
-    const secs = String(Math.floor(!isTestMode ? (timerInterval / 1000) % 60 : (timerInterval % 1000) / 1000 * 60 )).padStart(2, '0');
+    const mins = String(Math.floor((timerInterval / (1000 * 60)) % 60)).padStart(2, '0');
+    const secs = String(Math.floor((timerInterval / 1000) % 60)).padStart(2, '0');
     const timerTagText = `${mins}:${secs}`;
 
     const startTimer = () => {
         if(timeInput > 0){
-            setTimerInterval(isTestMode ? timeInput + 900 : timeInput + 900);
+            setTimerInterval(timeInput + 900);
             setIsRun(true);
             //설정 시간에 여유시간 0.9초(900밀리초) 추가 (UX 고려)
         }
@@ -49,7 +49,8 @@ export default function FocusTimer(){
 
     const pointGet = () => {
         if(timeLeft < 0 && isRun) { // 집중에 성공하면 포인트 추가
-            const mins = (timerInterval / (1000 * 60)) % 60 //분 단위 크기로 측정 (초 단위도 소수점으로 영향을 줍니다.)
+            //분 단위 크기로 측정 (초 단위도 소수점으로 영향을 줍니다.) (테스트 모드: 초단위로 점수 줍니다.)
+            const mins = !isTestMode ? (timerInterval / (1000 * 60)) % 60 :  (timerInterval / 1000) % 60
             const bonus = mins > 10 ? Math.sqrt(mins-10) * 3.5 : 0; //10분 이상 집중하면 지수적으로 증가하는 보너스 (배율: 3.5)
             const point = Math.floor(mins + bonus);
             if(point > 0){plusPoint(point);} //분 단위 집중과 보너스 합계를 포인트로 환산.      
