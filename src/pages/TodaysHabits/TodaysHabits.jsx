@@ -34,7 +34,8 @@ function HabitList({ today, habits, handleToggle, setIsModalOpen }) {
           <Button onClick={() => setIsModalOpen(true)}>목록수정</Button>
         </div>
         <ul className={styles.routineList}>
-          {habits.map((habit) => {
+          {
+          habits.length > 0 ? habits.map((habit) => {
             const isClear = convertToArray(habit.weeklyClear)[today];
             return (
               <li key={habit.id}>
@@ -47,7 +48,9 @@ function HabitList({ today, habits, handleToggle, setIsModalOpen }) {
                 />
               </li>
             );
-          })}
+          })
+          : <div className={styles.none}><p>진행 중인 습관이 없습니다.<br/>습관을 만들어 보세요!</p></div> 
+          }
         </ul>
       </div>
     </div>
