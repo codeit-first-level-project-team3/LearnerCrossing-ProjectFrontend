@@ -23,7 +23,7 @@ export function useAutoAsync(asyncFunction) {
 // async 실행 로딩처리 훅
 // 사용자가 행동을 했을때 api를 사용하는 경우
 export function useActionAsync(asyncFunction) {
-  const [pending, setPending] = useState(true); // 현재 loading 상태
+  const [pending, setPending] = useState(false); // 현재 loading 상태
   const [error, setError] = useState(null); // 에러 상태
 
   const wrappedFunction = async (...args) => {

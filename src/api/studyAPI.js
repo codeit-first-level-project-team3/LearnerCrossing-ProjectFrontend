@@ -1,3 +1,4 @@
+import useStudy from "../contexts/StudyStorage";
 import api from "./example"; 
 
 // GET studies
@@ -75,11 +76,11 @@ export async function updateStudy(id, data) {
 }
 
 // DELETE
-export async function deleteStudy(id, pwd) {
+export async function deleteStudy(id, token) {
   const result = api
-    .delete(`/studies/${id}`, {
-      data: {
-        password: pwd,
+    .delete(`/studies/${id}`,{
+      headers: {
+        Authorization: `Bearer ${token}`, // 헤더에 토큰 포함
       },
     })
     .then((res) => {
@@ -115,7 +116,7 @@ export async function deleteStudy(id, pwd) {
 //   return result;
 // }
 
-/* 토큰 버전 */
+/* 토큰 버전, 토큰 받아오기 */
 export async function checkStudyPw(id, pw) {
   const body = {
     studyId: id,

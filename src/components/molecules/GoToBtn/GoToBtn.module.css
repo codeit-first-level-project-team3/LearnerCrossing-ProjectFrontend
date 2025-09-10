@@ -1,7 +1,7 @@
 .goToBtn{
     width: fit-content;
     height: fit-content;
-    flex-shrink: 0;
+    flex-shrink: 1;
 
     padding: 12px 16px 12px 24px;
 

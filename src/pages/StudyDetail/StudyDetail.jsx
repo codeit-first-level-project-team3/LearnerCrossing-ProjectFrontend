@@ -38,11 +38,18 @@ function StudyDetail() {
   const [isHabitsLoading, habitsLoadingError, getHabitsAsync] =
     useAutoAsync(getHabitList); // 습관 가져오기 로딩,에러처리
 
-  const { studyId, studyData, selectStudy, checkPw, resetStudy } = useStudy();
+  const {
+    studyId,
+    studyData,
+    token,
+    selectStudy,
+    checkPw,
+    deleteStudy,
+    checkToken,
+  } = useStudy();
 
   useEffect(() => {
     (async () => {
-      resetStudy();
       await selectStudy(id);
     })();
   }, [id, selectStudy]);
@@ -64,44 +71,64 @@ function StudyDetail() {
     setInputPassword(val);
   };
 
-  // 각 버튼마다 이동 위치 분리...
+  // 각 버튼마다 이동 위치 분리
   // 함수를 상태에 저장해서 그걸 모달로 넘기기
   const [nextAction, setNextAction] = useState(null); // 다음에 일어날 함수
 
+  // token auth 체크하기
+  const checkAuth = async () => {
+    if (!token) {
+      return false;
+    } // 토큰이 없는 경우
+
+    const res = await checkToken();
+    console.log("token이 있는 경우 결과: " + res);
+    return res;
+  };
+
+  // 이동 버튼 click 시 action
+  async function handlePermission(action, btnText) {
+    const tokenValid = await checkAuth();
+    // 만약 토큰이 있다면 바로 action 실행
+    if (tokenValid) {
+      // token 확인
+      action();
+      return;
+    }
+    setNextAction(() => action);
+    setIsOpen(true);
+    setButtonText(btnText);
+  }
+  // 이동 버튼
   const gotobtn = [
     {
       to: "./habits",
       name: "오늘의 습관",
-      onClick: (e) => {
+      onClick: async (e) => {
         e.preventDefault();
-        setNextAction(() => () => navigate("./habits"));
-        setIsOpen(true);
-        setButtonText("오늘의 습관으로 가기");
+        const action = () => navigate("./habits");
+        handlePermission(action, "오늘의 습관으로 가기");
       },
     },
     {
       to: "./focus",
       name: "오늘의 집중",
-      onClick: (e) => {
+      onClick: async (e) => {
         e.preventDefault();
-        setNextAction(() => () => navigate("./focus"));
-        setIsOpen(true);
-        setButtonText("오늘의 집중으로 가기");
+        const action = () => navigate("./focus");
+        handlePermission(action, "오늘의 집중으로 가기");
       },
     },
   ];
   // 수정하기 클릭
-  const handleUpdateClick = () => {
-    // 만약 토큰이 있다면 바로 action 실행
-    setNextAction(() => () => navigate("./studyEdit"));
-    setIsOpen(true);
-    setButtonText("수정하러 가기");
+  const handleUpdateClick = async () => {
+    const action = () => navigate("./studyEdit");
+    handlePermission(action, "수정하러 가기");
   };
   // 삭제하기 클릭
-  const handleDeleteClick = () => {
-    setNextAction(() => () => setReconfirmOpen(true)); // 한번 더 확인 모달창 열기
-    setIsOpen(true);
-    setButtonText("삭제하기");
+  const handleDeleteClick = async () => {
+    const action = () => setReconfirmOpen(true); // 한번 더 확인 모달창 열기
+    handlePermission(action, "삭제하기");
   };
   // 비밀번호 성공시 미리 저장해둔 nextAction 실행
   const handlePasswordsubmit = async () => {
@@ -115,7 +142,7 @@ function StudyDetail() {
   };
   // 삭제 한번 더 확인, 삭제
   const handleReconfirm = async () => {
-    await deleteStudy(studyId, inputPassword);
+    await deleteStudy(studyId);
     setReconfirmOpen(false);
     setDeleteSuccess(true);
   };
@@ -142,6 +169,7 @@ function StudyDetail() {
     setShare((prev) => !prev);
   };
 
+  // 외부 클릭
   useOutsideClick([shareWrapperRef, shareBtnRef], () => setShare(false), share);
 
   const [alert, setAlert] = useState(false);
