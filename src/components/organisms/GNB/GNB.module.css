@@ -2,14 +2,12 @@
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* 로고는 왼쪽, 버튼은 절대 위치로 이동 */
+  justify-content: space-between; 
   height: 100px;
   width: 100%;
-  max-width: 1920px; /* PC 기본 */
-  padding: 20px 120px 20px 120px;
   background: var(--bg-F6F4EF);
   box-sizing: border-box;
-  gap: 486px;
+  padding: 40px;
 }
 
 /* 태블릿 */
