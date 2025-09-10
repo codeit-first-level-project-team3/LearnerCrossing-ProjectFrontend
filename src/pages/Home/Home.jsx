@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Card from "../../components/organisms/Card/Card";
 import GNB from "../../components/organisms/GNB/GNB";
 import Search from "../../components/molecules/Search/Search";
@@ -10,7 +10,6 @@ import { getStudyEmojis } from "../../api/emojiAPI";
 
 export default function Home() {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const [allStudies, setAllStudies] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,7 +18,6 @@ export default function Home() {
   const [pageSize] = useState(6);
   const [totalPages, setTotalPages] = useState(1);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [recentStudiesIds, setRecentStudiesIds] = useState([]);
   const [loading, setLoading] = useState(false);
 
   // 창 크기 추적
@@ -66,27 +64,17 @@ export default function Home() {
     fetchStudies(1);
   }, []);
 
-  // 최근 조회 스터디 ID 로드
-  useEffect(() => {
-    const stored = sessionStorage.getItem("recentStudies");
-    const ids = stored ? JSON.parse(stored).map((s) => s.id) : [];
-    setRecentStudiesIds(ids);
-  }, [location]);
-
-  // 최근 조회 스터디 (화면 크기에 따라 최대 표시 개수 제한)
+  // 최근 조회 스터디 (sessionStorage에서 직접 읽기)
   const recentStudies = useMemo(() => {
     const stored = sessionStorage.getItem("recentStudies");
     const recent = stored ? JSON.parse(stored) : [];
 
     let maxRecent = 3;
-    if (windowWidth <= 744) {
-      maxRecent = 1;
-    } else if (windowWidth <= 1200) {
-      maxRecent = 2;
-    }
+    if (windowWidth <= 744) maxRecent = 1;
+    else if (windowWidth <= 1200) maxRecent = 2;
 
     return recent.slice(0, maxRecent);
-  }, [recentStudiesIds, windowWidth]);
+  }, [windowWidth]);
 
   // 카드 클릭
   const handleCardClick = (study) => {
@@ -95,7 +83,6 @@ export default function Home() {
     recent = recent.filter((s) => s.id !== study.id);
     recent.unshift(study);
     sessionStorage.setItem("recentStudies", JSON.stringify(recent));
-    setRecentStudiesIds(recent.map((s) => s.id));
 
     navigate(`/studyDetail/${study.id}`);
   };
@@ -131,7 +118,6 @@ export default function Home() {
 
   return (
     <>
-      {/* ✅ 홈 최상단 (root 바로 아래) */}
       <GNB showCreateStudy={true} />
 
       <div className={styles.container}>
