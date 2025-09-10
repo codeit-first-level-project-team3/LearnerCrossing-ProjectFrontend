@@ -36,7 +36,6 @@ export default function StudyEdit() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 알람 모달 관련 상태
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
 
@@ -87,19 +86,17 @@ export default function StudyEdit() {
         password: data.password,
       };
 
-      await updateStudy(id, payload); // 수정 API 호출
+      const updated = await updateStudy(id, payload); // 수정 API 호출
 
-      // sessionStorage에 최근 조회 스터디로 업데이트
+      // recentStudies 갱신 (중복 제거 + 최신 데이터 반영)
       const stored = sessionStorage.getItem("recentStudies");
       let recent = stored ? JSON.parse(stored) : [];
-      recent = recent.filter((s) => s.id !== id); // 중복 제거
-      recent.unshift({ id, ...payload });
+      recent = recent.filter((s) => s.id !== updated.id); // 기존 제거
+      recent.unshift(updated); // 최신 추가
       sessionStorage.setItem("recentStudies", JSON.stringify(recent));
 
-      // 알람 모달 표시
       setAlertMessage("스터디 정보가 수정되었습니다!");
       setShowAlert(true);
-
     } catch (err) {
       console.error("스터디 수정 오류:", err);
       setAlertMessage(err.message || "수정 중 오류가 발생했습니다.");
@@ -127,7 +124,6 @@ export default function StudyEdit() {
         />
       </div>
 
-      {/* 커스텀 알람 모달 */}
       {showAlert && (
         <div style={{
           position: "fixed",
@@ -157,7 +153,7 @@ export default function StudyEdit() {
             <button
               onClick={() => {
                 setShowAlert(false);
-                navigate(`/studyDetail/${id}`); // 수정 후 Detail 페이지로 이동
+                navigate(`/studyDetail/${id}`);
               }}
               style={{
                 fontFamily: "var(--font-family-jeju)",
