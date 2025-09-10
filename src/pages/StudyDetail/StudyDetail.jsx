@@ -38,11 +38,19 @@ function StudyDetail() {
   const [isHabitsLoading, habitsLoadingError, getHabitsAsync] =
     useAutoAsync(getHabitList); // 습관 가져오기 로딩,에러처리
 
-  const { studyId, studyData, selectStudy, checkPw, resetStudy } = useStudy();
+  const {
+    resetStudy,
+    studyId,
+    studyData,
+    token,
+    selectStudy,
+    checkPw,
+    deleteStudy,
+    checkToken,
+  } = useStudy();
 
   useEffect(() => {
     (async () => {
-      resetStudy();
       await selectStudy(id);
     })();
   }, [id, selectStudy]);
@@ -72,9 +80,17 @@ function StudyDetail() {
     {
       to: "./habits",
       name: "오늘의 습관",
-      onClick: (e) => {
+      onClick: async (e) => {
         e.preventDefault();
-        setNextAction(() => () => navigate("./habits"));
+        const action = () => navigate("./habits");
+        const tokenValid = await checkAuth();
+        // 만약 토큰이 있다면 바로 action 실행
+        if (tokenValid) {
+          // token 확인
+          action();
+          return;
+        }
+        setNextAction(() => action);
         setIsOpen(true);
         setButtonText("오늘의 습관으로 가기");
       },
@@ -82,24 +98,63 @@ function StudyDetail() {
     {
       to: "./focus",
       name: "오늘의 집중",
-      onClick: (e) => {
+      onClick: async (e) => {
         e.preventDefault();
-        setNextAction(() => () => navigate("./focus"));
+        const action = () => navigate("./focus");
+        const tokenValid = await checkAuth();
+        // 만약 토큰이 있다면 바로 action 실행
+        if (tokenValid) {
+          // token 확인
+          action();
+          return;
+        }
+        setNextAction(() => action);
         setIsOpen(true);
         setButtonText("오늘의 집중으로 가기");
       },
     },
   ];
+
+  // token auth 체크하기
+  const checkAuth = async () => {
+    if (!token) {
+      return false;
+    } // 토큰이 없는 경우
+
+    const res = await checkToken();
+    console.log("token이 있는 경우 결과: " + res);
+    return res;
+  };
+
   // 수정하기 클릭
-  const handleUpdateClick = () => {
+  const handleUpdateClick = async () => {
+    const action = () => navigate("./studyEdit");
+
+    const tokenValid = await checkAuth();
     // 만약 토큰이 있다면 바로 action 실행
-    setNextAction(() => () => navigate("./studyEdit"));
+    if (tokenValid) {
+      // token 확인
+      action();
+      return;
+    }
+
+    setNextAction(() => action);
     setIsOpen(true);
     setButtonText("수정하러 가기");
   };
   // 삭제하기 클릭
-  const handleDeleteClick = () => {
-    setNextAction(() => () => setReconfirmOpen(true)); // 한번 더 확인 모달창 열기
+  const handleDeleteClick = async () => {
+    const action = () => setReconfirmOpen(true); // 한번 더 확인 모달창 열기
+
+    const tokenValid = await checkAuth();
+    // 만약 토큰이 있다면 바로 action 실행
+    if (tokenValid) {
+      // token 확인
+      action();
+      return;
+    }
+
+    setNextAction(() => action);
     setIsOpen(true);
     setButtonText("삭제하기");
   };
@@ -115,7 +170,7 @@ function StudyDetail() {
   };
   // 삭제 한번 더 확인, 삭제
   const handleReconfirm = async () => {
-    await deleteStudy(studyId, inputPassword);
+    await deleteStudy(studyId);
     setReconfirmOpen(false);
     setDeleteSuccess(true);
   };

@@ -52,8 +52,9 @@ const useStudy = create(
           });
           return updated;
         },
-        deleteStudy: async (id, password) => {
-            await deleteStudy(id, password);
+        deleteStudy: async (id) => {
+            const _token = get().token;
+            await deleteStudy(id, _token);
             get().resetStudy();
         },
         /* 비밀번호 버전 */
@@ -75,8 +76,8 @@ const useStudy = create(
             }
             return false;
         },
-        checkToken: async(_token) => {
-            return await checkStudyToken(get().studyId , _token);
+        checkToken: async(_token = get().token) => {
+          return await checkStudyToken(get().studyId , _token);
         },
         plusPoint: (amount) => {
           updatePoint(get().studyId, amount);
