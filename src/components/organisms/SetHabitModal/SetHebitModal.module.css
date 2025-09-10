@@ -63,8 +63,9 @@
     max-width: 400px;
     height: 54px;
     
-    border-radius: 20px;
+    outline: none;
     border: none;
+    border-radius: 20px;
     background-color: var(--gray-EEEEEE);
 
     color: var(--gray-818181);
@@ -75,6 +76,30 @@
 
     transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
+
+.input:focus{
+    color: #000000;
+
+    outline: none;
+    border: none;
+
+    background-image: url('../../../assets/wave.svg');
+    background-size: cover;
+    background-position: center;
+    animation: waveMove 10s linear infinite;
+}
+
+.input:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    filter: brightness(0.95);
+}
+
+@keyframes waveMove {
+  0% { background-position: 0 0; }
+  100% { background-position: -1000px 0; }
+}
+
 
 .plusBtn {
     display: flex;
@@ -125,26 +150,6 @@
 .trashBtn img{
     width: 24px;
     height: 24px;
-}
-
-.input:focus{
-    color: #000000;
-
-    background-image: url('../../../assets/wave.svg');
-    background-size: cover;
-    background-position: center;
-    animation: waveMove 10s linear infinite;
-}
-
-.input:hover{
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    filter: brightness(0.95);
-}
-
-@keyframes waveMove {
-  0% { background-position: 0 0; }
-  100% { background-position: -1000px 0; }
 }
 
 @media (max-width: 744px){
