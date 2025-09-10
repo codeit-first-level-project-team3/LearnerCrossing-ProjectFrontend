@@ -11,6 +11,17 @@ export default function Card({ studies = [], onClick }) {
     return diffDays;
   };
 
+  // nickname, name 글자 제한
+  const formatNickname = (nickname) =>
+    nickname.length >= 5 ? nickname.slice(0, 3) + "…" : nickname;
+
+  const formatName = (name) =>
+    name.length >= 3 ? name.slice(0, 3) + "…" : name;
+
+  // description 20자 제한
+  const formatDescription = (desc) =>
+    desc.length > 20 ? desc.slice(0, 20) + "…" : desc;
+
   return (
     <div className={styles.grid}>
       {studies.map((study) => {
@@ -34,7 +45,6 @@ export default function Card({ studies = [], onClick }) {
               backgroundPosition: "center",
             };
 
-        // 이미지 배경이면 whiteText 클래스 적용
         const cardClass = `${styles.card} ${!isColorBg ? styles.whiteText : ""}`;
 
         const days = calculateDays(createdAt);
@@ -49,7 +59,7 @@ export default function Card({ studies = [], onClick }) {
             : background === "#E0F1F5"
             ? "#418099"
             : undefined
-          : undefined; // 이미지 배경이면 whiteText로 흰색
+          : undefined;
 
         return (
           <div
@@ -61,10 +71,10 @@ export default function Card({ studies = [], onClick }) {
             <div className={styles.header}>
               <div className={styles.userInfo}>
                 <span className={styles.nickname} style={{ color: nicknameColor }}>
-                  {nickname}
+                  {formatNickname(nickname)}
                 </span>
                 <span className={styles.separator}>의</span>
-                <span className={styles.name}>{name}</span>
+                <span className={styles.name}>{formatName(name)}</span>
               </div>
               <div className={styles.points}>
                 <div className={styles.pointsRow}>
@@ -75,7 +85,11 @@ export default function Card({ studies = [], onClick }) {
             </div>
 
             <div className={styles.studyName}>{days}일째 진행 중</div>
-            <div className={styles.description}>{description}</div>
+
+            {/* description 최대 20자, 한 줄 */}
+            <div className={styles.description}>
+              {formatDescription(description)}
+            </div>
 
             <div className={styles.tagList}>
               {tags.slice(0, 3).map((tag, idx) => (
