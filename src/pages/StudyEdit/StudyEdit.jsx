@@ -89,6 +89,13 @@ export default function StudyEdit() {
 
       await updateStudy(id, payload); // 수정 API 호출
 
+      // sessionStorage에 최근 조회 스터디로 업데이트
+      const stored = sessionStorage.getItem("recentStudies");
+      let recent = stored ? JSON.parse(stored) : [];
+      recent = recent.filter((s) => s.id !== id); // 중복 제거
+      recent.unshift({ id, ...payload });
+      sessionStorage.setItem("recentStudies", JSON.stringify(recent));
+
       // 알람 모달 표시
       setAlertMessage("스터디 정보가 수정되었습니다!");
       setShowAlert(true);
