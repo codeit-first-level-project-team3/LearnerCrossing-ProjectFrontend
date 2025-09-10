@@ -9,27 +9,35 @@
     border-radius: 20px;
     border: 1px solid var(--gray-gray_DDDDDD, #DDD);
     background: #FFF;
+
+    position: relative;
+    overflow: hidden;
 }
 
-.isAllClear::before{
-  position: absolute;
-  width: 70px;
-  height: 70px;
-  left: 0;
-  top: 0;
-  content: "";
-  background-image: url("../../../assets/goodStamp.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
+.allClear::before{
+    content: "";
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    right: -45px;
+    bottom: -50px; 
+    background-image: url("../../assets/clearStamp2.png");
+    /* width: 300px;
+    height: 300px;
+    right: -45px;
+    bottom: -10px; 
+    background-image: url("../../assets/allClear.png"); */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 
-  transform: rotate(5deg);
-  animation: stamp 0.2s ease-in-out forwards;
+    transform: rotate(5deg);
+    animation: stamp 0.2s ease-in-out forwards;
 }
 
 @keyframes stamp {
-  0% { width: 80px; height: 80px; }
-  100% { width: 70px; height: 70px; }
+  0% { width: 350px; height: 350x; }
+  100% { width: 300px; height: 300px; }
 }
 
 .titleDiv{
