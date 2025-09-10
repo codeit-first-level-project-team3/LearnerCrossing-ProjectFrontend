@@ -57,23 +57,24 @@ const useStudy = create(
             get().resetStudy();
         },
         /* 비밀번호 버전 */
+        // checkPw: async(pw) => {
+        //     const result = await checkStudyPw(get().studyId , pw);
+        //     if(result){
+        //         set({password: pw}); //비밀번호 일치 시 토큰 반환
+        //         return true;
+        //     }
+        //     return false;
+        // },
+        /* 토큰 버전 */
         checkPw: async(pw) => {
             const result = await checkStudyPw(get().studyId , pw);
-            if(result){
-                set({password: pw}); //비밀번호 일치 시 토큰 반환
+            console.log("결과: " + result);
+            if(result.token){
+                set({token: result.token}); //비밀번호 일치 시 토큰 설정
                 return true;
             }
             return false;
         },
-        /* 토큰 버전 */
-        // checkPw: async(pw) => {
-        //     const result = await checkStudyPw(get().studyId , pw);
-        //     if(typeof result === 'string'){
-        //         set({token: result}); //비밀번호 일치 시 토큰 반환
-        //         return result;
-        //     }
-        //     return null;
-        // },
         checkToken: async(_token) => {
             return await checkStudyToken(get().studyId , _token);
         },

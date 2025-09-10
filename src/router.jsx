@@ -15,15 +15,16 @@ import LoadingPage from "./pages/Loading/Loading.jsx";
 //접근 보호 (조건 불만족 시 특정 페이지로 이동) - 비밀번호 방식
 const PrivateRoute = ({ children }) => {
   const { id } = useParams();
-  const { studyId, password, checkPw } = useStudy();
+  const { studyId, token, checkToken } = useStudy();
   const [ isAuthorized, setIsAuthorized ] = useState(true); // null: 로딩 중
-  const [ isPending, error, checkPassword ] = useAsync(checkPw);
+  const [ isPending, error, checkTk ] = useAsync(checkToken);
 
   useEffect(()=>{
     const checkAuth = async () => {
       try {
-        const res = await checkPassword(password);
-        setIsAuthorized(res);
+        if(!token){return;}
+        const res = await checkTk(token);
+        setIsAuthorized(res);// true. false
       } catch (error) {
         setIsAuthorized(false);
       }
