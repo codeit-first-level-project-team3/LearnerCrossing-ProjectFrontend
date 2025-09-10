@@ -64,4 +64,9 @@
     align-items: flex-start;
     gap: 16px;
   }
+
+
+.buttonDiv {
+  gap: 10px;
+}
 }

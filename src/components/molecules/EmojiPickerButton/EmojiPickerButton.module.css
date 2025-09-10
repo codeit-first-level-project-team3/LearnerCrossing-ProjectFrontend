@@ -1,5 +1,22 @@
-.emojiPicker {
-  position: relative;
+
+.emojiPickerBtn {
+  width: 75.66px;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  line-height: 16px;
+
+  padding: 8px 12px;
+  gap: 4px;
+
+  color: var(--black-414141);
+  font: var(--font-16-medium);
+
+  border-radius: 50px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
 }
 
 .emojiPickerWindow {
@@ -7,7 +24,8 @@
   position: absolute;
   z-index: 10;
   top: 20px;
-  left: -20px;
+  right: -253px;
+  /* left: 50px; */
   /* 커스텀 */
   transform: scale(0.9);
   border-radius: 8px;
@@ -20,8 +38,10 @@
 
 /* Mobile */
 @media (max-width: 744px) {
-  .emojiPickerWindow{
-    left: auto;
-    right: -19px;
+  .emojiPickerWindow {
+    top: -2px;
+    left: -48px;
+    right: auto;
+    transform: scale(0.8);
   }
 }
