@@ -12,7 +12,7 @@ import useStudy from "../../contexts/StudyStorage";
 export default function StudyEdit() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { studyData, selectStudy, updateStudy } = useStudy();
+  const { studyData, selectStudy, updateStudy, token } = useStudy();
 
   const backgroundImages = [bg1, bg2, bg3, bg4];
   const imageMap = {
@@ -86,7 +86,8 @@ export default function StudyEdit() {
         password: data.password,
       };
 
-      const updated = await updateStudy(id, payload); // 수정 API 호출
+      // 토큰 포함 updateStudy 호출
+      const updated = await updateStudy(id, payload); 
 
       // recentStudies 갱신 (중복 제거 + 최신 데이터 반영)
       const stored = sessionStorage.getItem("recentStudies");

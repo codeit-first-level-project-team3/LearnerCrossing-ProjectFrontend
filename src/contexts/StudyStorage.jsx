@@ -9,7 +9,7 @@ const useStudy = create(
       (set, get) => ({
         studyId: -1,
         studyData: {
-          id: null,   
+          id: null,
           nickname: "",
           name: "",
           description: "",
@@ -18,16 +18,16 @@ const useStudy = create(
         password: '',
         token: '',
         resetStudy: () => set({
-            studyId: -1,
-            studyData: {
-                id: null,
-                nickname: "",
-                name: "",
-                description: "",
-                points: 0,
-            },
-            password: '',
-            token: '',
+          studyId: -1,
+          studyData: {
+            id: null,
+            nickname: "",
+            name: "",
+            description: "",
+            points: 0,
+          },
+          password: '',
+          token: '',
         }),
         selectStudy: async (id) => {
           const result = await getStudy(id);
@@ -45,7 +45,8 @@ const useStudy = create(
           return newStudy; // 생성된 스터디 반환
         },
         updateStudy: async (id, data) => {
-          const updated = await updateStudy(id, data);
+          const _token = get().token;
+          const updated = await updateStudy(id, data, _token); // 토큰 포함
           set({
             studyId: id,
             studyData: updated,
@@ -53,9 +54,9 @@ const useStudy = create(
           return updated;
         },
         deleteStudy: async (id) => {
-            const _token = get().token;
-            await deleteStudy(id, _token);
-            get().resetStudy();
+          const _token = get().token;
+          await deleteStudy(id, _token);
+          get().resetStudy();
         },
         /* 비밀번호 버전 */
         // checkPw: async(pw) => {
@@ -67,27 +68,26 @@ const useStudy = create(
         //     return false;
         // },
         /* 토큰 버전 */
-        checkPw: async(pw) => {
-            const result = await checkStudyPw(get().studyId , pw);
-            console.log("결과: " + result);
-            if(result){
-                set({token: result.token}); //비밀번호 일치 시 토큰 설정
-                return true;
-            }
-            return false;
+        checkPw: async (pw) => {
+          const result = await checkStudyPw(get().studyId, pw);
+          if (result) {
+            set({ token: result.token }); //비밀번호 일치 시 토큰 설정
+            return true;
+          }
+          return false;
         },
-        checkToken: async(_token = get().token) => {
-          return await checkStudyToken(get().studyId , _token);
+        checkToken: async (_token = get().token) => {
+          return await checkStudyToken(get().studyId, _token);
         },
         plusPoint: (amount) => {
           updatePoint(get().studyId, amount);
-          set((state) => ({ 
+          set((state) => ({
             studyData: {
               ...state.studyData,
               points: state.studyData.points + amount,
-            }
+            },
           }));
-        }
+        },
       }),
       { name: 'study-storage' }
     )
