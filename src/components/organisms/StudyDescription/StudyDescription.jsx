@@ -1,4 +1,4 @@
-import GoToBtn from "../../molecules/GotoBtn/GoToBtn";
+import GoToBtn from "../../molecules/GoToBtn/GoToBtn";
 import styles from "./StudyDescription.module.css";
 import DateTag from "../../molecules/DateTag";
 import PointTag from "../../molecules/PointTag";

@@ -10,7 +10,7 @@ import CheerTagGroup from "../../components/molecules/CheerTagGroup/CheerTagGrou
 import EmojiPickerButton from "../../components/molecules/EmojiPickerButton/EmojiPickerButton.jsx";
 import GNB from "../../components/organisms/GNB/GNB.jsx";
 import StudyMain from "../../components/organisms/StudyMain/StudyMain.jsx";
-import StudyDescription from "../../components/organisms/StudyDescription/StudyDescription";
+import StudyDescription from "../../components/organisms/StudyDescription/StudyDescription.jsx";
 import AuthPasswordModal from "../../components/organisms/AuthPasswordModal/AuthPasswordModal.jsx";
 import WeeklyHabitForm from "../../components/organisms/WeeklyHabitForm/WeeklyHabitForm.jsx";
 import TwoButtonModal from "../../components/molecules/TwoButtonModal.jsx";
