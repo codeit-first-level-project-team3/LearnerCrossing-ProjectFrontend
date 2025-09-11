@@ -10,7 +10,6 @@
 .card {
   width: 358px;
   height: 243px;
-  flex-shrink: 0;
   border-radius: 20px;
   border: 1px solid var(--gray-DDDDDD);
   padding: 16px;
@@ -43,7 +42,7 @@
   gap: 2px;
 }
 
-.nickname {
+.nickname, .separator, .name {
   font-family: var(--font-family);
   font-size: 18px;
   font-weight: 700;
@@ -51,32 +50,22 @@
 }
 
 .separator {
-  font-family: var(--font-family);
-  font-size: 18px;
-  font-weight: 700;
-  line-height: normal;
   color: var(--black-414141);
   margin-right: 4px;
 }
 
 .name {
   color: var(--black-414141);
-  font-family: var(--font-family);
-  font-size: 18px;
-  font-weight: 700;
-  line-height: normal;
 }
 
-/* 포인트 */
+/* 포인트: 가로 배치 */
 .points {
   display: flex;
+  align-items: center;
   padding: 4px 8px;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
   border-radius: 50px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(255,255,255,0.3);
 }
 
 .pointsRow {
@@ -96,7 +85,6 @@
   font-family: var(--font-family);
   font-size: 14px;
   font-weight: 400;
-  line-height: normal;
   margin-top: 10px;
   margin-bottom: 30px;
 }
@@ -123,7 +111,7 @@
   gap: 5px;
   padding: 6px 8px;
   border-radius: 50px;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0,0,0,0.4);
 }
 
 .tagEmoji {
@@ -131,13 +119,13 @@
 }
 
 .tagNumber {
-  color: var(--white-FFFFFF);
+  color: #fff;
   font-family: var(--font-family);
   font-size: 12px;
   font-weight: 400;
 }
 
-/* 흰색 텍스트 카드 (이미지 배경) */
+/* 흰색 텍스트 카드 */
 .whiteText .nickname,
 .whiteText .name,
 .whiteText .separator,
@@ -145,22 +133,22 @@
 .whiteText .description,
 .whiteText .points,
 .whiteText .pointsRow span {
-  color: var(--white-FFFFFF) !important;
+  color: #fff !important;
 }
 
 .whiteText .points {
-  background: rgba(0, 0, 0, 0.5) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0,0,0,0.5) !important;
+  border: 1px solid rgba(255,255,255,0.2);
 }
 
-/* 반응형: 모바일 (744px 이하) */
+/* 반응형: 모바일 */
 @media screen and (max-width: 744px) {
   .card {
     width: 312px;
-    height: 180px; /* 기존 카드 높이 유지 */
-    padding: 12px; /* 불필요한 패딩 최소화 */
-    justify-content: flex-start; /* 내부 여백 제거 */
-    gap: 4px; /* 카드 내부 요소 간 최소 간격 */
+    height: 180px;
+    padding: 12px;
+    justify-content: flex-start;
+    gap: 4px;
   }
 
   .grid {
@@ -172,38 +160,36 @@
   .header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 6px; /* header 내부 요소 간 최소 간격 */
-    margin: 0; /* 불필요한 margin 제거 */
+    gap: 6px;
+    margin: 0;
   }
 
   .points {
     order: -1;
     align-self: flex-start;
-    padding: 4px 8px; /* 기존 padding 유지 */
-    margin: 0; /* 불필요한 margin 제거 */
+    padding: 4px 8px;
+    margin: 0;
   }
 
-  .nickname,
-  .separator,
-  .name {
+  .nickname, .separator, .name {
     font-size: 16px;
-    margin: 0; /* 불필요한 margin 제거 */
+    margin: 0;
   }
 
   .studyName {
     font-size: 12px;
     margin-top: 0;
-    margin-bottom: 12px; /* description과 12px 간격 */
+    margin-bottom: 12px;
   }
 
   .description {
     font-size: 14px;
-    margin: 0; /* 불필요한 margin 제거 */
+    margin: 0;
     flex-grow: 0;
     padding-bottom: 11px;
   }
 
   .tagList {
-    gap: 4px; /* 최소 간격 유지 */
+    gap: 4px;
   }
 }
