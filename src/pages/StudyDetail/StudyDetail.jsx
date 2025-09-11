@@ -140,16 +140,11 @@ function StudyDetail() {
       setWarning(true);
     }
   };
-  // 삭제 한번 더 확인, 삭제
+  // 삭제 한번 더 확인, 삭제 후 홈으로 이동 
   const handleReconfirm = async () => {
     await deleteStudy(studyId);
     setReconfirmOpen(false);
-    setDeleteSuccess(true);
-  };
-  // 삭제하기 완료
-  const handleDeleteSuccess = () => {
-    setDeleteSuccess(false);
-    navigate("/");
+    navigate("/", {state : {deleteMsg: "스터디가 삭제되었습니다."}}); // 홈으로 상태도 전달
   };
 
   // 모달창 닫기
@@ -209,15 +204,6 @@ function StudyDetail() {
           type="warning"
         />
       )}
-      {deleteSuccess && (
-        <OneButtonModal
-          isOpen={deleteSuccess}
-          onClick={handleDeleteSuccess}
-          buttonText="홈으로 돌아가기"
-        >
-          <span>스터디를 삭제했습니다.</span>
-        </OneButtonModal>
-      )}
       {/* 다시 한번 더 확인 */}
       {isReconfirmOpen && (
         <TwoButtonModal
@@ -261,7 +247,7 @@ function StudyDetail() {
               <span onClick={handleUpdateClick}>수정하기</span>
               <span className={styles.delete}>|</span>
               <span className={styles.delete} onClick={handleDeleteClick}>
-                스터디삭제하기
+                스터디 삭제하기
               </span>
               {share && (
                 <div className={styles.copyBox} ref={shareWrapperRef}>
