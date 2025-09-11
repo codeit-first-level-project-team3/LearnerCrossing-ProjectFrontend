@@ -50,7 +50,6 @@ export default function Home() {
   // 첫 로딩
   useEffect(() => {
     fetchStudies(1);
-
     const stored = sessionStorage.getItem("recentStudies");
     const recent = stored ? JSON.parse(stored) : [];
     setRecentIds(recent.map((s) => s.id));
@@ -63,7 +62,6 @@ export default function Home() {
     recent = recent.filter((s) => s.id !== study.id);
     recent.unshift(study);
     sessionStorage.setItem("recentStudies", JSON.stringify(recent));
-
     setRecentIds(recent.map((s) => s.id));
     navigate(`/studyDetail/${study.id}`);
   };
@@ -97,7 +95,7 @@ export default function Home() {
     return filtered;
   }, [allStudies, searchTerm, sortOption]);
 
-  // 최근 조회 스터디 (sessionStorage 기반)
+  // 최근 조회 스터디 (삭제 반영 + 최신화)
   const recentStudies = useMemo(() => {
     const stored = sessionStorage.getItem("recentStudies");
     if (!stored) return [];
@@ -107,8 +105,13 @@ export default function Home() {
     if (windowWidth <= 744) maxRecent = 1;
     else if (windowWidth <= 1200) maxRecent = 2;
 
-    return recent.slice(0, maxRecent);
-  }, [windowWidth, recentIds]);
+    const updatedRecent = recent
+      .map((s) => allStudies.find((a) => a.id === s.id)) // 최신 데이터 매핑
+      .filter(Boolean) // 삭제된 스터디 제거
+      .slice(0, maxRecent);
+
+    return updatedRecent;
+  }, [windowWidth, allStudies, recentIds]);
 
   return (
     <>
