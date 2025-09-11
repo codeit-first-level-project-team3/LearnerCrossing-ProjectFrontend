@@ -20,14 +20,12 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [recentIds, setRecentIds] = useState([]);
 
-  // 창 크기 추적
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // 전체 스터디 불러오기 (페이지네이션)
   const fetchStudies = async (currentPage) => {
     setLoading(true);
     try {
@@ -47,28 +45,23 @@ export default function Home() {
     }
   };
 
-  // 첫 로딩
   useEffect(() => {
     fetchStudies(1);
-
     const stored = sessionStorage.getItem("recentStudies");
     const recent = stored ? JSON.parse(stored) : [];
     setRecentIds(recent.map((s) => s.id));
   }, []);
 
-  // 카드 클릭
   const handleCardClick = (study) => {
     const stored = sessionStorage.getItem("recentStudies");
     let recent = stored ? JSON.parse(stored) : [];
     recent = recent.filter((s) => s.id !== study.id);
     recent.unshift(study);
     sessionStorage.setItem("recentStudies", JSON.stringify(recent));
-
     setRecentIds(recent.map((s) => s.id));
     navigate(`/studyDetail/${study.id}`);
   };
 
-  // 검색 + 정렬
   const filteredStudies = useMemo(() => {
     if (!Array.isArray(allStudies)) return [];
     let filtered = allStudies.filter(
@@ -93,11 +86,9 @@ export default function Home() {
       default:
         break;
     }
-
     return filtered;
   }, [allStudies, searchTerm, sortOption]);
 
-  // 최근 조회 스터디
   const recentStudies = useMemo(() => {
     if (!Array.isArray(allStudies)) return [];
     let maxRecent = 3;
