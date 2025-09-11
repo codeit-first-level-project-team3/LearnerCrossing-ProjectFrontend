@@ -2,51 +2,40 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import StudyForm from "../../components/organisms/StudyForm/StudyForm";
 import GNB from "../../components/organisms/GNB/GNB";
-import bg1 from "../../assets/backgrounds/bg1.svg";
-import bg2 from "../../assets/backgrounds/bg2.svg";
-import bg3 from "../../assets/backgrounds/bg3.svg";
-import bg4 from "../../assets/backgrounds/bg4.svg";
+import { IMAGE_BACKGROUNDS, COLOR_BACKGROUNDS } from "../../constants/backgrounds";
 import styles from "../StudyCreate/StudyCreate.module.css";
 import useStudy from "../../contexts/StudyStorage";
 
 export default function StudyEdit() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { studyData, selectStudy, updateStudy, token } = useStudy();
+  const { studyData, selectStudy, updateStudy } = useStudy();
 
-  const backgroundImages = [bg1, bg2, bg3, bg4];
-  const imageMap = {
-    "/src/assets/backgrounds/bg1.svg": bg1,
-    "/src/assets/backgrounds/bg2.svg": bg2,
-    "/src/assets/backgrounds/bg3.svg": bg3,
-    "/src/assets/backgrounds/bg4.svg": bg4,
-  };
+  const backgroundImages = IMAGE_BACKGROUNDS;
+  const backgrounds = [...Object.keys(COLOR_BACKGROUNDS), ...Object.keys(IMAGE_BACKGROUNDS)];
 
   const [formData, setFormData] = useState({
     nickname: "",
     name: "",
     description: "",
-    background: bg1,
+    background: "BG1",
     password: "",
     confirmPassword: "",
   });
-  const [errors, setErrors] = useState({});
-  const backgrounds = Array(8).fill(0);
 
+  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
 
-  // 스터디 데이터 로드
   useEffect(() => {
     if (!id) return;
     const loadStudy = async () => {
       setLoading(true);
       setError(null);
       try {
-        await selectStudy(id); // 최신 데이터 불러오기
+        await selectStudy(id);
       } catch (err) {
         setError("존재하지 않는 스터디입니다.");
       } finally {
@@ -56,44 +45,34 @@ export default function StudyEdit() {
     loadStudy();
   }, [id, selectStudy]);
 
-  // 스터디 데이터를 폼 데이터로 매핑
   useEffect(() => {
     if (!studyData) return;
-    const mappedBackground = imageMap[studyData.background] || studyData.background || bg1;
     setFormData({
       nickname: studyData.nickname || "",
       name: studyData.name || "",
       description: studyData.description || "",
-      background: mappedBackground,
+      background: studyData.background || "BG1",
       password: "",
       confirmPassword: "",
     });
   }, [studyData]);
 
-  // 제출 처리
   const handleSubmit = async (data) => {
     try {
-      const backgroundForServer =
-        Object.keys(imageMap).find(
-          (key) => imageMap[key] === data.background
-        ) || data.background;
-
       const payload = {
         nickname: data.nickname,
         name: data.name,
         description: data.description,
-        background: backgroundForServer,
+        background: data.background,
         password: data.password,
       };
 
-      // 토큰 포함 updateStudy 호출
-      const updated = await updateStudy(id, payload); 
+      const updated = await updateStudy(id, payload);
 
-      // recentStudies 갱신 (중복 제거 + 최신 데이터 반영)
       const stored = sessionStorage.getItem("recentStudies");
       let recent = stored ? JSON.parse(stored) : [];
-      recent = recent.filter((s) => s.id !== updated.id); // 기존 제거
-      recent.unshift(updated); // 최신 추가
+      recent = recent.filter((s) => s.id !== updated.id);
+      recent.unshift(updated);
       sessionStorage.setItem("recentStudies", JSON.stringify(recent));
 
       setAlertMessage("스터디 정보가 수정되었습니다!");
