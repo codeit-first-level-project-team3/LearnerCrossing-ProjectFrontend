@@ -4,7 +4,7 @@ import { createHabit, updateHabit, deleteHabit } from '../../../api/habitAPI.js'
 import plusIcon from '../../../assets/plus.svg';
 import TextButton from '../../molecules/TextButton/TextButton';
 import IconButton from '../../molecules/IconButton/IconButton';
-import Modal from '../../atoms/modal/modal';
+import Modal from '../../atoms/Modal/Modal';
 
 import styles from './SetHebitModal.module.css';
 
