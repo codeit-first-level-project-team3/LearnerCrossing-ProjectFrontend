@@ -11,7 +11,7 @@ import EmojiPickerButton from "../../components/molecules/EmojiPickerButton/Emoj
 import GNB from "../../components/organisms/GNB/GNB.jsx";
 import StudyMain from "../../components/organisms/StudyMain/StudyMain.jsx";
 import StudyDescription from "../../components/organisms/StudyDescription/StudyDescription";
-import AuthPasswordModal from "../../components/organisms/AuthPasswordModal/AuthPasswordModal.jsX";
+import AuthPasswordModal from "../../components/organisms/AuthPasswordModal/AuthPasswordModal.jsx";
 import WeeklyHabitForm from "../../components/organisms/WeeklyHabitForm/WeeklyHabitForm.jsx";
 import TwoButtonModal from "../../components/molecules/TwoButtonModal.jsx";
 import OneButtonModal from "../../components/molecules/OneButtonModal.jsx";
