@@ -1,4 +1,4 @@
-import Modal from '../../atoms/Modal/Modal';
+import Modal from '../atoms/Modal/Modal';
 import TextButton from "./TextButton/TextButton";
 
 function TwoButtonModal({ isOpen, onClose, onClick, buttonText, children }) {
