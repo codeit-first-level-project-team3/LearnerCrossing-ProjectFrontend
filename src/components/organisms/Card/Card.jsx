@@ -1,26 +1,18 @@
 import React from "react";
 import styles from "./Card.module.css";
-import dpIcon from "../../../../src/assets/point_icon.svg"; 
+import dpIcon from "../../../../src/assets/point_icon.svg";
 
-export default function Card({ studies = [], onClick }) { 
+export default function Card({ studies = [], onClick }) {
+  // 생성일로부터 진행일 계산
   const calculateDays = (createdAt) => {
     const start = new Date(createdAt);
     const today = new Date();
-    const diffTime = today - start;
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
-    return diffDays;
+    return Math.floor((today - start) / (1000 * 60 * 60 * 24)) + 1;
   };
 
-  // nickname, name 글자 제한
-  const formatNickname = (nickname) =>
-    nickname.length >= 5 ? nickname.slice(0, 3) + "…" : nickname;
-
-  const formatName = (name) =>
-    name.length >= 3 ? name.slice(0, 3) + "…" : name;
-
-  // description 20자 제한
-  const formatDescription = (desc) =>
-    desc.length > 20 ? desc.slice(0, 20) + "…" : desc;
+  // 글자 길이 제한
+  const formatText = (text, maxLength) =>
+    text.length > maxLength ? text.slice(0, maxLength) + "…" : text;
 
   return (
     <div className={styles.grid}>
@@ -28,11 +20,11 @@ export default function Card({ studies = [], onClick }) {
         const {
           id,
           nickname,
-          name, 
+          name,
           description,
           background,
           points,
-          tags = [],
+          emojis = [],
           createdAt,
         } = study;
 
@@ -47,8 +39,6 @@ export default function Card({ studies = [], onClick }) {
 
         const cardClass = `${styles.card} ${!isColorBg ? styles.whiteText : ""}`;
 
-        const days = calculateDays(createdAt);
-
         const nicknameColor = isColorBg
           ? background === "#E1EDDE"
             ? "#578246"
@@ -62,20 +52,18 @@ export default function Card({ studies = [], onClick }) {
           : undefined;
 
         return (
-          <div
-            key={id}
-            className={cardClass}
-            style={bgStyle}
-            onClick={onClick} 
-          >
+          <div key={id} className={cardClass} style={bgStyle} onClick={onClick}>
+            {/* 헤더 */}
             <div className={styles.header}>
               <div className={styles.userInfo}>
                 <span className={styles.nickname} style={{ color: nicknameColor }}>
-                  {formatNickname(nickname)}
+                  {formatText(nickname, 3)}
                 </span>
                 <span className={styles.separator}>의</span>
-                <span className={styles.name}>{formatName(name)}</span>
+                <span className={styles.name}>{formatText(name, 3)}</span>
               </div>
+
+              {/* 포인트: 가로 배치 */}
               <div className={styles.points}>
                 <div className={styles.pointsRow}>
                   <img src={dpIcon} alt="Points" className={styles.dpIcon} />
@@ -84,18 +72,18 @@ export default function Card({ studies = [], onClick }) {
               </div>
             </div>
 
-            <div className={styles.studyName}>{days}일째 진행 중</div>
+            {/* 진행일 */}
+            <div className={styles.studyName}>{calculateDays(createdAt)}일째 진행 중</div>
 
-            {/* description 최대 20자, 한 줄 */}
-            <div className={styles.description}>
-              {formatDescription(description)}
-            </div>
+            {/* description 최대 20자 */}
+            <div className={styles.description}>{formatText(description, 20)}</div>
 
+            {/* 이모지 */}
             <div className={styles.tagList}>
-              {tags.slice(0, 3).map((tag, idx) => (
+              {emojis.slice(0, 3).map((e, idx) => (
                 <div key={idx} className={styles.tag}>
-                  <span className={styles.tagEmoji}>{tag.emoji}</span>
-                  <span className={styles.tagNumber}>{tag.count}</span>
+                  <span className={styles.tagEmoji}>{e.emoji}</span>
+                  <span className={styles.tagNumber}>{e.count}</span>
                 </div>
               ))}
             </div>
