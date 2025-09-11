@@ -6,7 +6,6 @@ import Search from "../../components/molecules/Search/Search";
 import Sort from "../../components/molecules/Sort/Sort";
 import styles from "./Home.module.css";
 import { getStudyList } from "../../api/studyAPI";
-import { getStudyEmojis } from "../../api/emojiAPI";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -28,7 +27,7 @@ export default function Home() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // 전체 스터디 + 이모지 불러오기 (페이지네이션)
+  // 전체 스터디 불러오기 (페이지네이션)
   const fetchStudies = async (currentPage) => {
     setLoading(true);
     try {
@@ -36,21 +35,9 @@ export default function Home() {
       const studiesArray = data?.items ?? [];
       setTotalPages(data?.meta?.totalPages ?? 1);
 
-      const studiesWithEmojis = await Promise.all(
-        studiesArray.map(async (study) => {
-          try {
-            const emojiRes = await getStudyEmojis(study.id);
-            const tags = emojiRes?.items ?? [];
-            return { ...study, tags };
-          } catch {
-            return { ...study, tags: [] };
-          }
-        })
-      );
-
       setAllStudies((prev) => {
         const existingIds = new Set(prev.map((s) => s.id));
-        const newOnes = studiesWithEmojis.filter((s) => !existingIds.has(s.id));
+        const newOnes = studiesArray.filter((s) => !existingIds.has(s.id));
         return [...prev, ...newOnes];
       });
     } catch (err) {
@@ -64,7 +51,6 @@ export default function Home() {
   useEffect(() => {
     fetchStudies(1);
 
-    // 최근 조회 ID 가져오기
     const stored = sessionStorage.getItem("recentStudies");
     const recent = stored ? JSON.parse(stored) : [];
     setRecentIds(recent.map((s) => s.id));
@@ -72,7 +58,6 @@ export default function Home() {
 
   // 카드 클릭
   const handleCardClick = (study) => {
-    // 최근 조회 갱신
     const stored = sessionStorage.getItem("recentStudies");
     let recent = stored ? JSON.parse(stored) : [];
     recent = recent.filter((s) => s.id !== study.id);
@@ -80,7 +65,6 @@ export default function Home() {
     sessionStorage.setItem("recentStudies", JSON.stringify(recent));
 
     setRecentIds(recent.map((s) => s.id));
-
     navigate(`/studyDetail/${study.id}`);
   };
 
@@ -113,27 +97,23 @@ export default function Home() {
     return filtered;
   }, [allStudies, searchTerm, sortOption]);
 
-  // 최근 조회 스터디 (allStudies에서 가져오기, tags 포함)
+  // 최근 조회 스터디
   const recentStudies = useMemo(() => {
     if (!Array.isArray(allStudies)) return [];
     let maxRecent = 3;
     if (windowWidth <= 744) maxRecent = 1;
     else if (windowWidth <= 1200) maxRecent = 2;
 
-    const recent = recentIds
+    return recentIds
       .map((id) => allStudies.find((s) => s.id === id))
       .filter(Boolean)
       .slice(0, maxRecent);
-
-    return recent;
   }, [allStudies, recentIds, windowWidth]);
 
   return (
     <>
       <GNB showCreateStudy={true} />
-
       <div className={styles.container}>
-        {/* 최근 조회 */}
         <section className={styles.recentStudies}>
           <h2 className={styles.sectionTitle}>최근 조회한 스터디</h2>
           <div
@@ -155,10 +135,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 전체 스터디 */}
         <section className={styles.allStudies}>
           <h2 className={styles.sectionTitle}>스터디 둘러보기</h2>
-
           <div className={styles.controlsAll}>
             <div className={styles.searchWrapper}>
               <Search
@@ -192,7 +170,6 @@ export default function Home() {
             )}
           </div>
 
-          {/* 더보기 버튼 */}
           {page < totalPages && (
             <div className={styles.moreBtnContainerAll}>
               <button
