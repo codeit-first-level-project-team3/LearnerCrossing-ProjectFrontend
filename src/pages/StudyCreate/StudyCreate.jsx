@@ -2,10 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import StudyForm from "../../components/organisms/StudyForm/StudyForm";
 import GNB from "../../components/organisms/GNB/GNB";
-import bg1 from "../../assets/backgrounds/bg1.svg";
-import bg2 from "../../assets/backgrounds/bg2.svg";
-import bg3 from "../../assets/backgrounds/bg3.svg";
-import bg4 from "../../assets/backgrounds/bg4.svg";
+import { IMAGE_BACKGROUNDS, COLOR_BACKGROUNDS } from "../../constants/backgrounds";
 import pageStyles from "./StudyCreate.module.css"; 
 import useStudy from "../../contexts/StudyStorage";
 
@@ -13,7 +10,7 @@ export default function StudyCreate() {
   const [formData, setFormData] = useState({
     nickname: "",
     name: "",
-    background: "",
+    background: "BG1", // DB key 저장
     password: "",
     description: "",
     confirmPassword: "",
@@ -23,8 +20,10 @@ export default function StudyCreate() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [newStudyId, setNewStudyId] = useState(null);
-  const backgrounds = Array(8).fill(0);
-  const backgroundImages = [bg1, bg2, bg3, bg4];
+
+  const backgrounds = [...Object.keys(COLOR_BACKGROUNDS), ...Object.keys(IMAGE_BACKGROUNDS)];
+  const backgroundImages = IMAGE_BACKGROUNDS;
+
   const navigate = useNavigate();
   const { createStudy } = useStudy();
 
@@ -38,7 +37,7 @@ export default function StudyCreate() {
         description: data.description,
       });
 
-      // 최근 조회 스터디에 추가
+      // recentStudies 갱신
       const stored = sessionStorage.getItem("recentStudies");
       let recent = stored ? JSON.parse(stored) : [];
       recent = recent.filter((s) => s.id !== newStudy.id);
@@ -101,9 +100,7 @@ export default function StudyCreate() {
             <button
               onClick={() => {
                 setShowAlert(false);
-                if (newStudyId) {
-                  navigate(`/studyDetail/${newStudyId}`);
-                }
+                if (newStudyId) navigate(`/studyDetail/${newStudyId}`);
               }}
               style={{
                 backgroundColor: "#99C08E",

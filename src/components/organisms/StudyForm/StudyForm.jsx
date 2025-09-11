@@ -14,14 +14,16 @@ import {
   validateConfirmPassword,
 } from "../../../hooks/validation";
 
+import { IMAGE_BACKGROUNDS, COLOR_BACKGROUNDS } from "../../../constants/backgrounds";
+
 export default function StudyForm({
   onSubmit,
   formData,
   setFormData,
   errors,
   setErrors,
-  backgrounds,
-  backgroundImages,
+  backgrounds, // 배열: ["GREEN", "YELLOW", "PINK", "BLUE", "BG1", "BG2", "BG3", "BG4"]
+  backgroundImages, // IMAGE_BACKGROUNDS 객체
   submitText,
 }) {
   const [submitted, setSubmitted] = useState(false);
@@ -77,16 +79,10 @@ export default function StudyForm({
     }
   };
 
-  const getBackgroundValue = (idx) => {
-    return idx === 0
-      ? "#E1EDDE"
-      : idx === 1
-      ? "#FFF1CC"
-      : idx === 2
-      ? "#FDE0E9"
-      : idx === 3
-      ? "#E0F1F5"
-      : backgroundImages[idx - 4];
+  const getBackgroundStyle = (bgKey) => {
+    if (COLOR_BACKGROUNDS[bgKey]) return { backgroundColor: COLOR_BACKGROUNDS[bgKey] };
+    if (IMAGE_BACKGROUNDS[bgKey]) return { backgroundImage: `url(${IMAGE_BACKGROUNDS[bgKey]})`, backgroundSize: "cover", backgroundPosition: "center" };
+    return {};
   };
 
   return (
@@ -102,9 +98,7 @@ export default function StudyForm({
           errorMessage={errors.nickname}
           value={formData.nickname}
           onChange={(e) => handleChange("nickname", e.target.value)}
-          onFocus={() =>
-            setErrors((prev) => ({ ...prev, nickname: validateNickname(formData.nickname) }))
-          }
+          onFocus={() => setErrors((prev) => ({ ...prev, nickname: validateNickname(formData.nickname) }))}
         />
       </div>
 
@@ -119,9 +113,7 @@ export default function StudyForm({
           errorMessage={errors.name}
           value={formData.name}
           onChange={(e) => handleChange("name", e.target.value)}
-          onFocus={() =>
-            setErrors((prev) => ({ ...prev, name: validateStudyName(formData.name) }))
-          }
+          onFocus={() => setErrors((prev) => ({ ...prev, name: validateStudyName(formData.name) }))}
         />
       </div>
 
@@ -136,9 +128,7 @@ export default function StudyForm({
           errorMessage={errors.description}
           value={formData.description}
           onChange={(e) => handleChange("description", e.target.value)}
-          onFocus={() =>
-            setErrors((prev) => ({ ...prev, description: validateDescription(formData.description) }))
-          }
+          onFocus={() => setErrors((prev) => ({ ...prev, description: validateDescription(formData.description) }))}
         />
       </div>
 
@@ -150,20 +140,14 @@ export default function StudyForm({
         </div>
       )}
       <div className={styles.backgroundGrid}>
-        {backgrounds.map((_, idx) => {
-          const bgValue = getBackgroundValue(idx);
-          const isSelected = formData.background === bgValue;
+        {backgrounds.map((bgKey, idx) => {
+          const isSelected = formData.background === bgKey;
           return (
             <div
               key={idx}
-              className={`${styles.backgroundBox} ${
-                submitted && !formData.background && !isSelected ? styles.errorBorder : ""
-              }`}
-              onClick={() => setFormData({ ...formData, background: bgValue })}
-              style={{
-                background:
-                  idx < 4 ? bgValue : `url(${bgValue}) center/cover no-repeat`,
-              }}
+              className={`${styles.backgroundBox} ${submitted && !formData.background && !isSelected ? styles.errorBorder : ""}`}
+              onClick={() => setFormData({ ...formData, background: bgKey })}
+              style={getBackgroundStyle(bgKey)}
             >
               {isSelected && (
                 <div className={styles.selectIconWrapper}>
@@ -186,9 +170,7 @@ export default function StudyForm({
           errorMessage={errors.password}
           value={formData.password}
           onChange={(e) => handleChange("password", e.target.value)}
-          onFocus={() =>
-            setErrors((prev) => ({ ...prev, password: validatePassword(formData.password) }))
-          }
+          onFocus={() => setErrors((prev) => ({ ...prev, password: validatePassword(formData.password) }))}
         />
       </div>
 

@@ -97,23 +97,24 @@ export default function Home() {
     return filtered;
   }, [allStudies, searchTerm, sortOption]);
 
-  // 최근 조회 스터디
+  // 최근 조회 스터디 (sessionStorage 기반)
   const recentStudies = useMemo(() => {
-    if (!Array.isArray(allStudies)) return [];
+    const stored = sessionStorage.getItem("recentStudies");
+    if (!stored) return [];
+
+    let recent = JSON.parse(stored);
     let maxRecent = 3;
     if (windowWidth <= 744) maxRecent = 1;
     else if (windowWidth <= 1200) maxRecent = 2;
 
-    return recentIds
-      .map((id) => allStudies.find((s) => s.id === id))
-      .filter(Boolean)
-      .slice(0, maxRecent);
-  }, [allStudies, recentIds, windowWidth]);
+    return recent.slice(0, maxRecent);
+  }, [windowWidth, recentIds]);
 
   return (
     <>
       <GNB showCreateStudy={true} />
       <div className={styles.container}>
+        {/* 최근 조회 스터디 */}
         <section className={styles.recentStudies}>
           <h2 className={styles.sectionTitle}>최근 조회한 스터디</h2>
           <div
@@ -135,6 +136,7 @@ export default function Home() {
           </div>
         </section>
 
+        {/* 전체 스터디 */}
         <section className={styles.allStudies}>
           <h2 className={styles.sectionTitle}>스터디 둘러보기</h2>
           <div className={styles.controlsAll}>
