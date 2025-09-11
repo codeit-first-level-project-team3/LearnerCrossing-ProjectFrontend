@@ -6,6 +6,7 @@ import Search from "../../components/molecules/Search/Search";
 import Sort from "../../components/molecules/Sort/Sort";
 import styles from "./Home.module.css";
 import { getAllStudies, getStudyList, getStudy } from "../../api/studyAPI";
+import { all } from "axios";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -110,6 +111,12 @@ export default function Home() {
 
     switch (sortOption) {
       case "최근 순":
+        if (!Array.isArray(allStudies)) return [];
+        filtered = allStudies.filter((
+          (study) =>
+            study.nickname.includes(searchTerm) ||
+            study.description.includes(searchTerm)
+        ));
         filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         break;
       case "오래된 순":
