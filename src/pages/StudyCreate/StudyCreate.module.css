@@ -4,7 +4,7 @@
   flex-direction: column;
   align-items: center; 
   gap: 40px; 
-  padding: 0;
+  padding: 170px 0 0 0; /* 상단 GNB 공간 확보 */
   background: var(--bg-color);
 }
 
@@ -34,7 +34,7 @@
 @media (max-width: 1200px) {
   .pageWrapper {
     gap: 20px; 
-    padding: 0 24px;
+    padding: 140px 24px 0 24px; /* 상단 GNB 공간 확보 */
     justify-content: center;
     background: none;
   }
@@ -56,7 +56,7 @@
 @media (max-width: 744px) {
   .pageWrapper {
     gap: 20px;
-    padding: 0;
+    padding: 140px 0 0 0; /* 상단 GNB 공간 확보 */
     justify-content: center;
     background: none;
   }
@@ -64,6 +64,7 @@
   .contentWrapper {
     width: 100%;
     max-width: 344px; 
+    min-width: 355px; /* 모바일 최소 너비 유지 */
     padding: 16px;
     border-radius: 12px;
     box-sizing: border-box;
