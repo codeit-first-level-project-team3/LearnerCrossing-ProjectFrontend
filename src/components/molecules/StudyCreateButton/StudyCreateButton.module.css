@@ -17,40 +17,35 @@
   padding: 0;
 }
 
-/* ================= PC (≥745px) ================= */
-@media (min-width: 745px) {
-  .studyCreateBtn {
-    width: 252px;
-    height: 58px;
-    padding: 10px;
-    border-radius: 16px;
-    font-size: 18px;
-    position: static;
-  }
+/* ================= PC (디폴트: ≥1201px) ================= */
+.studyCreateBtn {
+  width: 252px;
+  height: 58px;
+  padding: 10px;
+  border-radius: 16px;
+  font-size: 18px;
 }
 
-/* ================= Tablet (376px ~ 744px) ================= */
-@media (min-width: 376px) and (max-width: 744px) {
+/* ================= Tablet (745px ~ 1200px) ================= */
+@media (max-width: 1200px) and (min-width: 745px) {
   .studyCreateBtn {
     width: 160px;
     height: 58px;
     padding: 10px;
     border-radius: 14px;
     font-size: 18px;
-    position: absolute;
-    right: clamp(16px, 24px + (100vw - 376px) * (354 - 16) / (744 - 376), 24px);
+    right: clamp(16px, 24px + (100vw - 745px) * (354 - 16) / (1200 - 745), 24px);
   }
 }
 
-/* ================= Mobile (≤375px) ================= */
-@media (max-width: 375px) {
+/* ================= Mobile (≤744px) ================= */
+@media (max-width: 744px) {
   .studyCreateBtn {
     width: 106px;
     height: 38px;
     padding: 10px;
     border-radius: 8px;
     font-size: 11.925px;
-    position: absolute;
-    right: clamp(8px, 16px + (100vw - 320px) * (131 - 8) / (375 - 320), 16px);
+    right: clamp(8px, 16px + (100vw - 320px) * (131 - 8) / (744 - 320), 16px);
   }
 }

@@ -1,38 +1,66 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import StudyForm from "../../components/organisms/StudyForm/StudyForm";
 import GNB from "../../components/organisms/GNB/GNB";
 import bg1 from "../../assets/backgrounds/bg1.svg";
 import bg2 from "../../assets/backgrounds/bg2.svg";
 import bg3 from "../../assets/backgrounds/bg3.svg";
 import bg4 from "../../assets/backgrounds/bg4.svg";
-import styles from "../../components/organisms/StudyForm/StudyForm.module.css";
+import pageStyles from "./StudyCreate.module.css"; 
+import useStudy from "../../contexts/StudyStorage";
 
 export default function StudyCreate() {
-const [formData, setFormData] = useState({
-  nickname: "",
-  name: "",
-  background: "",
-  password: "",
-  description: "",
-  confirmPassword: "", // 검증용
-});
+  const [formData, setFormData] = useState({
+    nickname: "",
+    name: "",
+    background: "",
+    password: "",
+    description: "",
+    confirmPassword: "",
+  });
 
   const [errors, setErrors] = useState({});
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [newStudyId, setNewStudyId] = useState(null);
   const backgrounds = Array(8).fill(0);
   const backgroundImages = [bg1, bg2, bg3, bg4];
+  const navigate = useNavigate();
+  const { createStudy } = useStudy();
 
-  const handleSubmit = (data) => {
-    // StudyForm에서 검증 후 onSubmit으로 넘어온 데이터(data) 사용
-    alert("스터디 생성 완료!");
-    console.log(data);
-    // axios 등으로 서버 전송
+  const handleSubmit = async (data) => {
+    try {
+      const newStudy = await createStudy({
+        nickname: data.nickname,
+        name: data.name,
+        background: data.background,
+        password: data.password,
+        description: data.description,
+      });
+
+      // 최근 조회 스터디에 추가
+      const stored = sessionStorage.getItem("recentStudies");
+      let recent = stored ? JSON.parse(stored) : [];
+      recent = recent.filter((s) => s.id !== newStudy.id);
+      recent.unshift(newStudy);
+      sessionStorage.setItem("recentStudies", JSON.stringify(recent));
+
+      setAlertMessage("스터디 생성 완료!");
+      setNewStudyId(newStudy.id);
+      setShowAlert(true);
+
+    } catch (error) {
+      console.error("스터디 생성 실패:", error);
+      setAlertMessage("스터디 생성 중 오류가 발생했습니다.");
+      setShowAlert(true);
+    }
   };
 
   return (
-    <div className={styles.pageWrapper}>
+    <div className={pageStyles.pageWrapper}>
       <GNB showCreateStudy={false} />
-      <div className={styles.contentWrapper}>
-        <h1 className={styles.pageTitle}>스터디 만들기</h1>
+      <div className={pageStyles.contentWrapper}>
+        <h1 className={pageStyles.pageTitle}>스터디 만들기</h1>
         <StudyForm
           formData={formData}
           setFormData={setFormData}
@@ -44,6 +72,55 @@ const [formData, setFormData] = useState({
           submitText="만들기"
         />
       </div>
+
+      {showAlert && (
+        <div style={{
+          position: "fixed",
+          top: 0, left: 0, width: "100%", height: "100%",
+          backgroundColor: "rgba(0,0,0,0.5)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          zIndex: 1000
+        }}>
+          <div style={{
+            backgroundColor: "#fff",
+            padding: "32px 24px",
+            borderRadius: "16px",
+            textAlign: "center",
+            width: "320px",
+            boxShadow: "0 4px 16px rgba(0,0,0,0.25)"
+          }}>
+            <p style={{
+              marginBottom: "24px",
+              fontSize: "18px",
+              color: "#414141",
+            }}>
+              {alertMessage}
+            </p>
+            <button
+              onClick={() => {
+                setShowAlert(false);
+                if (newStudyId) {
+                  navigate(`/studyDetail/${newStudyId}`);
+                }
+              }}
+              style={{
+                backgroundColor: "#99C08E",
+                color: "#fff",
+                border: "none",
+                borderRadius: "8px",
+                padding: "12px 24px",
+                fontSize: "16px",
+                cursor: "pointer",
+                transition: "0.2s",
+              }}
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

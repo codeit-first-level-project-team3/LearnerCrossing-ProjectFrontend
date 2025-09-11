@@ -4,6 +4,7 @@ import LabeledPasswordInput from "../../molecules/LabeledPasswordInput/LabeledPa
 import LabeledTextareaInput from "../../molecules/LabeledTextareaInput/LabeledTextareaInput";
 import TextButton from "../../molecules/TextButton/TextButton";
 import styles from "./StudyForm.module.css";
+import selectIcon from "../../../assets/select.svg";
 
 import {
   validateNickname,
@@ -166,7 +167,7 @@ export default function StudyForm({
             >
               {isSelected && (
                 <div className={styles.selectIconWrapper}>
-                  <img src="../src/assets/select.svg" alt="선택됨" className={styles.selectIcon} />
+                  <img src={selectIcon} alt="선택됨" className={styles.selectIcon} />
                 </div>
               )}
             </div>

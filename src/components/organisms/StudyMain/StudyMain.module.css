@@ -14,6 +14,8 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 24px;
+
+    user-select: none;
 }
 
 /* Tablet 디자인 */

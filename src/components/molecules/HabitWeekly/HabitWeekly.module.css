@@ -58,4 +58,24 @@
 
 /* Mobile */
 @media (max-width: 744px) {
+  .week {
+    flex-direction: column;
+  }
+  .weeklyGoals {
+    flex-direction: column;
+    justify-content: normal;
+    height: auto;
+  }
+  .todo {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 0 7px;
+    margin-top: 15px;
+    font: var(--font-14-regular);
+  }
+  .none{display: none;}
+  .todoWeek {
+    width: 100%;
+    margin: 10px 0;
+  }
 }

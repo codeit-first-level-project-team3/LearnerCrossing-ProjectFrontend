@@ -5,7 +5,8 @@ export default function CheerTag({emoji="", count="", id, onClick}) {
   return (
     <Tag
       className={styles.cheerTag}
-      text={emoji + " " + count}
+      emoji={emoji}
+      text={count}
       onClick={() => onClick(id)}
     />
   );

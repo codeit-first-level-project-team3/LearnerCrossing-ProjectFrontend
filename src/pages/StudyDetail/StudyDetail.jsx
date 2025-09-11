@@ -1,143 +1,243 @@
+import { useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+
+import { getHabitList } from "../../api/habitAPI.js";
+import { useAutoAsync } from "../../hooks/useAsync.js";
+import useEmojis from "../../hooks/useEmojis.js";
+
 import Toast from "../../components/atoms/Toast.jsx";
 import CheerTagGroup from "../../components/molecules/CheerTagGroup/CheerTagGroup.jsx";
 import EmojiPickerButton from "../../components/molecules/EmojiPickerButton/EmojiPickerButton.jsx";
 import GNB from "../../components/organisms/GNB/GNB.jsx";
 import StudyMain from "../../components/organisms/StudyMain/StudyMain.jsx";
 import StudyDescription from "../../components/organisms/StudyDescription/StudyDescription";
-import AuthPasswordModal from "../../components/organisms/AuthPasswordModal/AuthPasswordModal.jsX";
+import AuthPasswordModal from "../../components/organisms/AuthPasswordModal/AuthPasswordModal.jsx";
 import WeeklyHabitForm from "../../components/organisms/WeeklyHabitForm/WeeklyHabitForm.jsx";
+import TwoButtonModal from "../../components/molecules/TwoButtonModal.jsx";
+import OneButtonModal from "../../components/molecules/OneButtonModal.jsx";
 import styles from "./StudyDetail.module.css";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { getHabitsList } from "./studyDetailAPI.jsx";
+import icCopy from "../../assets/ic_copy.png";
+
+import useStudy from "../../contexts/StudyStorage.jsx";
+import useOutsideClick from "../../hooks/useClickOutside.js";
 
 function StudyDetail() {
-  const gotobtn = [
-    { to: "/habits", name: "오늘의 습관" },
-    { to: "/focus", name: "오늘의 집중" },
-  ];
-
-  const [chosenEmoji, setChosenEmoji] = useState(null); // 이모지 선택창에서 선택한 이모지
-  const [isOpen, setIsOpen] = useState(false); // 모달창 열린 상태
-  const [password, setPassword] = useState(""); // 비밀번호
+  const { id } = useParams();
+  const [isModalOpen, setIsOpen] = useState(false); // 모달창 열린 상태
+  const [buttonText, setButtonText] = useState(""); // 모달창 버튼 이름
+  const [isReconfirmOpen, setReconfirmOpen] = useState(false); // 한 번 더 확인용 모달
+  const [deleteSuccess, setDeleteSuccess] = useState(false); // 삭제 성공 여부
+  const [share, setShare] = useState(false); // 공유하기 창
+  const shareWrapperRef = useRef(null);
+  const shareBtnRef = useRef(null);
+  const [inputPassword, setInputPassword] = useState(""); // 입력 비밀번호
   const [warning, setWarning] = useState(false); // 경고창
   const navigate = useNavigate(); // 페이지 이동
   const [habits, setHabits] = useState([]); // habits 상태
 
-  const title = "연우의 개발 공장"; //임시 타이틀
-  const pwd = "1234"; // 임시 비밀번호
+  const [isHabitsLoading, habitsLoadingError, getHabitsAsync] =
+    useAutoAsync(getHabitList); // 습관 가져오기 로딩,에러처리
 
-  // 임시 이모지 상태
-  const [emojis, setEmojis] = useState({
-    1: { emoji: "🏝️", count: 10 },
-    // 2: { emoji: "👽", count: 78 },
-  });
+  const {
+    studyId,
+    studyData,
+    token,
+    selectStudy,
+    checkPw,
+    deleteStudy,
+    checkToken,
+  } = useStudy();
 
-  // 이모지 카운트 증가 함수
-  function increaseCnt(id) {
-    setEmojis((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        count: prev[id].count + 1,
-      },
-    }));
-    // console.log(chosenEmoji) // 이모지 픽커 이모지 확인
-    // console.log("id:", id); // 현재 클릭 아이디 확인용
-  }
-  // 이모지 추가 함수
-  function addEmoji(newEmoji) {
-    setEmojis((prev) => {
-      // 동일한 이모지 있는지 확인. 있으면 그 key 반환
-      const existEmojiKey = Object.keys(prev).find(
-        (key) => prev[key].emoji === newEmoji
-      );
-      // 있는 경우
-      if (existEmojiKey) {
-        return {
-          ...prev,
-          [existEmojiKey]: {
-            ...prev[existEmojiKey],
-            count: prev[existEmojiKey].count + 1,
-          },
-        };
-      }
-      // 일단은 있는 아이디 중 제일 큰 수 + 1 로 새 아이디 생성
-      const newId = Math.max(...Object.keys(prev).map(Number)) + 1;
-      return {
-        ...prev,
-        [newId]: { emoji: newEmoji, count: 1 },
-      };
-    });
-  }
-
-  // 이모지 추가
   useEffect(() => {
-    if (!chosenEmoji) return;
-    addEmoji(chosenEmoji);
-    console.log("이모지 추가: " + chosenEmoji); // 이모지 추가 확인용 코드
-  }, [chosenEmoji]);
+    (async () => {
+      await selectStudy(id);
+    })();
+  }, [id, selectStudy]);
+
+  // emojis 훅
+  const {
+    emojis,
+    chosenEmoji,
+    setChosenEmoji,
+    handleEmojisLoad,
+    handleEmojisAdd,
+    isEmojisLoading,
+    isEmojisAdding,
+  } = useEmojis(id);
 
   // input 변경 시 password 변경
   const handlePasswordChange = (e) => {
     const val = e.target.value;
-    setPassword(val);
-    console.log(password);
+    setInputPassword(val);
   };
 
-  // 비밀번호 성공시 스터디 생성으로 페이지 이동(임시 함수)
-  const handlePasswordsubmit = () => {
-    if (password === pwd) {
+  // 각 버튼마다 이동 위치 분리
+  // 함수를 상태에 저장해서 그걸 모달로 넘기기
+  const [nextAction, setNextAction] = useState(null); // 다음에 일어날 함수
+
+  // token auth 체크하기
+  const checkAuth = async () => {
+    if (!token) {
+      return false;
+    } // 토큰이 없는 경우
+
+    const res = await checkToken();
+    console.log("token이 있는 경우 결과: " + res);
+    return res;
+  };
+
+  // 이동 버튼 click 시 action
+  async function handlePermission(action, btnText) {
+    const tokenValid = await checkAuth();
+    // 만약 토큰이 있다면 바로 action 실행
+    if (tokenValid) {
+      // token 확인
+      action();
+      return;
+    }
+    setNextAction(() => action);
+    setIsOpen(true);
+    setButtonText(btnText);
+  }
+  // 이동 버튼
+  const gotobtn = [
+    {
+      to: "./habits",
+      name: "오늘의 습관",
+      onClick: async (e) => {
+        e.preventDefault();
+        const action = () => navigate("./habits");
+        handlePermission(action, "오늘의 습관으로 가기");
+      },
+    },
+    {
+      to: "./focus",
+      name: "오늘의 집중",
+      onClick: async (e) => {
+        e.preventDefault();
+        const action = () => navigate("./focus");
+        handlePermission(action, "오늘의 집중으로 가기");
+      },
+    },
+  ];
+  // 수정하기 클릭
+  const handleUpdateClick = async () => {
+    const action = () => navigate("./studyEdit");
+    handlePermission(action, "수정하러 가기");
+  };
+  // 삭제하기 클릭
+  const handleDeleteClick = async () => {
+    const action = () => setReconfirmOpen(true); // 한번 더 확인 모달창 열기
+    handlePermission(action, "삭제하기");
+  };
+  // 비밀번호 성공시 미리 저장해둔 nextAction 실행
+  const handlePasswordsubmit = async () => {
+    if (await checkPw(inputPassword)) {
       setWarning(false);
-      console.log("일치합니다.");
-      navigate("/studyEdit");
+      setIsOpen(false);
+      nextAction();
     } else {
       setWarning(true);
     }
   };
-
-  const [buttonText, setButtonText] = useState("");
-  // 모달창 열기
-  const handleModalOpen = (btnText) => {
-    setIsOpen(true);
-    setButtonText(btnText);
+  // 삭제 한번 더 확인, 삭제
+  const handleReconfirm = async () => {
+    await deleteStudy(studyId);
+    setReconfirmOpen(false);
+    setDeleteSuccess(true);
   };
+  // 삭제하기 완료
+  const handleDeleteSuccess = () => {
+    setDeleteSuccess(false);
+    navigate("/");
+  };
+
   // 모달창 닫기
   const handleModalClose = () => {
     setIsOpen(false);
     setWarning(false);
   };
+  // 한번 더 확인 모달창 닫기
+  const handleReconfirmClose = () => {
+    setReconfirmOpen(false);
+    handleModalClose();
+  };
 
-  // 스터디(id:3)의 habits 가져오기
+  const url = window.location.href;
+  // 공유하기 클릭
+  const handleShareClick = () => {
+    setShare((prev) => !prev);
+  };
+
+  // 외부 클릭
+  useOutsideClick([shareWrapperRef, shareBtnRef], () => setShare(false), share);
+
+  const [alert, setAlert] = useState(false);
+  // 복사 아이콘 클릭
+  const handleCopyClick = () => {
+    navigator.clipboard.writeText(url);
+    setAlert(true);
+
+    setTimeout(() => {
+      setAlert(false);
+      setShare(false);
+    }, 1000);
+  };
+
+  // 스터디 habits 가져오기
   const handleHabitsLoad = async () => {
     try {
-      const result = await getHabitsList(3);
-      console.log("result:", result);
+      const result = await getHabitsAsync(id);
       setHabits(result || []);
     } catch (error) {
       console.error("습관 불러오기 실패:", error.message);
     }
   };
+
   useEffect(() => {
+    // 데이터 불러오기
     handleHabitsLoad();
+    handleEmojisLoad();
   }, []);
 
   return (
     <>
+      {/* 경고창 */}
       {warning && (
         <Toast
           text="비밀번호가 일치하지 않습니다. 다시 입력해주세요."
           type="warning"
         />
       )}
-      {isOpen && (
+      {deleteSuccess && (
+        <OneButtonModal
+          isOpen={deleteSuccess}
+          onClick={handleDeleteSuccess}
+          buttonText="홈으로 돌아가기"
+        >
+          <span>스터디를 삭제했습니다.</span>
+        </OneButtonModal>
+      )}
+      {/* 다시 한번 더 확인 */}
+      {isReconfirmOpen && (
+        <TwoButtonModal
+          isOpen={isReconfirmOpen}
+          onClose={handleReconfirmClose}
+          onClick={handleReconfirm}
+          buttonText="삭제하기"
+        >
+          <span>정말 해당 스터디를 삭제하시겠습니까?</span>
+        </TwoButtonModal>
+      )}
+      {/* 모달창 */}
+      {isModalOpen && (
         <AuthPasswordModal
-          isOpen={isOpen}
+          isOpen={isModalOpen}
           onClick={handlePasswordsubmit}
           onClose={handleModalClose}
           buttonText={buttonText}
-          title={title}
-          value={password}
+          title={studyData.name}
+          value={inputPassword}
           onChange={handlePasswordChange}
         />
       )}
@@ -146,28 +246,54 @@ function StudyDetail() {
         <StudyMain>
           <div className={styles.utilityBar}>
             <div className={styles.emojiBox}>
-              <CheerTagGroup emojis={emojis} onClick={increaseCnt} />
+              <CheerTagGroup
+                emojis={emojis}
+                onClick={handleEmojisAdd}
+                isLoading={isEmojisLoading}
+              />
               <EmojiPickerButton setChosenEmoji={setChosenEmoji} />
             </div>
             <div className={styles.quickLinks}>
-              <span>공유하기</span>
+              <span onClick={handleShareClick} ref={shareBtnRef}>
+                공유하기
+              </span>
               <span>|</span>
-              <span onClick={() => handleModalOpen("수정하기")}>수정하기</span>
+              <span onClick={handleUpdateClick}>수정하기</span>
               <span className={styles.delete}>|</span>
-              <span
-                className={styles.delete}
-                onClick={() => handleModalOpen("삭제하기")}
-              >
+              <span className={styles.delete} onClick={handleDeleteClick}>
                 스터디삭제하기
               </span>
+              {share && (
+                <div className={styles.copyBox} ref={shareWrapperRef}>
+                  <p>스터디 공유하기</p>
+                  <div className={styles.linkBox}>
+                    <input type="text" value={url} disabled />
+                    <img
+                      src={icCopy}
+                      alt=" ic_copy"
+                      onClick={handleCopyClick}
+                    />
+                  </div>
+                  {alert && (
+                    <p className={styles.copyAlert}>링크가 복사되었습니다.</p>
+                  )}
+                </div>
+              )}
             </div>
           </div>
           <StudyDescription
-            title={title}
             goToBtn={gotobtn}
-            description="Slow And Steady Wins The Race! 다들 오늘 하루도 화이팅 :)"
+            description={studyData.description}
           />
-          <WeeklyHabitForm habits={habits} color="purple" colorNum={2} />
+          <div className={styles.habitsContainer}>
+            <h1>습관 기록표</h1>
+            <WeeklyHabitForm
+              habits={habits}
+              isLoading={isHabitsLoading}
+              color="purple"
+              colorNum={2}
+            />
+          </div>
         </StudyMain>
       </main>
     </>

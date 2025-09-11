@@ -1,14 +1,38 @@
 .routineChip{
+    position: relative;
     width: 100%;
     height: 54px;
 
     border-radius: 20px;
     border: none;
+    /* overflow: hidden; */
 }
 
-/* 성민님께 양해 구하고 써보기 */
-/* .routineChip:hover {
+.isClear::before{
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  /* left: -20%;
+  top: -15%; */
+  left: 0%;
+  top: -30%;
+  content: "";
+  background-image: url("../../../assets/clearStamp3.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  transform: rotate(5deg);
+  animation: stamp 0.2s ease-in-out forwards;
+}
+
+.routineChip:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   filter: brightness(0.95);
-} */
+}
+
+@keyframes stamp {
+  0% { width: 80px; height: 80px; }
+  100% { width: 70px; height: 70px; }
+}

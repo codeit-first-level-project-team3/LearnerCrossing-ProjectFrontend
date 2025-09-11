@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState} from 'react';
+import useStudy from '../../../contexts/StudyStorage.jsx';
 
 import CntdownTimer from '../../molecules/CntDownTimer/CntDownTimer.jsx';
 import SetTimerInput from '../../molecules/SetTimerInput/SetTimerInput.jsx';
@@ -13,15 +14,25 @@ import pauseIcon from '../../../assets/pause.svg';
 import styles from './FocusTimer.module.css';
 
 import timerIcon from '../../../assets/ic_timer.svg';
+import FadeToast from '../../molecules/FadeToast/FadeToast.jsx';
+import TestToggle from '../../molecules/TestToggle/TestToggle.jsx';
 
 /* 타이머 인풋 / 카운트 / 버튼 모두 합친 조직 컴포넌트 */
 export default function FocusTimer(){    
+    /* 테스트 모드 */
+    const [isTestMode, setIsTestMode] = useState(false);
 
+    /* 타이머 기능 */
     const [timeInput, setTimeInput] = useState(0);
     const [timerInterval, setTimerInterval] = useState(0);
     const [timeLeft, setTimeLeft] = useState(0);
     const [isRun, setIsRun] = useState(false);
     const [isPause, setIsPause] = useState(false);
+
+    /* 포인트 기능 */
+    const { plusPoint } = useStudy();
+    const [isClear, setIsClear] = useState(false);
+    const [gettingPoint, setGettingPoint] = useState(0);
 
     /* 타이머 세팅시 나오는 태그용 텍스트 (설정 시간 표시)*/
     const mins = String(Math.floor((timerInterval / (1000 * 60)) % 60)).padStart(2, '0');
@@ -36,9 +47,27 @@ export default function FocusTimer(){
         }
     }
 
-    const stopTimer = () => {
-        setTimerInterval(0);
-        setIsRun(false)
+    const pointGet = () => {
+        if(timeLeft < 0 && isRun) { // 집중에 성공하면 포인트 추가
+            //분 단위 크기로 측정 (초 단위도 소수점으로 영향을 줍니다.) (테스트 모드: 초단위로 점수 줍니다.)
+            const mins = !isTestMode ? (timerInterval / (1000 * 60)) % 60 :  (timerInterval / 1000) % 60
+            const bonus = mins > 10 ? Math.sqrt(mins-10) * 3.5 : 0; //10분 이상 집중하면 지수적으로 증가하는 보너스 (배율: 3.5)
+            const point = Math.floor(mins + bonus);
+            if(point > 0){plusPoint(point);} //분 단위 집중과 보너스 합계를 포인트로 환산.      
+            return point;
+        }
+        return 0;
+    }
+
+    const stopTimer = () => {    
+        const point = pointGet();
+        setGettingPoint(point);
+        setTimerInterval(0);  
+        setIsRun(false);
+        setIsClear(true);
+        setTimeout(()=>{
+            setIsClear(false);
+        }, 2000);
     }
 
     const pauseTimer = () => {
@@ -50,7 +79,8 @@ export default function FocusTimer(){
     }
 
     return(
-        <>
+        <>  
+            <TestToggle isTestMode={isTestMode} onToggle={setIsTestMode}/>
             {isRun 
             ? ( <div className={styles.timerDiv}>
                     <div className={styles.tagDiv}>
@@ -111,6 +141,14 @@ export default function FocusTimer(){
                     </div>
                 </div>) 
             }
+            {isPause && <FadeToast 
+                type="warning"
+                text="집중이 중단되었습니다!"
+            />}
+            {isClear && <FadeToast 
+                type="point"
+                text={gettingPoint < 1 ? "집중 완료! (1분 미만 포인트: 0)" : gettingPoint +"포인트를 획득했습니다!"} 
+            />}
         </>
     )
 }

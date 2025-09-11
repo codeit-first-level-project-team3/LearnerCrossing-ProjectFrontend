@@ -1,29 +1,29 @@
 .gnb {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-between; 
   height: 100px;
+  width: 100%;
   background: var(--bg-F6F4EF);
   box-sizing: border-box;
-  padding: 20px 240px 20px 220px;
-  width: 100%;
-  max-width: 1920px;
-  position: relative;
+  padding: 40px;
 }
 
-/* PC/Tablet/Mobile 레이아웃 미디어쿼리만 남김 */
+/* 태블릿 */
+@media (max-width: 1200px) {
+  .gnb {
+    max-width: 1200px;
+    padding: 20px 24px;
+    gap: 385px;
+  }
+}
+
+/* 모바일 */
 @media (max-width: 744px) {
   .gnb {
-    width: 100%;
     max-width: 744px;
-    padding: 20px 24px;
-  } 
-}
-
-@media (max-width: 375px) {
-  .gnb {
-    width: 100%;
-    max-width: 375px;
-    padding: 32px 16px;
+    padding: 20px 16px;
+    gap: 114px;
   }
 }

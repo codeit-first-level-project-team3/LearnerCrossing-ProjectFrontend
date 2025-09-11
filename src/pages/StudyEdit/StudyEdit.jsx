@@ -1,33 +1,112 @@
 import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import StudyForm from "../../components/organisms/StudyForm/StudyForm";
 import GNB from "../../components/organisms/GNB/GNB";
 import bg1 from "../../assets/backgrounds/bg1.svg";
 import bg2 from "../../assets/backgrounds/bg2.svg";
 import bg3 from "../../assets/backgrounds/bg3.svg";
 import bg4 from "../../assets/backgrounds/bg4.svg";
-import styles from "../../components/organisms/StudyForm/StudyForm.module.css";
+import styles from "../StudyCreate/StudyCreate.module.css";
+import useStudy from "../../contexts/StudyStorage";
 
 export default function StudyEdit() {
-  // 하드코딩된 기존 스터디 정보
-  const existingStudyData = {
-    nickname: "하드 코딩 테스트",
-    name: "React 스터디",
-    background: "#E1EDDE", 
-    password: "",
-    description: "React와 관련된 공부를 함께하는 스터디입니다.",
-    confirmPassword: "",
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { studyData, selectStudy, updateStudy, token } = useStudy();
+
+  const backgroundImages = [bg1, bg2, bg3, bg4];
+  const imageMap = {
+    "/src/assets/backgrounds/bg1.svg": bg1,
+    "/src/assets/backgrounds/bg2.svg": bg2,
+    "/src/assets/backgrounds/bg3.svg": bg3,
+    "/src/assets/backgrounds/bg4.svg": bg4,
   };
 
-  const [formData, setFormData] = useState(existingStudyData);
+  const [formData, setFormData] = useState({
+    nickname: "",
+    name: "",
+    description: "",
+    background: bg1,
+    password: "",
+    confirmPassword: "",
+  });
   const [errors, setErrors] = useState({});
   const backgrounds = Array(8).fill(0);
-  const backgroundImages = [bg1, bg2, bg3, bg4];
 
-  const handleSubmit = (data) => {
-    // 서버 없이 콘솔 출력으로 확인
-    alert("스터디 정보가 수정되었습니다!");
-    console.log("수정된 스터디 데이터:", data);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+
+  // 스터디 데이터 로드
+  useEffect(() => {
+    if (!id) return;
+    const loadStudy = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        await selectStudy(id); // 최신 데이터 불러오기
+      } catch (err) {
+        setError("존재하지 않는 스터디입니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadStudy();
+  }, [id, selectStudy]);
+
+  // 스터디 데이터를 폼 데이터로 매핑
+  useEffect(() => {
+    if (!studyData) return;
+    const mappedBackground = imageMap[studyData.background] || studyData.background || bg1;
+    setFormData({
+      nickname: studyData.nickname || "",
+      name: studyData.name || "",
+      description: studyData.description || "",
+      background: mappedBackground,
+      password: "",
+      confirmPassword: "",
+    });
+  }, [studyData]);
+
+  // 제출 처리
+  const handleSubmit = async (data) => {
+    try {
+      const backgroundForServer =
+        Object.keys(imageMap).find(
+          (key) => imageMap[key] === data.background
+        ) || data.background;
+
+      const payload = {
+        nickname: data.nickname,
+        name: data.name,
+        description: data.description,
+        background: backgroundForServer,
+        password: data.password,
+      };
+
+      // 토큰 포함 updateStudy 호출
+      const updated = await updateStudy(id, payload); 
+
+      // recentStudies 갱신 (중복 제거 + 최신 데이터 반영)
+      const stored = sessionStorage.getItem("recentStudies");
+      let recent = stored ? JSON.parse(stored) : [];
+      recent = recent.filter((s) => s.id !== updated.id); // 기존 제거
+      recent.unshift(updated); // 최신 추가
+      sessionStorage.setItem("recentStudies", JSON.stringify(recent));
+
+      setAlertMessage("스터디 정보가 수정되었습니다!");
+      setShowAlert(true);
+    } catch (err) {
+      console.error("스터디 수정 오류:", err);
+      setAlertMessage(err.message || "수정 중 오류가 발생했습니다.");
+      setShowAlert(true);
+    }
   };
+
+  if (loading) return <div>로딩 중...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div className={styles.pageWrapper}>
@@ -45,6 +124,55 @@ export default function StudyEdit() {
           submitText="수정하기"
         />
       </div>
+
+      {showAlert && (
+        <div style={{
+          position: "fixed",
+          top: 0, left: 0, width: "100%", height: "100%",
+          backgroundColor: "rgba(0,0,0,0.5)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          zIndex: 1000
+        }}>
+          <div style={{
+            backgroundColor: "var(--white)",
+            padding: "32px 24px",
+            borderRadius: "16px",
+            textAlign: "center",
+            width: "320px",
+            boxShadow: "0 4px 16px rgba(0,0,0,0.25)"
+          }}>
+            <p style={{
+              marginBottom: "24px",
+              fontSize: "18px",
+              color: "var(--black-414141)",
+              fontFamily: "var(--font-family)"
+            }}>
+              {alertMessage}
+            </p>
+            <button
+              onClick={() => {
+                setShowAlert(false);
+                navigate(`/studyDetail/${id}`);
+              }}
+              style={{
+                fontFamily: "var(--font-family-jeju)",
+                backgroundColor: "var(--brand-99C08E)",
+                color: "#fff",
+                border: "none",
+                borderRadius: "8px",
+                padding: "12px 24px",
+                fontSize: "16px",
+                cursor: "pointer",
+                transition: "0.2s",
+              }}
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

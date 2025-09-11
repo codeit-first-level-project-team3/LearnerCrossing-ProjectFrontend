@@ -9,6 +9,35 @@
     border-radius: 20px;
     border: 1px solid var(--gray-gray_DDDDDD, #DDD);
     background: #FFF;
+
+    position: relative;
+    overflow: hidden;
+}
+
+.allClear::before{
+    content: "";
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    right: -45px;
+    bottom: -50px; 
+    background-image: url("../../assets/clearStamp2.png");
+    /* width: 300px;
+    height: 300px;
+    right: -45px;
+    bottom: -10px; 
+    background-image: url("../../assets/allClear.png"); */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    transform: rotate(5deg);
+    animation: stamp 0.2s ease-in-out forwards;
+}
+
+@keyframes stamp {
+  0% { width: 350px; height: 350x; }
+  100% { width: 300px; height: 300px; }
 }
 
 .titleDiv{
@@ -55,4 +84,15 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+
+.none{
+    width: 100%;
+    height: 100px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray-818181);
+    font: var(--font-18-medium);
 }

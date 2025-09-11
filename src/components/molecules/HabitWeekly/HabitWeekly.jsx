@@ -24,7 +24,7 @@ function HabitWeekly({
     <div className={style.habitWeekly}>
       {isTop && (
         <div className={style.week}>
-          <p className={style.todo}></p>
+          <p className={`${style.todo} ${style.none}`}></p>
           <ul className={style.todoWeek}>
             {Object.values(weekDays).map((label, index) => (
               <li className={style.todoSticker} key={index}>

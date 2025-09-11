@@ -1,0 +1,79 @@
+/* PC 기본 스타일 */
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  gap: 40px; 
+  padding: 0;
+  background: var(--bg-color);
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 24px 40px 24px;
+  gap: 24px;
+  border-radius: 20px;
+  background: var(--white);
+  width: 696px; 
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* 페이지 타이틀 */
+.pageTitle {
+  color: #414141;
+  font-family: Pretendard;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+}
+
+/* Tablet */
+@media (max-width: 1200px) {
+  .pageWrapper {
+    gap: 20px; 
+    padding: 0 24px;
+    justify-content: center;
+    background: none;
+  }
+
+  .contentWrapper {
+    width: 696px;
+    padding: 24px;
+    border-radius: 16px;
+    box-sizing: border-box;
+  }
+
+  .pageTitle {
+    font-size: 24px;
+    font-weight: 800;
+  }
+}
+
+/* Mobile */
+@media (max-width: 744px) {
+  .pageWrapper {
+    gap: 20px;
+    padding: 0;
+    justify-content: center;
+    background: none;
+  }
+
+  .contentWrapper {
+    width: 100%;
+    max-width: 344px; 
+    padding: 16px;
+    border-radius: 12px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .pageTitle {
+    font-size: 16px;
+    font-weight: 800;
+  }
+}

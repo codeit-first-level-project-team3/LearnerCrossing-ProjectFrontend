@@ -2,12 +2,14 @@ import GoToBtn from "../../molecules/GotoBtn/GoToBtn";
 import styles from "./StudyDescription.module.css";
 import DateTag from "../../molecules/DateTag";
 import PointTag from "../../molecules/PointTag";
+import Title from "../../atoms/Title/Title";
 
 function StudyDescription({
-  title = "",
+  nickName,
+  name,
   goToBtn = [],
   description = "",
-  isInfoPoint = true,
+  isInfoPoint = true, 
 }) {
   const infoName = isInfoPoint ? "현재까지 획득한 포인트" : "현재 시간";
 
@@ -19,11 +21,11 @@ function StudyDescription({
   return ( 
     <div className={styles.studyDescription}>
       <div className={styles.titleDiv}>
-        <p className={styles.title}>{title}</p>
+        <Title nickName={nickName} name={name} isLarge={true}/>
         <div className={styles.buttonDiv}>
           {goToBtn.map((e) => {
-            const { to, name } = e;
-            return <GoToBtn to={to} name={name} />;
+            const { to, name, onClick} = e;
+            return <GoToBtn to={to} name={name} onClick={onClick} key={goToBtn.indexOf(e)}/>;
           })}
         </div>
       </div>

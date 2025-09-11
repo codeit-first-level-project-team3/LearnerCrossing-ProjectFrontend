@@ -1,0 +1,23 @@
+.medium {
+  font: var(--font-18-bold);
+}
+
+.large {
+  font: var(--font-32-bold);
+}
+
+/* Tablet */
+@media (max-width: 1200px) {
+}
+
+/* Mobile */
+@media (max-width: 744px) {
+.medium {
+  font: var(--font-16-bold);
+}
+
+.large {
+  font: var(--font-24-bold);
+}
+
+}

@@ -1,17 +1,17 @@
 .cheerTag {
-  width: fit-content;
-  height: fit-content;
+  width: 66px;
+  height: 33px;
 
   display: flex;
   justify-content: center;
-  align-content: center;
-
-  padding: 6px 8px;
-  gap: 5px;
+  align-items: center;
+  gap: 2px;
   border-radius: 50px;
   background: rgba(0, 0, 0, 0.5);
   border: 0;
 
   color: #fff;
   font: var(--font-16-regular);
+
+  cursor: pointer;
 }

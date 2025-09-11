@@ -44,7 +44,7 @@
 }
 
 /* 모바일 전용: 드롭다운 width 조정 */
-@media (max-width: 375px) {
+@media (max-width: 744px) {
   .sortOptions {
     width: 150px;
   }
