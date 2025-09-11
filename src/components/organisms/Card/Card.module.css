@@ -1,14 +1,16 @@
 /* 그리드 */
 .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(358px, 1fr));
+  /* display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(358px, 1fr)); */
+  display: flex;
   gap: 20px;
   justify-content: center;
 }
 
 /* 카드 기본 스타일 */
 .card {
-  width: 358px;
+  max-width: 358px;
+  width: 100%;
   height: 243px;
   border-radius: 20px;
   border: 1px solid var(--gray-DDDDDD);
@@ -144,15 +146,15 @@
 /* 반응형: 모바일 */
 @media screen and (max-width: 744px) {
   .card {
-    width: 312px;
-    height: 180px;
-    padding: 12px;
-    justify-content: flex-start;
-    gap: 4px;
+    max-width: 312px;
+    height: 180px; /* 기존 카드 높이 유지 */
+    padding: 12px; /* 불필요한 패딩 최소화 */
+    justify-content: flex-start; /* 내부 여백 제거 */
+    gap: 4px; /* 카드 내부 요소 간 최소 간격 */
   }
 
   .grid {
-    grid-template-columns: 1fr;
+    /* grid-template-columns: 1fr; */
     gap: 12px;
     justify-content: center;
   }

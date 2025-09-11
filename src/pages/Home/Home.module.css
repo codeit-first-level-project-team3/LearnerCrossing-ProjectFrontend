@@ -13,7 +13,8 @@
 .recentStudies,
 .allStudies {
   display: flex;
-  width: 1200px;
+  max-width: 1200px;
+  width: 100%;
   padding: 40px;
   flex-direction: column;
   align-items: flex-start;
@@ -44,8 +45,9 @@
 
 /* Controls */
 .controlsAll {
+  width: 100%;
   display: flex;
-  gap: 599px;
+  justify-content: space-between;
 }
 
 /* Card grid */
@@ -107,7 +109,8 @@
 @media screen and (max-width: 1200px) {
   .recentStudies,
   .allStudies {
-    width: 771px;
+    max-width: 771px;
+    width: 100%;
     padding: 20px;
     margin-top: 20px; /* 태블릿 GNB와 간격 */
   }
@@ -116,10 +119,6 @@
   .cardGridAll {
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
-  }
-
-  .controlsAll {
-    gap: 215px;
   }
 
   .recentStudies {
@@ -135,7 +134,7 @@
 @media screen and (max-width: 744px) {
   .recentStudies,
   .allStudies {
-    width: 344px;
+    max-width: 344px;
     padding: 16px;
     margin-top: 20px; /* 모바일 GNB와 간격 */
   }
