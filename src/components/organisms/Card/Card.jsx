@@ -42,10 +42,10 @@ export default function Card({ studies = [], onClick }) {
             <div className={styles.header}>
               <div className={styles.userInfo}>
                 <span className={styles.nickname} style={{ color: nicknameColor }}>
-                  {formatText(nickname, 3)}
+                  {formatText(nickname, 6)}
                 </span>
                 <span className={styles.separator}>의</span>
-                <span className={styles.name}>{formatText(name, 3)}</span>
+                <span className={styles.name}>{formatText(name, 6)}</span>
               </div>
               <div className={styles.points}>
                 <div className={styles.pointsRow}>
