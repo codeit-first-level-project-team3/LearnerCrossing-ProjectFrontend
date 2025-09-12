@@ -83,7 +83,6 @@ export default function StudyEdit() {
       setAlertMessage("스터디 정보가 수정되었습니다!");
       setShowAlert(true);
     } catch (err) {
-      console.error("스터디 수정 오류:", err);
       setAlertMessage(err.message || "수정 중 오류가 발생했습니다.");
       setShowAlert(true);
     }

@@ -52,7 +52,7 @@ export default function Home() {
         return [...prev, ...newOnes];
       });
     } catch (err) {
-      console.error("스터디 불러오기 실패", err);
+      
     } finally {
       setLoading(false);
     }
