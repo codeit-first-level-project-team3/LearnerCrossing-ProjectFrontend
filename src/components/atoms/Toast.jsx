@@ -20,7 +20,6 @@ function Toast({ text, type, className='' }) {
     alignItems: "center",
     padding: "14px 28px",
     borderRadius: "12px",
-    height: "47px",
 
     font: "var(--font-16-medium)",
     color: textColor,
