@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import StudyForm from "../../components/organisms/StudyForm/StudyForm";
 import GNB from "../../components/organisms/GNB/GNB";
@@ -26,6 +26,11 @@ export default function StudyCreate() {
 
   const navigate = useNavigate();
   const { createStudy } = useStudy();
+
+  // ✅ 페이지 진입 시 스크롤 맨 위로
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleSubmit = async (data) => {
     try {

@@ -7,6 +7,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* 상단 공간 확보: GNB 높이 + 여유 */
+  padding-top: 170px; 
 }
 
 /* 최근 조회한 스터디 & 스터디 둘러보기 */
@@ -20,7 +22,6 @@
   align-items: flex-start;
   border-radius: 20px;
   margin-bottom: 40px;
-  margin-top: 40px; /* PC 기준 GNB와 간격 */
   background: var(--white-FFFFFF);
 }
 
@@ -107,12 +108,15 @@
 
 /* 반응형: 태블릿 (1200px 이하) */
 @media screen and (max-width: 1200px) {
+  .container {
+    padding-top: 140px; /* GNB와 간격 유지 */
+  }
+
   .recentStudies,
   .allStudies {
     max-width: 771px;
     width: 100%;
     padding: 20px;
-    margin-top: 20px; /* 태블릿 GNB와 간격 */
   }
 
   .cardGridRecent,
@@ -132,11 +136,15 @@
 
 /* 반응형: 모바일 (744px 이하) */
 @media screen and (max-width: 744px) {
+  .container {
+    padding-top: 140px; /* GNB와 간격 유지 */
+  }
+
   .recentStudies,
   .allStudies {
     max-width: 344px;
+    min-width: 355px; /* 최소 너비 유지 */
     padding: 16px;
-    margin-top: 20px; /* 모바일 GNB와 간격 */
   }
 
   .cardGridRecent,
@@ -152,13 +160,11 @@
     gap: 12px;
   }
 
-  /* 검색 input 왼쪽 정렬 */
   .controlsAll .searchWrapper {
     align-self: flex-start;
     width: 100%;
   }
 
-  /* Sort select 오른쪽 정렬 */
   .controlsAll .sortWrapper {
     align-self: flex-end;
   }

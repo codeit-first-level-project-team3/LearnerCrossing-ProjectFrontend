@@ -1,10 +1,9 @@
 /* Mobile 디자인 */
 /* 디폴트를 모바일로 잡았습니다. */
-
 .studyMain{
     max-width: 1200px;
 
-    margin: 40px auto 70px;
+    margin: 170px auto 70px; /* 상단 GNB 공간 확보: 100px + 여유 40px */
     padding: 40px;
 
     border-radius: 20px;
@@ -21,7 +20,7 @@
 /* Tablet 디자인 */
 @media (max-width: 1200px){
     .studyMain{
-        margin: 16px 24px 170px;
+        margin: 140px 24px 170px; /* 상단 GNB 공간 확보 */
         padding: 24px;
     }
 }
@@ -29,7 +28,7 @@
 /* mobile 디자인 */
 @media (max-width: 744px){
     .studyMain{
-        margin: 20px 16px 32px;
+        margin: 140px 16px 32px; /* 상단 GNB 공간 확보 */
         padding: 16px;
     }
 }
