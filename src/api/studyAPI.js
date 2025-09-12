@@ -1,6 +1,25 @@
 import useStudy from "../contexts/StudyStorage";
 import api from "./example"; 
 
+// Get /studiesAll
+export async function getAllStudies() {
+
+  const result = await api
+    .get("/studiesAll")
+    .then((res) => {
+      // 상태 코드 확인 (200~299 범위만 성공)
+      if (res.status < 200 || res.status >= 300) {
+        throw new Error(`스터디 목록 조회 실패 (status: ${res.status})`);
+      }
+      return res.data;
+    })
+    .catch((error) => {
+      console.error(error);
+      return null;
+    })
+  return result;
+}
+
 // GET /studies
 export async function getStudyList(params = {}) {
   const result = await api

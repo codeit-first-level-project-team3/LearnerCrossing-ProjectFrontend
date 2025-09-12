@@ -5,13 +5,17 @@ import GNB from "../../components/organisms/GNB/GNB";
 import Search from "../../components/molecules/Search/Search";
 import Sort from "../../components/molecules/Sort/Sort";
 import styles from "./Home.module.css";
-import { getStudyList } from "../../api/studyAPI";
+
+import { getAllStudies, getStudyList, getStudy } from "../../api/studyAPI";
+import { all } from "axios";
 import FadeToast from "../../components/molecules/FadeToast/FadeToast";
+
 
 export default function Home() {
   const navigate = useNavigate();
 
   const [allStudies, setAllStudies] = useState([]);
+  const [holeStudies, setHoleStudies] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("최근 순");
   const [page, setPage] = useState(1);
@@ -48,12 +52,43 @@ export default function Home() {
     }
   };
 
+  const getHoleStudies = async () => {
+
+    const res = await getAllStudies();
+    setHoleStudies(res);
+
+  }
+
   // 첫 로딩
   useEffect(() => {
+    
     fetchStudies(1);
+    getHoleStudies();
     const stored = sessionStorage.getItem("recentStudies");
     const recent = stored ? JSON.parse(stored) : [];
-    setRecentIds(recent.map((s) => s.id));
+
+    const fetchRecentStudies = async () => {
+    const stored = sessionStorage.getItem("recentStudies");
+    const recent = stored ? JSON.parse(stored) : [];
+
+    const promises = recent.map(async (s) => {
+
+      try {
+        const latest = await getStudy(s.id);
+        return latest;
+      } catch {
+        console.error(`스터디 ${s.id} 최신화 실패`, err);
+        return undefined; // 실패하면 제거
+      }
+    });
+
+    const updatedRecent = (await Promise.all(promises)).filter(Boolean);
+
+    sessionStorage.setItem("recentStudies", JSON.stringify(updatedRecent));
+    setRecentIds(updatedRecent.map((s) => s.id));
+  };
+
+  fetchRecentStudies();
   }, []);
 
   // 삭제 toast 메세지 출력
@@ -84,8 +119,9 @@ export default function Home() {
 
   // 검색 + 정렬
   const filteredStudies = useMemo(() => {
-    if (!Array.isArray(allStudies)) return [];
-    let filtered = allStudies.filter(
+
+    if (!Array.isArray(holeStudies)) return [];
+    let filtered = holeStudies.filter(
       (study) =>
         study.nickname.includes(searchTerm) ||
         study.description.includes(searchTerm)
@@ -93,6 +129,12 @@ export default function Home() {
 
     switch (sortOption) {
       case "최근 순":
+        if (!Array.isArray(allStudies)) return [];
+        filtered = allStudies.filter((
+          (study) =>
+            study.nickname.includes(searchTerm) ||
+            study.description.includes(searchTerm)
+        ));
         filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         break;
       case "오래된 순":
@@ -108,10 +150,14 @@ export default function Home() {
         break;
     }
 
+    filtered = filtered.slice(0, allStudies.length);
+
+    //console.log(filtered);
+
     return filtered;
   }, [allStudies, searchTerm, sortOption]);
 
-  // 최근 조회 스터디 (삭제 반영 + 최신화)
+  // 최근 조회 스터디 (삭제/수정 반영 + 최신화)
   const recentStudies = useMemo(() => {
     const stored = sessionStorage.getItem("recentStudies");
     if (!stored) return [];
@@ -122,12 +168,26 @@ export default function Home() {
     else if (windowWidth <= 1200) maxRecent = 2;
 
     const updatedRecent = recent
-      .map((s) => allStudies.find((a) => a.id === s.id)) // 최신 데이터 매핑
-      .filter(Boolean) // 삭제된 스터디 제거
+      .map((s) => allStudies.find((a) => a.id === s.id) || s) // 최신 데이터 반영
+      .filter((s) => s && s.id) // 삭제된 스터디 제거
       .slice(0, maxRecent);
 
     return updatedRecent;
   }, [windowWidth, allStudies, recentIds]);
+
+  // ✅ sessionStorage 변경 감지해서 반영
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const stored = sessionStorage.getItem("recentStudies");
+      const recent = stored ? JSON.parse(stored) : [];
+      setRecentIds(recent.map((s) => s.id));
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
 
   return (
     <>
