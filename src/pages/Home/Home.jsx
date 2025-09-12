@@ -77,7 +77,7 @@ export default function Home() {
           const latest = await getStudy(s.id);
           return latest;
         } catch {
-          console.error(`스터디 ${s.id} 최신화 실패`);
+
           return undefined; // 실패하면 제거
         }
       });
@@ -94,7 +94,6 @@ export default function Home() {
   useEffect(() => {
     if (location.state?.deleteMsg) {
       setDeleteMsg(true);
-      console.log(location.state.deleteMsg);
       window.history.replaceState({}, document.title); // location.state 정리
     }
 
