@@ -9,6 +9,7 @@
   align-items: center;
   /* 상단 공간 확보: GNB 높이 + 여유 */
   padding-top: 170px; 
+  min-width: 400px;
 }
 
 /* 최근 조회한 스터디 & 스터디 둘러보기 */
@@ -143,7 +144,6 @@
   .recentStudies,
   .allStudies {
     max-width: 344px;
-    min-width: 355px; /* 최소 너비 유지 */
     padding: 16px;
   }
 
