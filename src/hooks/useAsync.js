@@ -40,23 +40,3 @@ export function useActionAsync(asyncFunction) {
 
   return [pending, error, wrappedFunction];
 }
-
-//위 둘의 용도를 몰라서 따로 만든 Async;;
-export function useAsync(asyncFunction) {
-  const [isPending, setIsPending] = useState(true); // 현재 loading 상태
-  const [error, setError] = useState(null); // 에러 상태
-
-  const wrappedFunction = async (...args) => {
-    setIsPending(true);
-    setError(null);
-    try {
-      return await asyncFunction(...args);
-    } catch (error) {
-      setError(error);
-    } finally {
-      setIsPending(false);
-    }
-  };
-
-  return [isPending, error, wrappedFunction];
-}

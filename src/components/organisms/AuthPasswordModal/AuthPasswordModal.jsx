@@ -7,12 +7,13 @@ function AuthPasswordModal({
   onClick,
   onClose,
   buttonText,
+  disabled,
   title,
   value,
   onChange,
 }) {
   return (
-    <OneButtonModal isOpen={isOpen} onClick={onClick} buttonText={buttonText}>
+    <OneButtonModal isOpen={isOpen} onClick={onClick} buttonText={buttonText} disabled={disabled}>
       <div className={styles.authModal}>
         <h3 className={styles.title}>{title}</h3>
         <p className={styles.content}>권한이 필요해요!</p>

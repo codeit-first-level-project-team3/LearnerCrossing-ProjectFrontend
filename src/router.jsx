@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { createBrowserRouter, Outlet, useParams, Navigate } from "react-router-dom";
 import useStudy from "./contexts/StudyStorage.jsx";
-import { useAsync } from "./hooks/useAsync.js";
+import { useAutoAsync } from "./hooks/useAsync.js";
 
 import Home from "./pages/Home/Home.jsx";
 import TodaysHabits from "./pages/TodaysHabits/TodaysHabits.jsx";
@@ -17,7 +17,7 @@ const PrivateRoute = ({ children }) => {
   const { id } = useParams();
   const { studyId, token, checkToken } = useStudy();
   const [ isAuthorized, setIsAuthorized ] = useState(true); // null: 로딩 중
-  const [ isPending, error, checkTk ] = useAsync(checkToken);
+  const [ isPending, error, checkTk ] = useAutoAsync(checkToken);
 
   useEffect(()=>{
     const checkAuth = async () => {
