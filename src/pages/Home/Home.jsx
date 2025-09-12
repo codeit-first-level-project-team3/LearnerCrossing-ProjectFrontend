@@ -130,11 +130,22 @@ export default function Home() {
     switch (sortOption) {
       case "최근 순":
         if (!Array.isArray(allStudies)) return [];
-        filtered = allStudies.filter((
-          (study) =>
-            study.nickname.includes(searchTerm) ||
-            study.description.includes(searchTerm)
-        ));
+        if(searchTerm == "") {
+          //console.log("all");
+          filtered = allStudies.filter((
+            (study) =>
+              study.nickname.includes(searchTerm) ||
+              study.description.includes(searchTerm)
+          ));
+        }else {
+          //console.log("hole");
+          filtered = holeStudies.filter((
+            (study) =>
+              study.nickname.includes(searchTerm) ||
+              study.description.includes(searchTerm)
+          ));
+        }
+        //console.log(filtered);
         filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         break;
       case "오래된 순":
