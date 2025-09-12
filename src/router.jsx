@@ -12,7 +12,7 @@ import StudyCreate from "./pages/StudyCreate/StudyCreate.jsx";
 import StudyEdit from "./pages/StudyEdit/StudyEdit.jsx"; 
 import LoadingPage from "./pages/Loading/Loading.jsx";
 
-//접근 보호 (조건 불만족 시 특정 페이지로 이동) - 비밀번호 방식
+//접근 보호 (조건 불만족 시 특정 페이지로 이동) - 토큰 방식
 const PrivateRoute = ({ children }) => {
   const { id } = useParams();
   const { studyId, token, checkToken } = useStudy();

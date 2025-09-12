@@ -112,25 +112,6 @@ export async function deleteStudy(id, token) {
   return result;
 }
 
-/* 비밀번호 버전 */
-// export async function checkStudyPw(id, pw) {
-//   const getRes = await getStudy(id);
-
-//   const RqBody = {
-//     nickName: getRes.nickName,
-//     name: getRes.name,
-//     description: getRes.description,
-//     background: getRes.background,
-//     password: pw.toString()
-//   }
-
-//   // patch 리퀘스트를 한번 보내서 통과하는 지 검사. (비밀번호 검사 api를 백엔드에 따로 만드는 게 더 귀찮아요 ㅜ)
-//   const result = await api.patch(`/studies/${id}`, RqBody)
-//     .then((res) => { return res.data })
-//     .catch((error) => { console.error(error); return null });
-//   return result;
-// }
-
 /* 토큰 버전, 토큰 받아오기 */
 export async function checkStudyPw(id, pw) {
   const body = { studyId: id, password: pw };
@@ -158,11 +139,6 @@ export async function checkStudyToken(id, token) {
 
   const config = { headers: { Authorization: `Bearer ${token}` } };
 
-
-
-
-
-
   // Pactch 리퀘스트를 한번 보내서 통과하는지 검사. (비밀번호 검사 api를 백엔드에 따로 만드는 게 더 귀찮아요 ㅜ)
 
   const result = await api
@@ -172,7 +148,5 @@ export async function checkStudyToken(id, token) {
       console.error(error);
       return false;
     });
-
-  console.log("토큰 결과: " + (result ? "통과" : "실패"));
   return result;
 }
