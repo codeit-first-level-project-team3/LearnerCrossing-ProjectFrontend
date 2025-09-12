@@ -1,8 +1,9 @@
 .weeklyHabitForm {
   width: 100%;
-
+  min-height: 193px;
   display: flex;
   flex-direction: column;
+  justify-content: center
 }
 
 /* object empty */
