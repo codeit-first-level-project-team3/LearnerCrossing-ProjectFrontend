@@ -28,7 +28,7 @@ function Toast({ text, type, className='' }) {
     bottom: "10%",
     left: "50%",
     transform: "translateX(-50%)",
-    zIndex: 7,
+    zIndex: 22,
   };
 
   return (
