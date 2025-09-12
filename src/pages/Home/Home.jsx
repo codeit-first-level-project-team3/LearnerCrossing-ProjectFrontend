@@ -1,11 +1,12 @@
 import { useState, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Card from "../../components/organisms/Card/Card";
 import GNB from "../../components/organisms/GNB/GNB";
 import Search from "../../components/molecules/Search/Search";
 import Sort from "../../components/molecules/Sort/Sort";
 import styles from "./Home.module.css";
 import { getStudyList } from "../../api/studyAPI";
+import FadeToast from "../../components/molecules/FadeToast/FadeToast";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -54,6 +55,21 @@ export default function Home() {
     const recent = stored ? JSON.parse(stored) : [];
     setRecentIds(recent.map((s) => s.id));
   }, []);
+
+  // 삭제 toast 메세지 출력
+  const location = useLocation();
+  const [deleteMsg, setDeleteMsg] = useState(false);
+  useEffect(() => {
+    if(location.state?.deleteMsg) {
+      setDeleteMsg(true)
+      console.log(location.state.deleteMsg);
+      window.history.replaceState({}, document.title); // location.state 정리
+    }
+
+    setTimeout(() => {
+      setDeleteMsg(false);
+    }, 2000);
+  }, [location.state]);
 
   // 카드 클릭
   const handleCardClick = (study) => {
@@ -192,6 +208,7 @@ export default function Home() {
           )}
         </section>
       </div>
+      {deleteMsg && <FadeToast type="point" text={location.state.deleteMsg} />}
     </>
   );
 }
