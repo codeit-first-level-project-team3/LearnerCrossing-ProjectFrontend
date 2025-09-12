@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { getHabitList } from "../../api/habitAPI.js";
-import { useAutoAsync } from "../../hooks/useAsync.js";
+import { useActionAsync, useAutoAsync } from "../../hooks/useAsync.js";
 import useEmojis from "../../hooks/useEmojis.js";
 
 import Toast from "../../components/atoms/Toast.jsx";
@@ -14,7 +14,6 @@ import StudyDescription from "../../components/organisms/StudyDescription/StudyD
 import AuthPasswordModal from "../../components/organisms/AuthPasswordModal/AuthPasswordModal.jsx";
 import WeeklyHabitForm from "../../components/organisms/WeeklyHabitForm/WeeklyHabitForm.jsx";
 import TwoButtonModal from "../../components/molecules/TwoButtonModal.jsx";
-import OneButtonModal from "../../components/molecules/OneButtonModal.jsx";
 import styles from "./StudyDetail.module.css";
 import icCopy from "../../assets/ic_copy.png";
 
@@ -26,7 +25,6 @@ function StudyDetail() {
   const [isModalOpen, setIsOpen] = useState(false); // 모달창 열린 상태
   const [buttonText, setButtonText] = useState(""); // 모달창 버튼 이름
   const [isReconfirmOpen, setReconfirmOpen] = useState(false); // 한 번 더 확인용 모달
-  const [deleteSuccess, setDeleteSuccess] = useState(false); // 삭제 성공 여부
   const [share, setShare] = useState(false); // 공유하기 창
   const shareWrapperRef = useRef(null);
   const shareBtnRef = useRef(null);
@@ -37,6 +35,7 @@ function StudyDetail() {
 
   const [isHabitsLoading, habitsLoadingError, getHabitsAsync] =
     useAutoAsync(getHabitList); // 습관 가져오기 로딩,에러처리
+
 
   const {
     studyId,
@@ -86,9 +85,10 @@ function StudyDetail() {
     return res;
   };
 
+  const [checkAuthLoading, checkAuthError, checkAuthAsync] = useActionAsync(checkAuth); // 토큰 체크 로딩
   // 이동 버튼 click 시 action
   async function handlePermission(action, btnText) {
-    const tokenValid = await checkAuth();
+    const tokenValid = await checkAuthAsync();
     // 만약 토큰이 있다면 바로 action 실행
     if (tokenValid) {
       // token 확인
@@ -106,6 +106,7 @@ function StudyDetail() {
       name: "오늘의 습관",
       onClick: async (e) => {
         e.preventDefault();
+        if(checkAuthLoading) return;
         const action = () => navigate("./habits");
         handlePermission(action, "오늘의 습관으로 가기");
       },
@@ -115,6 +116,7 @@ function StudyDetail() {
       name: "오늘의 집중",
       onClick: async (e) => {
         e.preventDefault();
+        if(checkAuthLoading) return;
         const action = () => navigate("./focus");
         handlePermission(action, "오늘의 집중으로 가기");
       },
@@ -122,17 +124,21 @@ function StudyDetail() {
   ];
   // 수정하기 클릭
   const handleUpdateClick = async () => {
+    if(checkAuthLoading) return;
     const action = () => navigate("./studyEdit");
     handlePermission(action, "수정하러 가기");
   };
   // 삭제하기 클릭
   const handleDeleteClick = async () => {
+    if(checkAuthLoading) return;
     const action = () => setReconfirmOpen(true); // 한번 더 확인 모달창 열기
     handlePermission(action, "삭제하기");
   };
+
+  const [checkPwdLoading, checkLoadingError, checkPwAsync] = useActionAsync(checkPw); // 비밀번호 체크 로딩
   // 비밀번호 성공시 미리 저장해둔 nextAction 실행
   const handlePasswordsubmit = async () => {
-    if (await checkPw(inputPassword)) {
+    if (await checkPwAsync(inputPassword)) {
       setWarning(false);
       setIsOpen(false);
       nextAction();
@@ -222,6 +228,7 @@ function StudyDetail() {
           onClick={handlePasswordsubmit}
           onClose={handleModalClose}
           buttonText={buttonText}
+          disabled={checkPwdLoading}
           title={studyData.name}
           value={inputPassword}
           onChange={handlePasswordChange}
