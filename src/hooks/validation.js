@@ -1,14 +1,14 @@
-// 닉네임: 10자 미만
+// 닉네임: 13자 미만
 export const validateNickname = (value) => {
   if (!value) return "*닉네임을 입력해 주세요.";
-  if (value.length < 1 || value.length >= 10) return "*닉네임은 10자 미만이어야 합니다.";
+  if (value.length < 1 || value.length >= 13) return "*닉네임은 10자 미만이어야 합니다.";
   return "";
 };
 
-// 스터디 이름: 10자 미만
+// 스터디 이름: 13자 미만
 export const validateStudyName = (value) => {
   if (!value) return "*스터디 이름을 입력해 주세요.";
-  if (value.length < 1 || value.length >= 10) return "*스터디 이름은 10자 미만이어야 합니다.";
+  if (value.length < 1 || value.length >= 13) return "*스터디 이름은 10자 미만이어야 합니다.";
   return "";
 };
 
