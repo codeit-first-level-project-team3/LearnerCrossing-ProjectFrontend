@@ -10,9 +10,9 @@ import { getAllStudies, getStudyList, getStudy } from "../../api/studyAPI";
 import { all } from "axios";
 import FadeToast from "../../components/molecules/FadeToast/FadeToast";
 
-
 export default function Home() {
   const navigate = useNavigate();
+  const location = useLocation(); // ✅ 위치 추적
 
   const [allStudies, setAllStudies] = useState([]);
   const [holeStudies, setHoleStudies] = useState([]);
@@ -24,6 +24,12 @@ export default function Home() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [loading, setLoading] = useState(false);
   const [recentIds, setRecentIds] = useState([]);
+  const [deleteMsg, setDeleteMsg] = useState(false);
+
+  // ✅ 페이지 전환 시 무조건 스크롤 맨 위로
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   // 창 크기 추적
   useEffect(() => {
@@ -53,50 +59,41 @@ export default function Home() {
   };
 
   const getHoleStudies = async () => {
-
     const res = await getAllStudies();
     setHoleStudies(res);
-
-  }
+  };
 
   // 첫 로딩
   useEffect(() => {
-    
     fetchStudies(1);
     getHoleStudies();
-    const stored = sessionStorage.getItem("recentStudies");
-    const recent = stored ? JSON.parse(stored) : [];
 
     const fetchRecentStudies = async () => {
-    const stored = sessionStorage.getItem("recentStudies");
-    const recent = stored ? JSON.parse(stored) : [];
+      const stored = sessionStorage.getItem("recentStudies");
+      const recent = stored ? JSON.parse(stored) : [];
 
-    const promises = recent.map(async (s) => {
+      const promises = recent.map(async (s) => {
+        try {
+          const latest = await getStudy(s.id);
+          return latest;
+        } catch {
+          console.error(`스터디 ${s.id} 최신화 실패`);
+          return undefined; // 실패하면 제거
+        }
+      });
 
-      try {
-        const latest = await getStudy(s.id);
-        return latest;
-      } catch {
-        console.error(`스터디 ${s.id} 최신화 실패`, err);
-        return undefined; // 실패하면 제거
-      }
-    });
+      const updatedRecent = (await Promise.all(promises)).filter(Boolean);
+      sessionStorage.setItem("recentStudies", JSON.stringify(updatedRecent));
+      setRecentIds(updatedRecent.map((s) => s.id));
+    };
 
-    const updatedRecent = (await Promise.all(promises)).filter(Boolean);
-
-    sessionStorage.setItem("recentStudies", JSON.stringify(updatedRecent));
-    setRecentIds(updatedRecent.map((s) => s.id));
-  };
-
-  fetchRecentStudies();
+    fetchRecentStudies();
   }, []);
 
   // 삭제 toast 메세지 출력
-  const location = useLocation();
-  const [deleteMsg, setDeleteMsg] = useState(false);
   useEffect(() => {
-    if(location.state?.deleteMsg) {
-      setDeleteMsg(true)
+    if (location.state?.deleteMsg) {
+      setDeleteMsg(true);
       console.log(location.state.deleteMsg);
       window.history.replaceState({}, document.title); // location.state 정리
     }
@@ -119,33 +116,32 @@ export default function Home() {
 
   // 검색 + 정렬
   const filteredStudies = useMemo(() => {
-
     if (!Array.isArray(holeStudies)) return [];
     let filtered = holeStudies.filter(
       (study) =>
         study.nickname.includes(searchTerm) ||
-        study.description.includes(searchTerm)
+        study.description.includes(searchTerm) ||
+        study.name.includes(searchTerm)
     );
 
     switch (sortOption) {
       case "최근 순":
         if (!Array.isArray(allStudies)) return [];
-        if(searchTerm == "") {
-          //console.log("all");
-          filtered = allStudies.filter((
+        if (searchTerm == "") {
+          filtered = allStudies.filter(
             (study) =>
               study.nickname.includes(searchTerm) ||
-              study.description.includes(searchTerm)
-          ));
-        }else {
-          //console.log("hole");
-          filtered = holeStudies.filter((
+              study.description.includes(searchTerm) ||
+              study.name.includes(searchTerm)
+          );
+        } else {
+          filtered = holeStudies.filter(
             (study) =>
               study.nickname.includes(searchTerm) ||
-              study.description.includes(searchTerm)
-          ));
+              study.description.includes(searchTerm) ||
+              study.name.includes(searchTerm)
+          );
         }
-        //console.log(filtered);
         filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         break;
       case "오래된 순":
@@ -162,9 +158,6 @@ export default function Home() {
     }
 
     filtered = filtered.slice(0, allStudies.length);
-
-    //console.log(filtered);
-
     return filtered;
   }, [allStudies, searchTerm, sortOption]);
 
