@@ -80,7 +80,7 @@ export default function FocusTimer(){
 
     return(
         <>  
-            <TestToggle isTestMode={isTestMode} onToggle={setIsTestMode}/>
+            {/* <TestToggle isTestMode={isTestMode} onToggle={setIsTestMode}/> */}
             {isRun 
             ? ( <div className={styles.timerDiv}>
                     <div className={styles.tagDiv}>
