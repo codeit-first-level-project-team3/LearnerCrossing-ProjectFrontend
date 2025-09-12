@@ -20,6 +20,12 @@ function HabitWeekly({
 
   const boolenState = weeklyState.split("|").map(el => el==0 ? false : true);
 
+  if(weeklytodo.length > 8) { 
+    const todoArr = weeklytodo.split(' ');
+    const lastCh = "\n" + todoArr.pop();
+    weeklytodo = todoArr.join(" ") + lastCh;
+  }
+
   return (
     <div className={style.habitWeekly}>
       {isTop && (
@@ -35,7 +41,7 @@ function HabitWeekly({
         </div>
       )}
       <div className={style.weeklyGoals}>
-        <p className={style.todo}>{weeklytodo}</p>
+        <p className={style.todo} style={{ whiteSpace: "pre-line" }}>{weeklytodo}</p>
         <ul className={style.todoWeek}>
           {Object.keys(weekDays).map((key, i) => (
             <li className={style.todoSticker} key={key}>

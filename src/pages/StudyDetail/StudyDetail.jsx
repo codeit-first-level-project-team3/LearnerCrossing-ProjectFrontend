@@ -81,7 +81,6 @@ function StudyDetail() {
     } // 토큰이 없는 경우
 
     const res = await checkToken();
-    console.log("token이 있는 경우 결과: " + res);
     return res;
   };
 
