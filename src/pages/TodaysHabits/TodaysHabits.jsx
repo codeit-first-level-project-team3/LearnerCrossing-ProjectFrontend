@@ -49,7 +49,7 @@ function HabitList({ today, habits, handleToggle, setIsModalOpen }) {
               </li>
             );
           })
-          : <div className={styles.none}><p>진행 중인 습관이 없습니다.<br/>습관을 만들어 보세요!</p></div> 
+          : <div className={styles.none}><p>아직 습관이 없어요<br/>목록 수정을 눌러 습관을 생성해보세요</p></div> 
           }
         </ul>
       </div>
